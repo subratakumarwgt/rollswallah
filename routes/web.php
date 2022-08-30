@@ -524,6 +524,14 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
 
 
 
+
+     //Expense Routes
+    //  Route::get('/expense/bind', 'AdminDashboardController@expenseBind')->name('expense-bind');
+    //  Route::get('/expense/edit/{id}', 'AdminDashboardController@expenseEdit')->name('expense-edit');
+     Route::get('/expense/daily-expense', 'ExpenseController@viewDailyExpense')->name('daily-expense');
+
+
+
     
 });
 
