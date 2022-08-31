@@ -890,6 +890,12 @@ class CrudController extends Controller
 						$results[] = ['id'=>$product->id,'text'=>$product->short_name];
 					}
 					break;
+				case 'items':			
+					$products = Item::where('name', 'like', '%' . $request->search . '%')->get()->take(10);
+					foreach ($products as $key => $product) {
+						$results[] = ['id'=>$product->id,'text'=>$product->name,"price" => $product->price,"unit" => $product->unit];
+					}
+					break;
 				
 				default:
 					# code...
@@ -898,6 +904,7 @@ class CrudController extends Controller
 			echo json_encode(["items"=>$results]);
 		  
 	}
+
 		}
 
 
