@@ -17,6 +17,7 @@ use App\Models\Payment;
 use App\Models\Product;
 use App\Models\Profile;
 use App\Models\Slots;
+use App\Models\Item;
 use App\Models\StaticAsset;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
@@ -267,6 +268,9 @@ class CrudController extends Controller
 					'zip_code' => $request->zip_code,
 				]);
 			}
+			if($request->role)
+			$new_user->assignRole($request->role);
+			else
 			$new_user->assignRole('user');
 			//$user->getDirectPermissions(); 
 

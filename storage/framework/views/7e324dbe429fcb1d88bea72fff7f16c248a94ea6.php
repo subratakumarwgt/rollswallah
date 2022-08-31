@@ -1,25 +1,25 @@
-<script src="{{asset('assets/js/jquery-3.5.1.min.js')}}"></script>
+<script src="<?php echo e(asset('assets/js/jquery-3.5.1.min.js')); ?>"></script>
 <!-- Bootstrap js-->
-<script src="{{asset('assets/js/bootstrap/bootstrap.bundle.min.js')}}"></script>
+<script src="<?php echo e(asset('assets/js/bootstrap/bootstrap.bundle.min.js')); ?>"></script>
 <!-- feather icon js-->
-<script src="{{asset('assets/js/icons/feather-icon/feather.min.js')}}"></script>
-<script src="{{asset('assets/js/icons/feather-icon/feather-icon.js')}}"></script>
+<script src="<?php echo e(asset('assets/js/icons/feather-icon/feather.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/icons/feather-icon/feather-icon.js')); ?>"></script>
 <!-- scrollbar js-->
-<script src="{{asset('assets/js/scrollbar/simplebar.js')}}"></script>
-<script src="{{asset('assets/js/scrollbar/custom.js')}}"></script>
+<script src="<?php echo e(asset('assets/js/scrollbar/simplebar.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/scrollbar/custom.js')); ?>"></script>
 <!-- Sidebar jquery-->
-<script src="{{asset('assets/js/config.js')}}"></script>
+<script src="<?php echo e(asset('assets/js/config.js')); ?>"></script>
 <!-- Plugins JS start-->
-<script id="menu" src="{{asset('assets/js/sidebar-menu.js')}}"></script>
-<script src="{{asset('assets/js/loadingoverlay.js')}}"></script>
-<script src="{{asset('assets/js/datatable/datatables/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('assets/js/datepicker/date-picker/datepicker.js')}}"></script>
-<script src="{{asset('assets/js/notify/bootstrap-notify.min.js')}}"></script>
+<script id="menu" src="<?php echo e(asset('assets/js/sidebar-menu.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/loadingoverlay.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/datatable/datatables/jquery.dataTables.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/datepicker/date-picker/datepicker.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/notify/bootstrap-notify.min.js')); ?>"></script>
 <script src="https://kit.fontawesome.com/568e34549e.js" crossorigin="anonymous"></script>
-<script src="{{asset('assets/js/form-validation-custom.js')}}"></script>
+<script src="<?php echo e(asset('assets/js/form-validation-custom.js')); ?>"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.js"></script>
-<script src="{{asset('assets/js/select2/select2.full.min.js')}}"></script>
+<script src="<?php echo e(asset('assets/js/select2/select2.full.min.js')); ?>"></script>
 <script>
     function loadoverlay(object) {
         object.LoadingOverlay('show', {
@@ -80,7 +80,7 @@ $(document).ready(async function(){
 // });
 })
 </script>
-<script src="{{asset('js/app.js')}}"></script>
+<script src="<?php echo e(asset('js/app.js')); ?>"></script>
 
 <script>
     const admin_broadcast = $("#admin_broadcast").val();
@@ -150,7 +150,7 @@ $(document).ready(async function(){
 
 let new_user_row = $(`
     <li class="clearfix user_info" id="user_info_${user.id}" data-user_id = "${user.id}" role="button" >
-    	<img class="rounded-circle user-image" src="/storage/${user.profile ? user.profile.image : ""  }" alt="{{asset('assets/images/user/1.jpg')}}">
+    	<img class="rounded-circle user-image" src="/storage/${user.profile ? user.profile.image : ""  }" alt="<?php echo e(asset('assets/images/user/1.jpg')); ?>">
 										<div class="status-circle online"></div>
 										<div class="about">
 											<div class="name">${user.name}</div>											
@@ -182,19 +182,17 @@ let new_user_row = $(`
     });
    
 </script>
-@yield('script')
-<script src="{{asset('js/app.js')}}"></script>
+<?php echo $__env->yieldContent('script'); ?>
+<script src="<?php echo e(asset('js/app.js')); ?>"></script>
 
-@if(Route::current()->getName() != 'popover')
-<script src="{{asset('assets/js/tooltip-init.js')}}"></script>
-@endif
+<?php if(Route::current()->getName() != 'popover'): ?>
+<script src="<?php echo e(asset('assets/js/tooltip-init.js')); ?>"></script>
+<?php endif; ?>
 
 <!-- Plugins JS Ends-->
 <!-- Theme js-->
-<script src="{{asset('assets/js/script.js')}}"></script>
-<!-- <script src="{{asset('assets/js/theme-customizer/customizer.js')}}"></script> -->
+<script src="<?php echo e(asset('assets/js/script.js')); ?>"></script>
+<!-- <script src="<?php echo e(asset('assets/js/theme-customizer/customizer.js')); ?>"></script> -->
 
 
-{{-- @if(Route::current()->getName() == 'index') 
-	<script src="{{asset('assets/js/layout-change.js')}}"></script>
-@endif --}}
+<?php /**PATH C:\Users\subra\Documents\Projects\rollswallah\resources\views/adminpanel/script.blade.php ENDPATH**/ ?>

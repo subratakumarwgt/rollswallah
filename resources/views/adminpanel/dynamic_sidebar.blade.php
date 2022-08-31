@@ -22,7 +22,7 @@
 <div class="sidebar-wrapper">
 	<div>
 		<div class="logo-wrapper">
-			<a href="{{'/management/dashboard'}}"><img class="img-fluid for-light" src="{{asset('assets/images/logo/rollswallah.png')}}" alt="" width="150px"><img class="img-fluid for-dark" src="{{asset('assets/images/logo/logo_dark.png')}}" alt=""></a>
+			<a href="{{'/management/dashboard'}}"><img class="img-fluid for-light p-0 m-0" src="{{asset('assets/images/logo/rollswallah.png')}}" alt="" width="60px"><img class="img-fluid for-dark" src="{{asset('assets/images/logo/logo_dark.png')}}" alt=""></a>
 			<div class="back-btn"><i class="fa fa-angle-left"></i></div>
 			<div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="grid"> </i></div>
 		</div>
@@ -35,9 +35,9 @@
 						<a href="{{route('/')}}"><img class="img-fluid" src="{{asset('assets/images/logo/logo-icon.png')}}" alt=""></a>
 						<div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
 					</li>
-					<li class="sidebar-list">
+					<!-- <li class="sidebar-list">
 					<a href="{{route('send-push')}}" class="btn btn-outline-primary btn-block">Make a Push Notification!</a>
-					</li>
+					</li> -->
                     @foreach($modules as $module)
 					<li class="sidebar-main-title">
 						<div>
