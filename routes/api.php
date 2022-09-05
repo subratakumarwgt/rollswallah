@@ -43,3 +43,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
   Route::post('/broadcasting/auth','\App\Http\Controllers\AdminDashboardController@verifyBroadcast')->name('broadcast-auth');
   Route::post('/product/varient', '\App\Http\Controllers\CrudController@productVarientData')->name('product-varient-data');
   Route::get('/product/get/{id}', '\App\Http\Controllers\CrudController@productGetData')->name('product-get-data');
+  Route::post('/save-daily-expenses', '\App\Http\Controllers\CrudController@saveDailyExpenses')->name('save-daily-expenses');

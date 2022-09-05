@@ -20,6 +20,7 @@ use App\Models\Slots;
 use App\Models\Item;
 use App\Models\StaticAsset;
 use App\Models\User;
+use App\Models\DailyExpense;
 use Illuminate\Support\Facades\Validator;
 use Session;
 use DB;
@@ -891,7 +892,15 @@ class CrudController extends Controller
 					}
 					break;
 				case 'items':			
-					$products = Item::where('name', 'like', '%' . $request->search . '%')->get()->take(10);
+					$products = Item::whereNotNull("id");
+					if($request->search)
+					$products =$products->where('name', 'like', '%' . $request->search . '%');
+					if($request->filters){
+						foreach ($request->filters as $column => $value) {
+							$products = $products->WhereIn($column,$value);
+						}
+					}
+					$products = $products->get()->take(10);
 					foreach ($products as $key => $product) {
 						$results[] = ['id'=>$product->id,'text'=>$product->name,"price" => $product->price,"unit" => $product->unit];
 					}
@@ -903,7 +912,17 @@ class CrudController extends Controller
 			}
 			echo json_encode(["items"=>$results]);
 		  
-	}
+   	    }
+		public function saveDailyExpenses(Request $request){
+			if (!empty(count($request->row_data))) {
+				if(DailyExpense::insert($request->row_data))
+				return response(['status'=>true,'message'=>"Expense Created Successfully"],200);
+			}
+			else{
+				return response(['status'=>false,'message'=>"No data Provided"],400);
+
+			}
+		}
 
 		}
 

@@ -512,7 +512,6 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
      Route::post('/role/create', 'RoleController@createNewrole')->name('role-create');
     Route::get('/module/bind', 'ModuleController@moduleBind')->name('module-bind');
      Route::get('render-sidebar', 'ModuleController@renderSideBar')->name('render-sidebar');
-
      Route::get('general-statistics', 'ModuleController@generalStatistics')->name('statistics');
 
      Route::post('push-notification-subscription', 'ModuleController@saveSubscription')->name('push-notification-subscription');
@@ -529,6 +528,11 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
     //  Route::get('/expense/bind', 'AdminDashboardController@expenseBind')->name('expense-bind');
     //  Route::get('/expense/edit/{id}', 'AdminDashboardController@expenseEdit')->name('expense-edit');
      Route::get('/expense/daily-expense', 'ExpenseController@viewDailyExpense')->name('daily-expense');
+     Route::get('/sales/quick-order', 'ExpenseController@viewQuickOrder')->name('quick-order');
+     Route::get('/expense/other-expense', 'ExpenseController@viewOtherExpense')->name('other-expense');
+     Route::get('/expense/all-expense', 'ExpenseController@viewAllExpense')->name('all-expense');
+     Route::get('/expense/wastages', 'ExpenseController@viewAllExpense')->name('wastages');
+     
 
 
 

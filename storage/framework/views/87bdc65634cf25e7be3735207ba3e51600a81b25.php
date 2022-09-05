@@ -83,6 +83,7 @@
 
 
 
+
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-12">
@@ -91,13 +92,13 @@
         <div class="card-header">
           <div class="row justify-content-center">
             <div class="col-md-4 mb-2 ">
-              <div class="border p-3 text-center rounded border-primary bg-light text-primary shadows-sm">
+              <div class="border p-3 text-center rounded border-primary bg-light text-primary shadow-sm">
                 <strong>Date</strong> : <span class="text-dark editable_value editable_date"><?php echo e(date("Y-m-d")); ?></span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
                 <div class="p-1 hide_input d-none"> <input type="date" class="form-control editable" value='<?php echo e(date("d.m.Y")); ?>'></div>
               </div>
             </div>
             <div class="col-md-4 mb-2 ">
-              <div class="border p-3 text-center rounded border-primary bg-light text-primary shadows-sm">
+              <div class="border p-3 text-center rounded border-primary bg-light text-primary shadow-sm">
                 <strong>Expense Type</strong> : <span class="text-dark editable_value editable_expense_type">Daily Expenses</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
                 <div class="p-1 hide_input d-none"> <select name="" id="expense_type" class="form-control editable">
                     <option value="Daily Expenses">Daily Expenses</option>
@@ -106,7 +107,7 @@
               </div>
             </div>
             <div class="col-md-4 mb-2 ">
-              <div class="border p-3 text-center rounded border-primary bg-light text-primary shadows-sm">
+              <div class="border p-3 text-center rounded border-primary bg-light text-primary shadow-sm">
                 <strong>Expense Category</strong> : <span class="text-dark editable_value editable_expense_category">Vegetable</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
                 <div class="p-1 hide_input d-none"> <select name="" id="expense_category" class="form-control editable">
                     <option value="Vegetables">Vegetables</option>
@@ -244,7 +245,12 @@
       return res.items
     })
     localStorage.setItem("items",JSON.stringify(items))    
-    getAllItems($(".item_name").bind("change", function() {
+
+  
+  }
+  
+  getAllItems($(".item_name").bind("change", function() {
+   
       if ($(".item_name").length > 1 && isDuplicateItem($(this).val())) {
         $.notify({
           message: "Item already exists in the list"
@@ -258,9 +264,6 @@
         setPrice(this)
 
     }))
-  
-  }
-  getItemDetails()
   const setPrice = (item_obj) => {
     items = JSON.parse(JSON.parse(localStorage.getItem("items")))
     let item = items.items.filter((value, key) => {
@@ -434,30 +437,109 @@
 
 
     }, function() {
-
+      getItemDetails()
     });
 
   }
 
 
-  const setAllData = () => {
-
+  const setAllData = async () => {
+    loadoverlay($("#expense_body"))
     if (confirm("Are you sure you want to save expenses?")) {
+      $.notify({
+            message: "Expenses being added!"
+          }, {
+            type: 'warning',
+            z_index: 10000,
+            timer: 2000,
+          });
+      
       let data = {}
       let row_data = []
       data.expense_date = $(".editable_date").html()
       data.expense_type = $(".editable_expense_type").html()
       data.expense_category = $(".editable_expense_category").html()
-      data.row_data = $("#expense_body tr").map(function(index, elem) {
+      data.created_by = $("#created_by").val()
+     
+
+      data.total = $("#total").html()
+
+      data.description = `Expense of RS ${data.total} as ${data.expense_type} for ${data.expense_category} is paid.`
+
+    
+    var form = new FormData();
+    form.append("table_name", "expenses");
+    form.append("type", data.expense_type);
+    form.append("category", data.expense_category);
+    form.append("amount",  data.total);
+    form.append("created_by", data.created_by);
+    form.append("description",data.description);
+    form.append("table_model", "Expense");
+
+    var settings = {
+      "url": "/api/create-data",
+      "method": "POST",
+      "timeout": 0,
+      "processData": false,
+      "mimeType": "multipart/form-data",
+      "contentType": false,
+      "data": form,
+      statusCode: {
+        400: function() {
+          hideoverlay($("#expense_body"))
+          //  = JSON.parse();
+          $.notify({
+            message: "Something went wrong while inserting doctor!"
+          }, {
+            type: 'danger',
+            z_index: 10000,
+            timer: 2000,
+          });
+        },
+        500: function() {
+          hideoverlay($("#expense_body"))
+          // response = JSON.parse(response);
+          $.notify({
+            message: "Something went wrong while inserting doctor!"
+          }, {
+            type: 'danger',
+            z_index: 10000,
+            timer: 2000,
+          })
+        }
+      }
+    };
+
+  await  $.ajax(settings).done(function(response) {
+      var response2 = JSON.parse(response)
+      row_data = $("#expense_body tr").map(function(index, elem) {
         let row = {};
-        row.item_name = $(elem).find(".item_name").val()
-        row.qty = $(elem).find(".qty").val()
+        row.item_id = $(elem).find(".item_name").val()
+        row.quantity = $(elem).find(".qty").val()
         row.price = $(elem).find(".price").val()
         row.subtotal = $(elem).find(".subtotal").val()
+        row.expense_id = response2.data.id
         return row
       }).get()
 
-      data.total = $("#total").html()
+      $.post("/api/save-daily-expenses",{row_data},function(res){
+        alert(res.message+" Status Code")
+        hideoverlay($("#expense_body"));
+        $.notify({
+        message: response2.message
+      }, {
+        type: 'success',
+        z_index: 10000,
+        timer: 2000,
+      })
+      })
+    }, function() {
+     
+    });
+
+ 
+   
+
     }
 
 

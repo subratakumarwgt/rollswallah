@@ -29,17 +29,21 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Add Daily Expense</h3>
+<h3>Quick Order</h3>
 
-<button class="btn btn-primary btn-sm" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Item</button>
+<button class="btn btn-outline-dark btn-sm m-1" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Product</button>
+<button class="btn btn-outline-dark btn-sm m-1" id="add_new_charge" onclick="add_charge()"><i class="fa fa-plus-circle"></i> New Charges</button>
+
+
 @endsection
 
 @section('breadcrumb-items')
-<li class="breadcrumb-item">Expenses</li>
-<li class="breadcrumb-item active">Daily Expense</li>
+<li class="breadcrumb-item">Sales</li>
+<li class="breadcrumb-item active">Make Order</li>
 @endsection
 
 @section('content')
+
 <input type="hidden" id="created_by" value="{{Auth::User()->id}}">
 <input type="hidden" id="type" name="type" value="0">
 <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModal" aria-hidden="true">
@@ -47,7 +51,7 @@
     <div class="modal-content">
       <form action="" id="add_item_form" onsubmit="return addItemForm(event,this)">
         <div class="modal-header">
-          <h5> <i class="fa fa-plus-square"></i> Add Item
+          <h5> <i class="fa fa-plus-square"></i> Add Product
           </h5>
         </div>
         <div class="modal-body">
@@ -80,8 +84,44 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="chargeModal" tabindex="-1" role="dialog" aria-labelledby="chargeModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form action="" id="add_item_form" onsubmit="return addItemForm(event,this)">
+        <div class="modal-header">
+          <h5> <i class="fa fa-plus-square"></i> Add Charges
+          </h5>
+        </div>
+        <div class="modal-body">
+
+          <div class="form-group p-1 mt-2">
+            <label for="view_type">
+             Charge Type
+            </label>
+            <input type="text" class="form-control" id="charge_type" required name="name">
+          </div>
+          <div class="form-group p-1 mt-2">
+            <label for="view_type">
+              Variation
+            </label>
+            <input type="text" class="form-control" id="variation" required name="unit">
+          </div>
+          <div class="form-group p-1 mt-2">
+            <label for="view_type">
+              Amount
+            </label>
+            <input type="number" class="form-control" id="amount" required name="price">
+          </div>
 
 
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-success shadow-sm btn-block" type="submit"> Add <i class="fa fa-plus-square"></i> </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
 
 <div class="container-fluid">
@@ -89,43 +129,45 @@
     <div class="col-sm-12">
       <div class="card">
 
-        <div class="card-header">
+        
+        <div class="card-body table-responsive">
+        <div class="row"> <div class="col-md-3 mb-3"><button class="btn btn-warning text-dark border-dark m-2" id="add_new_order" onclick='window.open("{{url()->full()}}","_blank")'><i class="fa fa-plus-circle"></i> New Order</button></div></div>
+           
           <div class="row justify-content-center">
-            <div class="col-md-4 mb-2 ">
-              <div class="border p-3 text-center rounded border-primary bg-light text-primary shadow-sm">
+            <div class="col-md-4 mb-1 ">
+              <div class="border p-2 text-center rounded border-primary bg-light text-primary shadow-sm">
                 <strong>Date</strong> : <span class="text-dark editable_value editable_date">{{date("Y-m-d")}}</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
                 <div class="p-1 hide_input d-none"> <input type="date" class="form-control editable" value='{{date("d.m.Y")}}'></div>
               </div>
             </div>
-            <div class="col-md-4 mb-2 ">
-              <div class="border p-3 text-center rounded border-primary bg-light text-primary shadow-sm">
-                <strong>Expense Type</strong> : <span class="text-dark editable_value editable_expense_type">Daily Expenses</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
-                <div class="p-1 hide_input d-none"> <select name="" id="expense_type" class="form-control editable">
-                    <option value="Daily Expenses">Daily Expenses</option>
-                    <option value="Sallary" disabled>Sallary</option>
+            <div class="col-md-4 mb-1 ">
+              <div class="border p-2 text-center rounded border-primary bg-light text-primary shadow-sm">
+                <strong>Order Type</strong> : <span class="text-dark editable_value editable_expense_type">dine_in</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
+                <div class="p-1 hide_input d-none"> <select name="" id="order_type" class="form-control editable">
+                    <option value="on_call">on_call</option>
+                    <option value="dine_in" default>dine_in</option>
+                    <option value="take_away">take_away</option>
+                    <option value="swiggy">swiggy</option>
+                    <option value="zomato">zomato</option>
                   </select></div>
               </div>
             </div>
-            <div class="col-md-4 mb-2 ">
-              <div class="border p-3 text-center rounded border-primary bg-light text-primary shadow-sm">
-                <strong>Expense Category</strong> : <span class="text-dark editable_value editable_expense_category">Vegetable</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
+            <div class="col-md-4 mb-1 ">
+              <div class="border p-2 text-center rounded border-primary bg-light text-primary shadow-sm">
+                <strong>Payment Type</strong> : <span class="text-dark editable_value editable_expense_category">cash</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
                 <div class="p-1 hide_input d-none"> <select name="" id="expense_category" class="form-control editable">
-                    <option value="Vegetables">Vegetables</option>
-                    <option value="Raw Material">Raw Material</option>
-                    <option value="Others">Others</option>
-                  </select></div>
+                    <option value="cash">cash</option>
+                    <option value="phone_pe">phone_pe</option>
+                    <option value="credit">credit</option>
+                  </select>
+                </div>
 
               </div>
             </div>
 
           </div>
-
-
-
-        </div>
-        <div class="card-body">
           <table class="table">
-            <thead>
+            <thead class="">
               <tr>
                 <th>
                   Item
@@ -147,15 +189,19 @@
                 </th>
               </tr>
             </thead>
+
             <tbody id="expense_body">
               <tr>
-                <td>
+                <td colspan="">
                   <select name="item" id="" class="form-control item_name">
                     <option value="0">Select New Item</option>
                   </select>
                 </td>
                 <td>
-                  <input type="number" class="form-control qty" name="qty" value="1" min="1">
+                  <!-- <span><i class="fa fa-times"></i></span><input type="number" class=" qty" name="qty" value="1" min="1"> -->
+                
+                                            <input class="form-control qty" type="number" name="qty" value="1" min="1" >
+                                           
                 </td>
                 <td>
                   <input type="text" class="form-control unit" name="unit" value="unit" readonly>
@@ -174,15 +220,51 @@
 
               </tr>
             </tbody>
+
+            <tbody id="charge_body">
+                <tr>
+                    <td colspan="7" class="text-secondary p-3">
+                     Add Charges  <i class="fa fa-arrow-down"></i>
+                    </td>
+                    
+                </tr>
+                <tr id="charge_row">
+                <td colspan="2">
+                  <select name="charges" id="" class="form-control charges">
+                    <option value="1">Packing Charge</option>
+                  </select>
+                </td>
+                <td>
+                  <input type="number" class="form-control qty" value="1" >
+                </td>    
+                <td>
+                  <input type="number" class="form-control price" value="0" >
+                </td>                
+                <td>
+                  <input type="number" class="form-control subtotal" name="subtotal" value="0" min="1">
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-outline-success" id="add_charge_row" onclick="add_charge_row()">
+                    <i class="fa fa-plus-square"></i>
+                  </button>
+                </td>
+
+                </tr>
+            </tbody>
             <tfoot>
               <tr>
-                <td colspan="3" class="text-center">Total</td>
-                <td> RS. <span id="total"></span> </td>
+                <td colspan="2"></td>
+                <td colspan="2" class="text-center"></td>
+                <td>Total Payable Rs. <span id="total">0</span> </td>
                 <td> </td>
               </tr>
             </tfoot>
           </table>
-          <button class="btn btn-dark btn-sm m-3" onclick="setAllData()"> <i class="fa fa-send"></i> Add Expenses </button>
+          <button class="btn btn-dark btn-sm m-2" onclick="setAllData()"> <i class="fa fa-send"></i> Place Order </button>
+          <button class="btn btn-success btn-sm m-2" onclick="createBill()"> <i class="fa fa-inr"></i> Create Bill </button>
+          <button class="btn btn-primary btn-sm m-2" onclick="saveDraft()"> <i class="fa fa-save"></i> Save Draft </button>
+          <button class="btn btn-danger btn-sm m-2" onclick="saveDraft()"> <i class="fa fa-times"></i> Cancel Order </button>
+       
         </div>
       </div>
     </div>
@@ -209,6 +291,10 @@
 
 
 <script>
+
+  const getPackingCharge = () =>{
+    return 5;
+  }
  
   const getAllItems = (obj) => {
     $(obj).select2({
@@ -221,7 +307,10 @@
         data: function(params) {
           var query = {
             search: params.term,
-            resource_type: "items"
+            resource_type: "items",
+            filters:{
+                type:["product"]
+            }
           }
           query.resource_type = "items"
           return query;
@@ -274,7 +363,7 @@
   }
 
   const expense_row = (id) => $(`<tr id="new_row_${id}">
-                        <td>
+                        <td colspan="">
                          <select name="item" id=""  class="form-control item_name">
                           <option value="0">Select New Item</option>
                          </select>
@@ -337,7 +426,7 @@
   }
 
 
-  $("#expense_body").on("change", ".qty, .price", function() {
+  $("#expense_body, #charge_body").on("change", ".qty, .price", function() {
 
     let price = $(this).closest("tr").find(".price").val()
     let qty = $(this).closest("tr").find(".qty").val()
@@ -347,6 +436,12 @@
 
     countTotal()
 
+  })
+  $("#order_type").on("change",function(){
+    if(this.value == "take_away")
+    $("#charge_row").find(".price").val(getPackingCharge()).trigger("change")
+    else
+    $("#charge_row").find(".price").val(0).trigger("change")
   })
   const countTotal = () => {
     let total = 0
@@ -376,6 +471,9 @@
   const add_item = () => {
     $("#itemModal").modal("show")
   }
+  const add_charge = () => {
+    $("#chargeModal").modal("show")
+  }
 
 
 
@@ -386,6 +484,7 @@
     form.append("table_name", "items");
     form.append("name", $("#item_name").val());
     form.append("unit", $("#item_unit").val());
+    form.append("type","product");
     form.append("price", $("#item_price").val());
     form.append("table_model", "Item");
 
