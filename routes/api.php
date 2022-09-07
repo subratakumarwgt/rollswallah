@@ -44,3 +44,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
   Route::post('/product/varient', '\App\Http\Controllers\CrudController@productVarientData')->name('product-varient-data');
   Route::get('/product/get/{id}', '\App\Http\Controllers\CrudController@productGetData')->name('product-get-data');
   Route::post('/save-daily-expenses', '\App\Http\Controllers\CrudController@saveDailyExpenses')->name('save-daily-expenses');
+  Route::post('/save-order-details', '\App\Http\Controllers\CrudController@saveOrderDetails')->name('save-order-details');
+  Route::get('/get-order/{id}', '\App\Http\Controllers\CrudController@getOrderDetails')->name('get-order');

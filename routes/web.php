@@ -529,6 +529,8 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
     //  Route::get('/expense/edit/{id}', 'AdminDashboardController@expenseEdit')->name('expense-edit');
      Route::get('/expense/daily-expense', 'ExpenseController@viewDailyExpense')->name('daily-expense');
      Route::get('/sales/quick-order', 'ExpenseController@viewQuickOrder')->name('quick-order');
+     Route::get('/sales/quick-order/{id}', 'ExpenseController@viewQuickOrder')->name('quick-order-id');
+     Route::get('/sales/report', 'ExpenseController@viewSalesReport')->name('sales-report');
      Route::get('/expense/other-expense', 'ExpenseController@viewOtherExpense')->name('other-expense');
      Route::get('/expense/all-expense', 'ExpenseController@viewAllExpense')->name('all-expense');
      Route::get('/expense/wastages', 'ExpenseController@viewAllExpense')->name('wastages');

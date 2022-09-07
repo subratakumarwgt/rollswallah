@@ -20,6 +20,8 @@ use App\Models\Slots;
 use App\Models\Item;
 use App\Models\StaticAsset;
 use App\Models\User;
+use App\Models\Order;
+use App\Models\OrderDetails;
 use App\Models\DailyExpense;
 use Illuminate\Support\Facades\Validator;
 use Session;
@@ -900,7 +902,7 @@ class CrudController extends Controller
 							$products = $products->WhereIn($column,$value);
 						}
 					}
-					$products = $products->get()->take(10);
+					$products = $products->get();
 					foreach ($products as $key => $product) {
 						$results[] = ['id'=>$product->id,'text'=>$product->name,"price" => $product->price,"unit" => $product->unit];
 					}
@@ -922,6 +924,45 @@ class CrudController extends Controller
 				return response(['status'=>false,'message'=>"No data Provided"],400);
 
 			}
+		}
+		public function saveOrderDetails(Request $request){
+			if (!empty(count($request->row_data))) {
+				$order = Order::where("order_id",$request->order_id)->first();
+				foreach ($order->orderDetails as $key => $value) {
+					$value->delete();
+				}
+				if(OrderDetails::insert($request->row_data))
+				return response(['status'=>true,'message'=>"Order Details Saved Successfully"],200);
+			}
+			else{
+				return response(['status'=>false,'message'=>"No data Provided"],400);
+
+			}
+		}
+		public function cancelOrderDraft(Request $request){
+			$order = Order::where("order_id",$request->order_id)->first();
+			if ($order) {
+				foreach ($order->orderDetails as $key => $value) {
+					$value->delete();
+				}
+				$order->delete();
+				return response(['status'=>true,'message'=>"Order cancelled successfully"],200);
+			}
+			else
+			return response(['status'=>false,'message'=>"No order found"],400);
+		}
+
+		public function getOrderDetails($id){
+			$order = Order::where("order_id",$id)->first();
+			if ($order) {
+				foreach ($order->orderDetails as $key => $value) {
+					$value->item = $value->item;
+				}
+				
+				return response(['status'=>true,'data'=>$order],200);
+			}
+			else
+			return response(['status'=>false,'message'=>"No order found"],400);
 		}
 
 		}

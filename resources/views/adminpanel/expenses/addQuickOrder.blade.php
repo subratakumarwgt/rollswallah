@@ -31,9 +31,6 @@
 @section('breadcrumb-title')
 <h3>Quick Order</h3>
 
-<button class="btn btn-outline-dark btn-sm m-1" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Product</button>
-<button class="btn btn-outline-dark btn-sm m-1" id="add_new_charge" onclick="add_charge()"><i class="fa fa-plus-circle"></i> New Charges</button>
-
 
 @endsection
 
@@ -46,6 +43,7 @@
 
 <input type="hidden" id="created_by" value="{{Auth::User()->id}}">
 <input type="hidden" id="type" name="type" value="0">
+<input type="hidden" id="order_id" value="{{$order_id}}">
 <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -80,6 +78,26 @@
         <div class="modal-footer">
           <button class="btn btn-outline-dark shadow-sm btn-block" type="submit"> Add <i class="fa fa-plus-square"></i> </button>
         </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="billModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form action="" id="bill_form" onsubmit="">
+        <div class="modal-header">
+          <h5> 
+          </h5>
+        </div>
+        <div class="modal-body" id="bill">        
+
+        </div>
+        <div class="modal-footer">
+        <div class="col-sm-12 text-center mt-3">
+                     <button class="btn btn btn-primary me-2" type="button" onclick="myFunction()">Print</button>
+                     <button class="btn btn-secondary" type="button">Cancel</button>
+                  </div>  </div>
       </form>
     </div>
   </div>
@@ -131,16 +149,39 @@
 
         
         <div class="card-body table-responsive">
-        <div class="row"> <div class="col-md-3 mb-3"><button class="btn btn-warning text-dark border-dark m-2" id="add_new_order" onclick='window.open("{{url()->full()}}","_blank")'><i class="fa fa-plus-circle"></i> New Order</button></div></div>
+        <div class="row"> 
+        <div class="col-md-6  border-right"><button class="btn btn-outline-dark  ml-1" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Product</button>
+<button class="btn btn-outline-dark  ml-1" id="add_new_charge" onclick="add_charge()"><i class="fa fa-plus-circle"></i> New Charges</button>
+<button class="btn btn-outline-dark border-success ml-1" id="add_new_order" onclick='newOrder()'><i class="fa fa-plus-circle"></i> New Order</button>
+</div>
+<div class="col-md-3 mb-3">
+  <div class="input-group">
+<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-phone"></i>  </span></div>
+<input class="form-control" type="text" minlength="10" max="9999999999" placeholder="(+91) Contact number" data-bs-original-title="" title="" id="user_contact" value="{{@$order->user_contact}}" required>
+</div>
+        </div>
+        <div class="col-md-3 mb-3">
+  <div class="input-group">
+<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-map-marker"></i>  </span></div>
+<input class="form-control" type="text" minlength="10" max="9999999999" placeholder="customer address" data-bs-original-title="" title="" id="user_address" value="{{@$order->user->user_contact}}" required>
+</div>
+        </div>
+      </div>
            
           <div class="row justify-content-center">
-            <div class="col-md-4 mb-1 ">
+          <div class="col-md-3 mb-1 ">
               <div class="border p-2 text-center rounded border-primary bg-light text-primary shadow-sm">
-                <strong>Date</strong> : <span class="text-dark editable_value editable_date">{{date("Y-m-d")}}</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
-                <div class="p-1 hide_input d-none"> <input type="date" class="form-control editable" value='{{date("d.m.Y")}}'></div>
+                <strong>Order ID</strong> : <span class="text-dark editable_value editable_date">{{$order_id}}</span> 
+              
               </div>
             </div>
-            <div class="col-md-4 mb-1 ">
+            <div class="col-md-3 mb-1 ">
+              <div class="border p-2 text-center rounded border-primary bg-light text-primary shadow-sm">
+                <strong>Date</strong> : <span class="text-dark editable_value editable_date">{{date("Y-m-d")}}</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
+                <div class="p-1 hide_input d-none"> <input type="date" class="form-control editable" value='{{date("d.m.Y")}}' id="date"></div>
+              </div>
+            </div>
+            <div class="col-md-3 mb-1 ">
               <div class="border p-2 text-center rounded border-primary bg-light text-primary shadow-sm">
                 <strong>Order Type</strong> : <span class="text-dark editable_value editable_expense_type">dine_in</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
                 <div class="p-1 hide_input d-none"> <select name="" id="order_type" class="form-control editable">
@@ -152,12 +193,12 @@
                   </select></div>
               </div>
             </div>
-            <div class="col-md-4 mb-1 ">
+            <div class="col-md-3 mb-1 ">
               <div class="border p-2 text-center rounded border-primary bg-light text-primary shadow-sm">
                 <strong>Payment Type</strong> : <span class="text-dark editable_value editable_expense_category">cash</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
-                <div class="p-1 hide_input d-none"> <select name="" id="expense_category" class="form-control editable">
+                <div class="p-1 hide_input d-none"> <select name="" id="payment_category" class="form-control editable">
                     <option value="cash">cash</option>
-                    <option value="phone_pe">phone_pe</option>
+                    <option value="online">online</option>
                     <option value="credit">credit</option>
                   </select>
                 </div>
@@ -191,6 +232,45 @@
             </thead>
 
             <tbody id="expense_body">
+              @if(!empty(count($order->orderDetails)))
+              @foreach($order->orderDetails as $key => $order_detail)
+              <tr>
+
+                <td colspan="">
+                  <select name="item" id="" class="form-control item_name">
+                    <option value="{{$order_detail->item->id}}">{{$order_detail->item->name}}</option>
+                  </select>
+                </td>
+                <td>
+                  <!-- <span><i class="fa fa-times"></i></span><input type="number" class=" qty" name="qty" value="1" min="1"> -->
+                
+                 <input class="form-control qty" type="number" name="qty" value="{{$order_detail->quantity}}" min="1" >
+                                           
+                </td>
+                <td>
+                  <input type="text" class="form-control unit" name="unit" value="{{$order_detail->item->unit}}" readonly>
+                </td>
+                <td>
+                  <input type="number" class="form-control price" name="price" value="{{$order_detail->price}}" min="1">
+                </td>
+                <td>
+                  <input type="number" class="form-control subtotal" name="subtotal" value="{{$order_detail->subtotal}}" min="1">
+                </td>
+                <td>
+                  @if($key == 0)
+                  <button class="btn btn-sm btn-outline-success" id="add_row" onclick="add_row()">
+                    <i class="fa fa-plus-square"></i>
+                  </button>
+                  @else
+                  <button class="btn btn-sm btn-outline-danger remove_row" id="" onclick="remove_row()">
+                    <i class="fa fa-minus-square"></i>
+                  </button>
+                  @endif
+                </td>
+
+              </tr>
+              @endforeach
+              @else
               <tr>
                 <td colspan="">
                   <select name="item" id="" class="form-control item_name">
@@ -219,6 +299,8 @@
                 </td>
 
               </tr>
+            
+              @endif
             </tbody>
 
             <tbody id="charge_body">
@@ -263,21 +345,23 @@
           <button class="btn btn-dark btn-sm m-2" onclick="setAllData()"> <i class="fa fa-send"></i> Place Order </button>
           <button class="btn btn-success btn-sm m-2" onclick="createBill()"> <i class="fa fa-inr"></i> Create Bill </button>
           <button class="btn btn-primary btn-sm m-2" onclick="saveDraft()"> <i class="fa fa-save"></i> Save Draft </button>
-          <button class="btn btn-danger btn-sm m-2" onclick="saveDraft()"> <i class="fa fa-times"></i> Cancel Order </button>
+          <button class="btn btn-danger btn-sm m-2" onclick="cancelOrder()"> <i class="fa fa-times"></i> Cancel Order </button>
        
         </div>
       </div>
     </div>
   </div>
 </div>
+
 </div>
 @endsection
 
 @section('script')
 
-<script>
-
-</script>
+<script src="{{asset('assets/js/counter/jquery.waypoints.min.js')}}"></script>
+<script src="{{asset('assets/js/counter/jquery.counterup.min.js')}}"></script>
+<script src="{{asset('assets/js/counter/counter-custom.js')}}"></script>
+<script src="{{asset('assets/js/print.js')}}"></script>
 <script>
   $("#from_date").prop('max', $("#to_date").val());
   $("#to_date").change(function() {
@@ -291,6 +375,10 @@
 
 
 <script>
+  const isNew = {{$isNew}}
+
+  if(isNew)
+  window.history.replaceState(null, null, "{{url()->full()}}/{{$order_id}}");
 
   const getPackingCharge = () =>{
     return 5;
@@ -333,7 +421,7 @@
        res = JSON.parse(res)
       return res.items
     })
-    localStorage.setItem("items",JSON.stringify(items))    
+    return items    
 
   
   }
@@ -353,8 +441,10 @@
         setPrice(this)
 
     }))
-  const setPrice = (item_obj) => {
-    items = JSON.parse(JSON.parse(localStorage.getItem("items")))
+  const setPrice =async (item_obj) => {
+    items = await getItemDetails()
+    console.log(items,"etProce")
+    items = JSON.parse(items)
     let item = items.items.filter((value, key) => {
       return value.id == $(item_obj).val()
     })
@@ -567,7 +657,7 @@
 
     
     var form = new FormData();
-    form.append("table_name", "expenses");
+    form.append("table_name", "orders");
     form.append("type", data.expense_type);
     form.append("category", data.expense_category);
     form.append("amount",  data.total);
@@ -610,6 +700,7 @@
     };
 
   await  $.ajax(settings).done(function(response) {
+    
       var response2 = JSON.parse(response)
       row_data = $("#expense_body tr").map(function(index, elem) {
         let row = {};
@@ -652,7 +743,201 @@
     return duplicate.length > 1
 
   }
+  const newOrder = () => {
+    window.open("{{route('quick-order')}}","_blank")
+  }
+  const saveDraft =async () => {
+    
+    loadoverlay($("#expense_body"))
+    let data = {}
+    data.order_id = $("#order_id").val()
+    data.total = $("#total").html()
+    row_data = $("#expense_body tr").map(function(index, elem) {
+        let row = {};
+        row.order_id = data.order_id
+        row.item_id = $(elem).find(".item_name").val()
+        row.quantity = $(elem).find(".qty").val()
+        row.price = $(elem).find(".price").val()
+        row.subtotal = $(elem).find(".subtotal").val()
+        return row
+      }).get()
+     await $.post("/api/save-order-details",{row_data,order_id:data.order_id,total:data.total},function(res){
+       
+        hideoverlay($("#expense_body"));
+        $.notify({
+        message: "Order saved successfully"
+      }, {
+        type: 'success',
+        z_index: 10000,
+        timer: 2000,
+      })
+      })
+
+
+
+  }
+  countTotal();
+  document.onkeyup = function(e) {
+    e.preventDefault()
+    console.log(`${e.which} is value for  ${e.which ? String.fromCharCode(e.which) : e}`)
+    //New Order ShortCut
+  if (e.altKey && e.which == 79) {
+    newOrder()
+  }
+  if (e.altKey && e.which == 83) {
+    saveDraft()
+  }
+  if (e.shiftKey && e.which == 107) {
+    add_row()
+  }
+  // else if (e.ctrlKey && e.which == 66) {
+  //   alert("Ctrl + B shortcut combination was pressed");
+  // } else if (e.ctrlKey && e.altKey && e.which == 89) {
+  //   alert("Ctrl + Alt + Y shortcut combination was pressed");
+  // } else if (e.ctrlKey && e.altKey && e.shiftKey && e.which == 85) {
+  //   alert("Ctrl + Alt + Shift + U shortcut combination was pressed");
+  // }
+};
+const generateBill = (order) => {
+  return $(`<div class="container">
+   <div class="row">
+      <div class="col-sm-12">
+         <div class="card">
+            <div class="card-body">
+               <div class="invoice">
+                  <div>
+                     <div>
+                        <div class="row">
+                           <div class="col-sm-6">
+                              <div class="media">
+                                 <div class="media-left"><img class="media-object img-60" src="{{asset('assets/images/logo/rollswallah.png')}}" alt=""></div>
+                                 <div class="media-body m-l-20 text-right">
+                                    <h4 class="media-heading">ROLLSWALLAH</h4>
+                                    <p>Have Some Rolls</p>
+                                 </div>
+                              </div>
+                              <!-- End Info-->
+                           </div>
+                           <div class="col-sm-6">
+                              <div class="text-md-end text-xs-center">
+                                 <h3>ORDER_ID #<span class="counter">${order.order_id}</span></h3>
+                                 <p>${new Date(order.created_at)}</span></p>
+                              </div>
+                              <!-- End Title-->
+                           </div>
+                        </div>
+                     </div>
+                     <hr>
+                     <!-- End InvoiceTop-->
+                     <div class="row">
+                        <div class="col-md-4">
+                           <div class="media">
+                              <div class="media-left"><img class="media-object rounded-circle img-60" src="{{asset('assets/images/user/1.jpg')}}" alt=""></div>
+                              <div class="media-body m-l-20">                               
+                                 <p><span>${order.user_contact ?? "No contact given"}</span></p>
+                              </div>
+                           </div>
+                        </div>
+                        
+                     </div>
+                     <!-- End Invoice Mid-->
+                     <div>
+                        <div class="table-responsive invoice-table" id="table">
+                           <table class="table table-bordered table-striped">
+                              <tbody>
+                                 <tr>
+                                    <td class="item">
+                                       <h6 class="p-2 mb-0">Item Description</h6>
+                                    </td>
+                                    <td class="Hours">
+                                       <h6 class="p-2 mb-0">Quantity</h6>
+                                    </td>
+                                    <td class="Rate">
+                                       <h6 class="p-2 mb-0">Price</h6>
+                                    </td>
+                                    <td class="subtotal">
+                                       <h6 class="p-2 mb-0">Sub-total</h6>
+                                    </td>
+                                 </tr>
+                                 ${order.order_details.map((order_row,key)=>{
+                         
+                                  return (`<tr>
+                                    <td class="item">
+                                      ${order_row.item.name}
+                                    </td>
+                                    <td class="Hours">
+                                     x ${order_row.quantity}
+                                    </td>
+                                    <td class="Rate">
+                                    <i class='fa fa-inr'></i> ${order_row.price}
+                                    </td>
+                                    <td class="subtotal">
+                                    <i class='fa fa-inr'></i> ${order_row.subtotal}
+                                    </td>
+                                 </tr>`)
+                                 })}
+                                 <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="Rate">
+                                       Packing Charge
+                                    </td>
+                                    <td class="payment">
+                                       <i class='fa fa-inr'></i> 0.00
+                                    </td>
+                                 </tr>
+                                 <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="Rate">
+                                       Delivery Charge
+                                    </td>
+                                    <td class="payment">
+                                       <i class='fa fa-inr'></i> 0.00
+                                    </td>
+                                 </tr>
+                    
+                                 <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="Rate">
+                                       <h6 class="mb-0 p-2">Total</h6>
+                                    </td>
+                                    <td class="payment">
+                                       <h6 class="mb-0 p-2"><i class='fa fa-inr'></i> ${order.total ?? 0}</h6>
+                                    </td>
+                                 </tr>
+                              </tbody>
+                           </table>
+                        </div>
+                        <!-- End Table-->
+        
+                     </div>
+                     <!-- End InvoiceBot-->
+                  </div>
+                  
+                  <!-- End Invoice-->
+                  <!-- End Invoice Holder-->
+                  <!-- Container-fluid Ends-->
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>`)
+}
+
+const createBill =async () => {
+ let order = await $.get("/api/get-order/"+$("#order_id").val(),(data)=>{
+  return data
+ })
+ console.log(order,"order")
+ 
+  $("#bill").html(generateBill(order.data))
+  $("#billModal").modal("show")
+}
 </script>
+
 
 <!-- <script src="{{asset('assets/js/datatable/datatables/datatable.custom.js')}}"></script> -->
 @endsection
