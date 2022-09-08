@@ -31,8 +31,9 @@ class ExpenseController extends Controller
         }
         else{
             $order = Order::where("order_id",$id)->first();
-            if($order && $order->status == "draft")
+            if($order)
             $order->orderDetails = $order->orderDetails;
+            // dd($order->chargeDetails->charge);
             $data["order"] = $order;
            
         }

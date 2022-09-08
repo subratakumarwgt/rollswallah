@@ -12,6 +12,7 @@ use App\Models\Address;
 use App\Models\Booking;
 use App\Models\Cart;
 use App\Models\Centre;
+use App\Models\Charge;
 use App\Models\Doctor;
 use App\Models\Payment;
 use App\Models\Product;
@@ -23,6 +24,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\DailyExpense;
+use App\Models\OrderCharge;
 use Illuminate\Support\Facades\Validator;
 use Session;
 use DB;
@@ -127,6 +129,7 @@ class CrudController extends Controller
 			$model = "\\App\\Models\\" . $request->table_model;
 			$model = new $model();
 			$data = $model->find($request->id);
+			$request->updated_at = date("Y-m-d H:i:s");
 			$inserted_data = $data->update($update_data);
 			$finalData = $model->find($request->id);
 			return response(array('status' => true, "data" => $finalData, "message" => $request->table_model . " updated successfully"), 200);
@@ -907,7 +910,21 @@ class CrudController extends Controller
 						$results[] = ['id'=>$product->id,'text'=>$product->name,"price" => $product->price,"unit" => $product->unit];
 					}
 					break;
-				
+				case 'charges':			
+					$products = Charge::whereNotNull("id");
+					if($request->search)
+					$products =$products->where('name', 'like', '%' . $request->search . '%');
+					if($request->filters){
+						foreach ($request->filters as $column => $value) {
+							$products = $products->WhereIn($column,$value);
+						}
+					}
+					$products = $products->get();
+					foreach ($products as $key => $product) {
+						$results[] = ['id'=>$product->id,'text'=>$product->title,"price" => $product->amount];
+					}
+					break;
+			
 				default:
 					# code...
 					break;
@@ -957,12 +974,32 @@ class CrudController extends Controller
 			if ($order) {
 				foreach ($order->orderDetails as $key => $value) {
 					$value->item = $value->item;
+					
 				}
+				foreach ($order->chargeDetails as $key => $value) {
+					$value->charge = $value->charge;
+					
+				}
+
 				
 				return response(['status'=>true,'data'=>$order],200);
 			}
 			else
 			return response(['status'=>false,'message'=>"No order found"],400);
+		}
+		public function saveChargeDetails(Request $request){
+			if (!empty(count($request->row_data))) {
+				$order = Order::where("order_id",$request->order_id)->first();
+				foreach ($order->chargeDetails as $key => $value) {
+					$value->delete();
+				}
+				if(OrderCharge::insert($request->row_data))
+				return response(['status'=>true,'message'=>"Charge Details Saved Successfully"],200);
+			}
+			else{
+				return response(['status'=>false,'message'=>"No data Provided"],400);
+
+			}
 		}
 
 		}
