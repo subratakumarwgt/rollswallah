@@ -2,6 +2,6 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/rollsrbf/public_html/
+    - export DEPLOYPATH=/home/rollsrbf/
     - /bin/cp -R * $DEPLOYPATH
     
