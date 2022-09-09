@@ -4,18 +4,22 @@
 @section('css')
 <style type="text/css">
   @media print {
-  body * {
-    visibility: hidden;
+    body * {
+      visibility: hidden;
+    }
+
+    #section-to-print,
+    #section-to-print * {
+      visibility: visible;
+    }
+
+    #section-to-print {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
   }
-  #section-to-print, #section-to-print * {
-    visibility: visible;
-  }
-  #section-to-print {
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-}
+
   .float {
     position: absolute;
     right: 5px;
@@ -34,15 +38,16 @@
   .cursor-pointer:hover {
     color: black
   }
-  .overlay{
+
+  .overlay {
     position: absolute;
-    top:0px;
-    bottom:0px;
+    top: 0px;
+    bottom: 0px;
     left: 0px;
     right: 0px;
     z-index: 2;
     padding-top: 10%;
-    background: rgba(245,254,234,0.6);
+    background: rgba(245, 254, 234, 0.6);
   }
 </style>
 @endsection
@@ -68,6 +73,8 @@
 <input type="hidden" id="type" name="type" value="0">
 <input type="hidden" id="order_id" value="{{$order_id}}">
 <input type="hidden" id="order_primary_id" value="{{$order->id}}">
+
+<!-- Modals -->
 <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -111,17 +118,18 @@
     <div class="modal-content">
       <form action="" id="bill_form" onsubmit="">
         <div class="modal-header">
-          <h5> 
+          <h5>
           </h5>
         </div>
-        <div class="modal-body" id="bill">        
+        <div class="modal-body" id="bill">
 
         </div>
         <div class="modal-footer">
-        <div class="col-sm-12 text-center mt-3">
-                     <button class="btn btn btn-primary me-2" type="button" onclick="myFunction()">Print</button>
-                     <button class="btn btn-secondary" type="button">Cancel</button>
-                  </div>  </div>
+          <div class="col-sm-12 text-center mt-3">
+            <button class="btn btn btn-primary me-2" type="button" onclick="myFunction()">Print</button>
+            <button class="btn btn-secondary" type="button">Cancel</button>
+          </div>
+        </div>
       </form>
     </div>
   </div>
@@ -138,7 +146,7 @@
 
           <div class="form-group p-1 mt-2">
             <label for="view_type">
-             Charge Title
+              Charge Title
             </label>
             <input type="text" class="form-control" id="charge_title" required name="name">
           </div>
@@ -171,32 +179,32 @@
     <div class="col-sm-12">
       <div class="card">
 
-        
+
         <div class="card-body table-responsive">
-        <div class="row"> 
-        <div class="col-md-6  border-right"><button class="btn btn-outline-dark  ml-1" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Product</button>
-<button class="btn btn-outline-dark  ml-1" id="add_new_charge" onclick="add_charge()"><i class="fa fa-plus-circle"></i> New Charges</button>
-<button class="btn btn-outline-dark border-success ml-1" id="add_new_order" onclick='newOrder()'><i class="fa fa-plus-circle"></i> New Order</button>
-</div>
-<div class="col-md-3 mb-3">
-  <div class="input-group">
-<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-phone"></i>  </span></div>
-<input class="form-control" type="text" minlength="10" max="9999999999" placeholder="(+91) Contact number" data-bs-original-title="" title="" id="user_contact" value="{{@$order->user_contact}}" required>
-</div>
-        </div>
-        <div class="col-md-3 mb-3">
-  <div class="input-group">
-<div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-map-marker"></i>  </span></div>
-<input class="form-control" type="text" minlength="10" max="9999999999" placeholder="customer address" data-bs-original-title="" title="" id="user_address" value="" required>
-</div>
-        </div>
-      </div>
-           
+          <div class="row">
+            <div class="col-md-6  border-right"><button class="btn btn-outline-dark  ml-1" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Product</button>
+              <button class="btn btn-outline-dark  ml-1" id="add_new_charge" onclick="add_charge()"><i class="fa fa-plus-circle"></i> New Charges</button>
+              <button class="btn btn-outline-dark border-success ml-1" id="add_new_order" onclick='newOrder()'><i class="fa fa-plus-circle"></i> New Order</button>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-phone"></i> </span></div>
+                <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="(+91) Contact number" data-bs-original-title="" title="" id="user_contact" value="{{@$order->user_contact}}" required>
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-map-marker"></i> </span></div>
+                <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="customer address" data-bs-original-title="" title="" id="user_address" value="" required>
+              </div>
+            </div>
+          </div>
+
           <div class="row justify-content-center">
-          <div class="col-md-3 mb-1 ">
+            <div class="col-md-3 mb-1 ">
               <div class="border p-2 text-center rounded border-primary bg-light text-primary shadow-sm">
-                <strong>Order ID</strong> : <span class="text-dark editable_value editable_date">{{$order_id}}</span> 
-              
+                <strong>Order ID</strong> : <span class="text-dark editable_value editable_date">{{$order_id}}</span>
+
               </div>
             </div>
             <div class="col-md-3 mb-1 ">
@@ -232,13 +240,14 @@
 
           </div>
           <table class="table" id="quick_order_table">
-           @if($order->status == "completed") <div class="overlay">
-            <div class="row p-4 justify-content-center mt-4">
-              <div class="col-md-6 text-center mt-4 p-4 border border-success shadow-sm rounded bg-white">
-              <h3 class="text-primary">Completed <i class="fa fa-check-circle text-success "></i></h3>
-              </div>           
-            </div>
-           </div>@endif
+            @if($order->status == "completed") <div class="overlay">
+              <div class="row p-4 justify-content-center mt-4">
+                <div class="col-md-6 text-center mt-4 p-4 border border-success shadow-sm rounded bg-white">
+                  <h3 class="text-primary">Order Completed <i class="fa fa-check-circle text-success "></i>  </h3>
+                  <p><button class="btn btn-primary btn-sm btn-block"><i class="fa fa-list" onclick="createBill()"></i> Generate Bill </button></p>
+                </div>
+              </div>
+            </div>@endif
             <thead class="">
               <tr>
                 <th>
@@ -274,9 +283,9 @@
                 </td>
                 <td>
                   <!-- <span><i class="fa fa-times"></i></span><input type="number" class=" qty" name="qty" value="1" min="1"> -->
-                
-                 <input class="form-control qty" type="number" name="qty" value="{{$order_detail->quantity}}" min="1" >
-                                           
+
+                  <input class="form-control qty" type="number" name="qty" value="{{$order_detail->quantity}}" min="1">
+
                 </td>
                 <td>
                   <input type="text" class="form-control unit" name="unit" value="{{$order_detail->item->unit}}" readonly>
@@ -310,9 +319,9 @@
                 </td>
                 <td>
                   <!-- <span><i class="fa fa-times"></i></span><input type="number" class=" qty" name="qty" value="1" min="1"> -->
-                
-                                            <input class="form-control qty" type="number" name="qty" value="1" min="1" >
-                                           
+
+                  <input class="form-control qty" type="number" name="qty" value="1" min="1">
+
                 </td>
                 <td>
                   <input type="text" class="form-control unit" name="unit" value="unit" readonly>
@@ -330,37 +339,37 @@
                 </td>
 
               </tr>
-            
+
               @endif
             </tbody>
 
             <tbody id="charge_body">
-                <tr>
-                    <td colspan="7" class="text-secondary p-3">
-                     Add Charges  <i class="fa fa-arrow-down"></i>
-                    </td>
-                    
-                </tr>
-                @if(!empty(count($order->chargeDetails)))
+              <tr>
+                <td colspan="7" class="text-secondary p-3">
+                  Add Charges <i class="fa fa-arrow-down"></i>
+                </td>
+
+              </tr>
+              @if(!empty(count($order->chargeDetails)))
               @foreach($order->chargeDetails as $key => $order_detail)
-              <tr id="charge_row{{$key > 0 ? $key : '' }}"  class="charges_row">
+              <tr id="charge_row{{$key > 0 ? $key : '' }}" class="charges_row">
                 <td colspan="2">
                   <select name="item_name" id="charges{{$key > 0 ? $key : '' }}" class="form-control item_name charges">
                     <option value="{{$order_detail->charge_id}}">{{$order_detail->charge->title}}</option>
                   </select>
                 </td>
                 <td>
-                  <input type="number" class="form-control qty" value="1" >
-                </td>    
+                  <input type="number" class="form-control qty" value="1">
+                </td>
                 <td>
-                  <input type="number" class="form-control price" value="{{$order_detail->charge->amount}}" >
-                </td>                
+                  <input type="number" class="form-control price" value="{{$order_detail->charge->amount}}">
+                </td>
                 <td>
                   <input type="number" class="form-control subtotal" name="subtotal" value="{{$order_detail->amount}}" min="1">
                 </td>
                 <td>
-                @if($key == 0)
-                <button class="btn btn-sm btn-outline-success" id="add_charge_row" onclick="add_charge_row()">
+                  @if($key == 0)
+                  <button class="btn btn-sm btn-outline-success" id="add_charge_row" onclick="add_charge_row()">
                     <i class="fa fa-plus-square"></i>
                   </button>
                   @else
@@ -368,24 +377,24 @@
                     <i class="fa fa-minus-circle"></i>
                   </button>
                   @endif
-                 
+
                 </td>
 
-                </tr>
+              </tr>
               @endforeach
               @else
-                <tr id="charge_row"  class="charges_row">
+              <tr id="charge_row" class="charges_row">
                 <td colspan="2">
                   <select name="item_name" id="charges" class="form-control item_name charges">
                     <option value="1">Packing Charge</option>
                   </select>
                 </td>
                 <td>
-                  <input type="number" class="form-control qty" value="1" >
-                </td>    
+                  <input type="number" class="form-control qty" value="1">
+                </td>
                 <td>
-                  <input type="number" class="form-control price" value="0" >
-                </td>                
+                  <input type="number" class="form-control price" value="0">
+                </td>
                 <td>
                   <input type="number" class="form-control subtotal" name="subtotal" value="0" min="1">
                 </td>
@@ -395,8 +404,8 @@
                   </button>
                 </td>
 
-                </tr>
-                @endif
+              </tr>
+              @endif
             </tbody>
             <tfoot>
               <tr>
@@ -411,7 +420,7 @@
           <button class="btn btn-success btn-sm m-2 " onclick="createBill()"> <i class="fa fa-inr"></i> Create Bill </button>
           <button class="btn btn-primary btn-sm m-2 order_draft" onclick="saveDraft()"> <i class="fa fa-save"></i> Save Draft </button>
           <button class="btn btn-danger btn-sm m-2 order_draft" onclick="cancelOrder()"> <i class="fa fa-times"></i> Cancel Order </button>
-       
+
         </div>
       </div>
     </div>
@@ -443,23 +452,22 @@
 <script>
   const isNew = {{$isNew}}
 
-  if(isNew)
-  window.history.replaceState(null, null, "{{url()->full()}}/{{$order_id}}");
+  if (isNew)
+    window.history.replaceState(null, null, "{{url()->full()}}/{{$order_id}}");
 
-  const getPackingCharge = () =>{
+  const getPackingCharge = () => {
     return 5;
   }
- 
+
   const getAllItems = (obj) => {
     let resource_type
     let filters = {}
     if (obj.hasClass("items")) {
       resource_type = items
       filters = {
-                type:["product"]
-            }
-    }
-    else{
+        type: ["product"]
+      }
+    } else {
       resource_type = "charges"
     }
     $(obj).select2({
@@ -473,7 +481,7 @@
           var query = {
             search: params.term,
             resource_type: resource_type,
-           filters
+            filters
           }
           query.resource_type = "items"
           return query;
@@ -523,56 +531,56 @@
   }
   let items = []
   getItemDetails = async () => {
-    items = await $.get("/api/get-resources?resource_type=items",(res)=>{
-       res = JSON.parse(res)
+    items = await $.get("/api/get-resources?resource_type=items", (res) => {
+      res = JSON.parse(res)
       return res.items
     })
-    return items    
+    return items
 
-  
+
   }
   getChargeDetails = async () => {
-    items = await $.get("/api/get-resources?resource_type=charges",(res)=>{
-       res = JSON.parse(res)
+    items = await $.get("/api/get-resources?resource_type=charges", (res) => {
+      res = JSON.parse(res)
       return res.items
     })
-    return items    
+    return items
 
   }
-  
+
   getAllItems($(".items").bind("change", function() {
-   
-      if ($(".items").length > 1 && isDuplicateItem($(this).val())) {
-        $.notify({
-          message: "Items already exists in the list"
-        }, {
-          type: 'danger',
-          z_index: 10000,
-          timer: 2000,
-        })
-        $(this).find('option:selected').remove();
-      } else
-        setPrice(this)
 
-    }))
-    getAllCharges($(".charges").bind("change", function() {
-   
-   if ($(".charges").length > 1 && isDuplicateItem($(this).val())) {
-     $.notify({
-       message: "Items already exists in the list"
-     }, {
-       type: 'danger',
-       z_index: 10000,
-       timer: 2000,
-     })
-     $(this).find('option:selected').remove();
-   } else
-     setCharge(this)
+    if ($(".items").length > 1 && isDuplicateItem($(this).val())) {
+      $.notify({
+        message: "Items already exists in the list"
+      }, {
+        type: 'danger',
+        z_index: 10000,
+        timer: 2000,
+      })
+      $(this).find('option:selected').remove();
+    } else
+      setPrice(this)
 
- }))
-  const setPrice =async (item_obj) => {
+  }))
+  getAllCharges($(".charges").bind("change", function() {
+
+    if ($(".charges").length > 1 && isDuplicateItem($(this).val())) {
+      $.notify({
+        message: "Items already exists in the list"
+      }, {
+        type: 'danger',
+        z_index: 10000,
+        timer: 2000,
+      })
+      $(this).find('option:selected').remove();
+    } else
+      setCharge(this)
+
+  }))
+  const setPrice = async (item_obj) => {
     items = await getItemDetails()
-    console.log(items,"etProce")
+    console.log(items, "etProce")
     items = JSON.parse(items)
     let item = items.items.filter((value, key) => {
       return value.id == $(item_obj).val()
@@ -580,7 +588,7 @@
     $(item_obj).closest("tr").find(".price").val(item[0].price).trigger("change")
     $(item_obj).closest("tr").find(".unit").val(item[0].unit).trigger("change")
   }
-  const setCharge =async (item_obj) => {
+  const setCharge = async (item_obj) => {
     items = await getChargeDetails()
     // console.log(items,"etProce")
     items = JSON.parse(items)
@@ -612,7 +620,7 @@
                   </button>
                 </td>
                 </tr>`)
-                      const expense_row = (id) => $(`<tr id="new_row_${id}">
+  const expense_row = (id) => $(`<tr id="new_row_${id}">
                         <td colspan="">
                          <select name="item" id=""  class="form-control item_name items">
                           <option value="0">Select New Item</option>
@@ -685,7 +693,7 @@
         })
         $(this).find('option:selected').remove();
       } else
-      setCharge(this)
+        setCharge(this)
 
     })
   }
@@ -708,11 +716,11 @@
     countTotal()
 
   })
-  $("#order_type").on("change",function(){
-    if(this.value == "take_away")
-    $("#charge_row").find(".price").val(getPackingCharge()).trigger("change")
+  $("#order_type").on("change", function() {
+    if (this.value == "take_away")
+      $("#charge_row").find(".price").val(getPackingCharge()).trigger("change")
     else
-    $("#charge_row").find(".price").val(0).trigger("change")
+      $("#charge_row").find(".price").val(0).trigger("change")
   })
   const countTotal = () => {
     let total = 0
@@ -755,7 +763,7 @@
     form.append("table_name", "items");
     form.append("name", $("#item_name").val());
     form.append("unit", $("#item_unit").val());
-    form.append("type","product");
+    form.append("type", "product");
     form.append("price", $("#item_price").val());
     form.append("table_model", "Item");
 
@@ -817,7 +825,7 @@
     var form = new FormData();
     form.append("table_name", "charges");
     form.append("title", $("#charge_title").val());
-    form.append("level",$("#charge_type").val());
+    form.append("level", $("#charge_type").val());
     form.append("amount", $("#charge_amount").val());
     form.append("table_model", "Charge");
 
@@ -877,101 +885,103 @@
 
   const setAllData = async () => {
     loadoverlay($("#quick_order_table"))
-   
+
     if (confirm("Are you sure you want to complete order?")) {
       await saveDraft()
       $.notify({
-            message: "Expenses being added!"
-          }, {
-            type: 'warning',
-            z_index: 10000,
-            timer: 2000,
-          });
-      
+        message: "Expenses being added!"
+      }, {
+        type: 'warning',
+        z_index: 10000,
+        timer: 2000,
+      });
+
       let data = {}
       let row_data = []
       data.expense_date = $(".editable_date").html()
       data.expense_type = $(".editable_expense_type").html()
       data.expense_category = $(".editable_expense_category").html()
       data.created_by = $("#created_by").val()
- 
+
 
       data.total = $("#total").html()
 
       data.description = `Order of RS ${data.total} is paid through ${data.expense_category}`
 
-    
-    var form = new FormData();
-    form.append("table_name", "orders");
-    form.append("order_type", data.expense_type);
-    form.append("id", $("#order_primary_id").val());
-    form.append("payment_type", data.expense_category);
-    form.append("total",  data.total);
-    form.append("item_count", row_data.length);
-    form.append("product_qty_json",JSON.stringify(row_data))
-    form.append("status","completed")
-    form.append("user_contact", $("#user_contact").val());
-    form.append("table_model", "Order");
 
-    var settings = {
-      "url": "/api/update-data",
-      "method": "POST",
-      "timeout": 0,
-      "processData": false,
-      "mimeType": "multipart/form-data",
-      "contentType": false,
-      "data": form,
-      statusCode: {
-        400: function() {
-          hideoverlay($("#quick_order_table"))
-          //  = JSON.parse();
-          $.notify({
-            message: "Something went wrong while accepting order!"
-          }, {
-            type: 'danger',
-            z_index: 10000,
-            timer: 2000,
-          });
-        },
-        500: function() {
-          hideoverlay($("#quick_order_table"))
-          // response = JSON.parse(response);
-          $.notify({
-            message: "Something went wrong while inserting doctor!"
-          }, {
-            type: 'danger',
-            z_index: 10000,
-            timer: 2000,
-          })
+      var form = new FormData();
+      form.append("table_name", "orders");
+      form.append("order_type", data.expense_type);
+      form.append("id", $("#order_primary_id").val());
+      form.append("payment_type", data.expense_category);
+      form.append("total", data.total);
+      form.append("item_count", row_data.length);
+      form.append("product_qty_json", JSON.stringify(row_data))
+      form.append("status", "completed")
+      form.append("user_contact", $("#user_contact").val());
+      form.append("table_model", "Order");
+
+      var settings = {
+        "url": "/api/update-data",
+        "method": "POST",
+        "timeout": 0,
+        "processData": false,
+        "mimeType": "multipart/form-data",
+        "contentType": false,
+        "data": form,
+        statusCode: {
+          400: function() {
+            hideoverlay($("#quick_order_table"))
+            //  = JSON.parse();
+            $.notify({
+              message: "Something went wrong while accepting order!"
+            }, {
+              type: 'danger',
+              z_index: 10000,
+              timer: 2000,
+            });
+          },
+          500: function() {
+            hideoverlay($("#quick_order_table"))
+            // response = JSON.parse(response);
+            $.notify({
+              message: "Something went wrong while inserting doctor!"
+            }, {
+              type: 'danger',
+              z_index: 10000,
+              timer: 2000,
+            })
+          }
         }
-      }
-    };
+      };
 
-  await  $.ajax(settings).done(function(response) {
-    hideoverlay($("#quick_order_table"))
-    $.notify({
-            message: "Order was completed successfully"
-          }, {
-            type: 'success',
-            z_index: 10000,
-            timer: 2000,
-          }) 
-          $("#quick_order_table").html(`<div class="row p-4 justify-content-center mt-4">
-              <div class="col-md-6 text-center mt-4 p-4 border border-success shadow-sm rounded bg-white">
-              <h3 class="text-primary">Completed <i class="fa fa-check-circle text-success "></i></h3>
-              </div>           
-            </div>
-           </div>`)
-           $(".order_draft").remove()
-           createBill()
+      await $.ajax(settings).done(function(response) {
+        hideoverlay($("#quick_order_table"))
+        $.notify({
+          message: "Order was completed successfully"
+        }, {
+          type: 'success',
+          z_index: 10000,
+          timer: 2000,
+        })
+        $("#quick_order_table").html(`<div class="overlay">
+              <div class="row p-4 justify-content-center mt-4">
+                <div class="col-md-6 text-center mt-4 p-4 border border-success shadow-sm rounded bg-white">
+                  <h3 class="text-primary">Order Completed <i class="fa fa-check-circle text-success "></i>  </h3>
+                  <p><button class="btn btn-primary btn-sm btn-block"><i class="fa fa-list" onclick="createBill()"></i> Generate Bill </button></p>
+                </div>
+              </div>
+            </div>`)
+        $(".order_draft").remove()
+        createBill()
 
-   
-    }, function() {
-     
-    });
 
- 
-   
+      }, function() {
+
+      });
+
+
+
 
     }
 
@@ -987,24 +997,28 @@
 
   }
   const newOrder = () => {
-    window.open("{{route('quick-order')}}","_blank")
+    window.open("{{route('quick-order')}}", "_blank")
   }
-  const saveDraft =async () => {
+  const saveDraft = async () => {
     loadoverlay($("#quick_order_table"))
     let data = {}
     data.order_id = $("#order_id").val()
     data.total = $("#total").html()
     row_data = $("#expense_body tr").map(function(index, elem) {
-        let row = {};
-        row.order_id = data.order_id
-        row.item_id = $(elem).find(".item_name").val()
-        row.quantity = $(elem).find(".qty").val()
-        row.price = $(elem).find(".price").val()
-        row.subtotal = $(elem).find(".subtotal").val()
-        return row
-      }).get()
-     await $.post("/api/save-order-details",{row_data,order_id:data.order_id,total:data.total},function(res){
-       
+      let row = {};
+      row.order_id = data.order_id
+      row.item_id = $(elem).find(".item_name").val()
+      row.quantity = $(elem).find(".qty").val()
+      row.price = $(elem).find(".price").val()
+      row.subtotal = $(elem).find(".subtotal").val()
+      return row
+    }).get()
+    await $.post("/api/save-order-details", {
+      row_data,
+      order_id: data.order_id,
+      total: data.total
+    }, function(res) {
+
       //   hideoverlay($("#expense_body"));
       //   $.notify({
       //   message: "Order saved successfully"
@@ -1014,26 +1028,30 @@
       //   timer: 2000,
       // })
       return res
-      })
+    })
     let charge_data = []
     charge_data = $("#charge_body tr.charges_row").map(function(index, elem) {
-        let row = {};
-        row.order_id = data.order_id
-        row.charge_id = $(elem).find(".item_name").val()
-        row.amount = $(elem).find(".subtotal").val()
-        return row
-      }).get()
-      await $.post("/api/save-charge-details",{row_data:charge_data,order_id:data.order_id,total:data.total},function(res){
-       
-       hideoverlay($("#quick_order_table"));
-       $.notify({
-       message: "Order saved successfully"
-     }, {
-       type: 'success',
-       z_index: 10000,
-       timer: 2000,
-     })
-     })
+      let row = {};
+      row.order_id = data.order_id
+      row.charge_id = $(elem).find(".item_name").val()
+      row.amount = $(elem).find(".subtotal").val()
+      return row
+    }).get()
+    await $.post("/api/save-charge-details", {
+      row_data: charge_data,
+      order_id: data.order_id,
+      total: data.total
+    }, function(res) {
+
+      hideoverlay($("#quick_order_table"));
+      $.notify({
+        message: "Order saved successfully"
+      }, {
+        type: 'success',
+        z_index: 10000,
+        timer: 2000,
+      })
+    })
 
 
 
@@ -1043,25 +1061,25 @@
     e.preventDefault()
     console.log(`${e.which} is value for  ${e.which ? String.fromCharCode(e.which) : e}`)
     //New Order ShortCut
-  if (e.altKey && e.which == 79) {
-    newOrder()
-  }
-  if (e.altKey && e.which == 83) {
-    saveDraft()
-  }
-  if (e.shiftKey && e.which == 107) {
-    add_row()
-  }
-  // else if (e.ctrlKey && e.which == 66) {
-  //   alert("Ctrl + B shortcut combination was pressed");
-  // } else if (e.ctrlKey && e.altKey && e.which == 89) {
-  //   alert("Ctrl + Alt + Y shortcut combination was pressed");
-  // } else if (e.ctrlKey && e.altKey && e.shiftKey && e.which == 85) {
-  //   alert("Ctrl + Alt + Shift + U shortcut combination was pressed");
-  // }
-};
-const generateBill = (order) => {
-  return $(`<div class="container " >
+    if (e.altKey && e.which == 79) {
+      newOrder()
+    }
+    if (e.altKey && e.which == 83) {
+      saveDraft()
+    }
+    if (e.shiftKey && e.which == 107) {
+      add_row()
+    }
+    // else if (e.ctrlKey && e.which == 66) {
+    //   alert("Ctrl + B shortcut combination was pressed");
+    // } else if (e.ctrlKey && e.altKey && e.which == 89) {
+    //   alert("Ctrl + Alt + Y shortcut combination was pressed");
+    // } else if (e.ctrlKey && e.altKey && e.shiftKey && e.which == 85) {
+    //   alert("Ctrl + Alt + Shift + U shortcut combination was pressed");
+    // }
+  };
+  const generateBill = (order) => {
+    return $(`<div class="container " >
    <div class="row">
       <div class="col-sm-12">
          <div class="card">
@@ -1182,17 +1200,17 @@ const generateBill = (order) => {
       </div>
    </div>
 </div>`)
-}
+  }
 
-const createBill =async () => {
- let order = await $.get("/api/get-order/"+$("#order_id").val(),(data)=>{
-  return data
- })
-//  console.log(order,"order")
- 
-  $("#bill").html(generateBill(order.data))
-  $("#billModal").modal("show")
-}
+  const createBill = async () => {
+    let order = await $.get("/api/get-order/" + $("#order_id").val(), (data) => {
+      return data
+    })
+    //  console.log(order,"order")
+
+    $("#bill").html(generateBill(order.data))
+    $("#billModal").modal("show")
+  }
 </script>
 
 
