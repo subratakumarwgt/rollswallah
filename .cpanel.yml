@@ -3,5 +3,5 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/rollsrbf/
-    - /bin/cp -R * $DEPLOYPATH
+
     
