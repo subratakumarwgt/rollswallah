@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Sales Report<i class="fas fa-cookie-bite"></i></h3>
+<h3>Sales Report  <i class="fas fa-file"></i></h3>
 
 
 
@@ -35,10 +35,10 @@
                         <h6 class="mb-1">Sale</h6>
                         <h4 class="mb-0">Today</h4>
                      </div>
-                     <div class="media-body align-self-center"><i class="font-primary" data-feather="arrow-down"></i></div>
+                     <div class="media-body align-self-center"><i class="font-{{$todayTotal > $yesterdayTotal ? 'success' : 'danger'}}" data-feather="arrow-{{$todayTotal > $yesterdayTotal ? 'up' : 'down'}}"></i></div>
                      <div class="media-body">
-                        <h5 class="mb-0"> <i class="fa fa-inr"></i> <span class="counter">25698</span></h5>
-                        <span class="mb-1">- <i class="fa fa-inr"></i> 2658(36%)</span>
+                        <h5 class="mb-0"> <i class="fa fa-inr"></i> <span class="counter">{{$todayTotal}}</span></h5>
+                        <span class="mb-1">{{$todayTotal > $yesterdayTotal ? '+' : '-'}} (yesterday) <i class="fa fa-inr"></i> {{$yesterdayTotal}}</span>
                      </div>
                   </div>
                </div>
@@ -48,10 +48,10 @@
                         <h6 class="mb-1">Sale</h6>
                         <h4 class="mb-0">Month</h4>
                      </div>
-                     <div class="media-body align-self-center"><i class="font-primary" data-feather="arrow-up"></i></div>
+                     <div class="media-body align-self-center"><i class="font-{{$thisMonthTotal > $lastMonthTotal ? 'success' : 'danger'}}" data-feather="arrow-{{$thisMonthTotal > $lastMonthTotal ? 'up' : 'down'}}"></i></div>
                      <div class="media-body ps-2">
-                        <h5 class="mb-0"> <i class="fa fa-inr"></i> <span class="counter">6954</span></h5>
-                        <span class="mb-1">+ <i class="fa fa-inr"></i> 369(15%)</span>
+                        <h5 class="mb-0"> <i class="fa fa-inr"></i> <span class="counter">{{$thisMonthTotal}}</span></h5>
+                        <span class="mb-1">{{$thisMonthTotal > $lastMonthTotal ? '+' : '-'}} (last month) <i class="fa fa-inr"></i> {{$lastMonthTotal}}</span>
                      </div>
                   </div>
                </div>
@@ -61,10 +61,10 @@
                         <h6 class="mb-1">Sale</h6>
                         <h4 class="mb-0">Week</h4>
                      </div>
-                     <div class="media-body align-self-center"><i class="font-primary" data-feather="arrow-up"></i></div>
+                     <div class="media-body align-self-center"><i class="font-{{$thisWeekTotal > $lastWeekTotal ? 'success' : 'danger'}}" data-feather="arrow-{{$thisWeekTotal > $lastWeekTotal ? 'up' : 'down'}}"></i></div>
                      <div class="media-body">
-                        <h5 class="mb-0"> <i class="fa fa-inr"></i> <span class="counter">63147</span></h5>
-                        <span class="mb-1">+ <i class="fa fa-inr"></i> 69(65%)</span>
+                        <h5 class="mb-0"> <i class="fa fa-inr"></i> <span class="counter">{{$thisWeekTotal}}</span></h5>
+                        <span class="mb-1">{{$thisWeekTotal > $lastWeekTotal ? '+' : '-'}} (last week) <i class="fa fa-inr"></i> {{$lastWeekTotal}}</span>
                      </div>
                   </div>
                </div>
@@ -74,10 +74,10 @@
                         <h6 class="mb-1">Sale</h6>
                         <h4 class="mb-0">Year</h4>
                      </div>
-                     <div class="media-body align-self-center ps-3"><i class="font-primary" data-feather="arrow-up"></i></div>
-                     <div class="media-body ps-2">
-                        <h5 class="mb-0"> <i class="fa fa-inr"></i> <span class="counter">963198</span></h5>
-                        <span class="mb-1">+ <i class="fa fa-inr"></i> 3654(90%)          </span>
+                     <div class="media-body align-self-center"><i class="font-{{$thisYearTotal > $lastYearTotal ? 'success' : 'danger'}}" data-feather="arrow-{{$thisYearTotal > $lastYearTotal ? 'up' : 'down'}}"></i></div>
+                     <div class="media-body">
+                        <h5 class="mb-0"> <i class="fa fa-inr"></i> <span class="counter">{{$thisYearTotal}}</span></h5>
+                        <span class="mb-1">{{$thisYearTotal > $lastYearTotal ? '+' : '-'}} (last year) <i class="fa fa-inr"></i> {{$lastYearTotal}}</span>
                      </div>
                   </div>
                </div>
@@ -118,7 +118,7 @@
                         </div> -->
                         <div class="col-md-4 p-3">
                             <label class="p-2">Filter by Order Type</label>
-                            <select class="form-control" id="type">
+                            <select class="form-control" id="order_type">
                             <option  selected="" value="" disabled>--Select--</option>
                             <option value="dine_in" >Dine In</option>
                             <option  value="take_away" >Take Away</option>
@@ -194,12 +194,12 @@
                     // Read values
                     var from_date = $('#from_date').val();
                     var to_date = $('#to_date').val();
-                    var type = $('#type').val();
+                    var order_type = $('#order_type').val();
 
                     // Append to data
                     data.from_date = from_date;
                     data.to_date = to_date;
-                    data.type = type;
+                    data.order_type = order_type;
 
                 }
             },
@@ -250,7 +250,7 @@
         $('#to_date').on('change', function() {
             dataTable.draw();
         });
-        $('#type').on('change', function() {
+        $('#order_type').on('change', function() {
             dataTable.draw();
         });
 
