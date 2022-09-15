@@ -150,10 +150,10 @@ class ExpenseController extends Controller
 		}
 		
 		if (isset($request->from_date) && !empty($request->from_date)) {
-			$recordsQuery = $recordsQuery->whereDate('orders.created_at', '>=', $request->from_date);
+			$recordsQuery = $recordsQuery->whereDate('expenses.created_at', '>=', $request->from_date);
 		}
 		if (isset($request->to_date) && !empty($request->to_date)) {
-			$recordsQuery = $recordsQuery->whereDate('orders.created_at', '<=', $request->to_date);
+			$recordsQuery = $recordsQuery->whereDate('expenses.created_at', '<=', $request->to_date);
 		}
 		$totalRecords = $recordsQuery->count();
 		$totalRecordswithFilter = $recordsQuery->count();
@@ -165,6 +165,8 @@ class ExpenseController extends Controller
 		$data_arr = array();
 		$i = 1;
 		foreach ($records as $record) {
+
+			$sl = "'";
           	$data_arr[] = array(
 				// "Image"=>$image,
 				"Id"     => $record->id,
@@ -174,7 +176,7 @@ class ExpenseController extends Controller
 				"Items"        => $record->expenseDetails->count()," Items",
 				"Amount"      => '<i class="fa fa-inr"></i> '.$record->amount ,
 				"Date"        => date("d M, Y",strtotime($record->created_at)),
-                "Action"      =>'<button class="btn btn-sm btn-outline-success text-dark ml-1 viewDetails" data-expensed_details = "" ><i class="fa fa-eye"></i> </button>',
+                "Action"      =>'<button class="btn btn-sm btn-outline-success text-dark ml-1 viewDetails" onclick="viewDetails(this)" data-expense_details = '.$sl.$record->expenseDetails.$sl.' ><i class="fa fa-eye"></i> </button>',
 
 
 			);
@@ -238,7 +240,9 @@ class ExpenseController extends Controller
 
 		$data_arr = array();
 		$i = 1;
+		$sl = "'";
 		foreach ($records as $record) {
+			$details = $record->orderDetails;
           	$data_arr[] = array(
 				// "Image"=>$image,
 				"Order Id"     => $record->order_id,
@@ -249,7 +253,7 @@ class ExpenseController extends Controller
 				"Charges"      => '<i class="fa fa-inr"></i> '.$record->chargeDetails->sum("amount") ,
 				"Amount"      => '<i class="fa fa-inr"></i> '. $record->total,
                 "Date"        =>date("d M, Y",strtotime($record->created_at)),
-                "Action"      =>'<button class="btn btn-sm btn-outline-success text-dark ml-1 viewDetails" data-order_details = "'.json_encode($record->orderDetails).'" ><i class="fa fa-eye"></i> </button><button class="btn btn-sm btn-outline-primary text-dark ml-1 viewCharges" data-order_details = "'.json_encode($record->chargeDetails).'" ><i class="fa fa-inr"></i> </button><button class="btn btn-sm btn-outline-primary viewDetails ml-1 text-dark" data-order_details = "'.json_encode($record->chargeDetails).'" ><i class="fa fa-file-text"></i> </button>',
+                "Action"      =>'<button class="btn btn-sm btn-outline-success text-dark ml-1 viewDetails" data-order_details = "'.json_encode($record->orderDetails).'" ><i class="fa fa-eye"></i> </button><button class="btn btn-sm btn-outline-primary text-dark ml-1 viewCharges" data-order_details = "'.json_encode($record->chargeDetails).'" ><i class="fa fa-inr"></i> </button><button class="btn btn-sm btn-outline-primary viewDetails ml-1 text-dark" data-order_details = '.$sl.$details.$sl.' ><i class="fa fa-file-text"></i> </button>',
 
 
 			);

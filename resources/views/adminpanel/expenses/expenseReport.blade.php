@@ -190,11 +190,13 @@
                     var from_date = $('#from_date').val();
                     var to_date = $('#to_date').val();
                     var type = $('#type').val();
+                    var category = $('#category').val();
 
                     // Append to data
                     data.from_date = from_date;
                     data.to_date = to_date;
                     data.type = type;
+                    data.category = type;
 
                 }
             },
@@ -242,12 +244,20 @@
         $('#to_date').on('change', function() {
             dataTable.draw();
         });
-        $('#order_type').on('change', function() {
+        $('#type').on('change', function() {
+            dataTable.draw();
+        });
+
+        $('#category').on('change', function() {
             dataTable.draw();
         });
 
 
     });
+
+    const viewDetails = (obj) => {
+        alert(JSON.stringify($(obj).data("expense_details")))
+    }
 </script>
 
 
