@@ -9,4 +9,10 @@ class Expense extends Model
 {
     use HasFactory;
     protected $guarded=[];
+
+    public function expenseDetails(){
+        return $this->hasMany(DailyExpense::class,'expense_id','id');
+    }
+
+
 }

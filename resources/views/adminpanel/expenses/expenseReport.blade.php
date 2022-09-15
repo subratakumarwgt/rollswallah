@@ -32,7 +32,7 @@
                <div class="col-sm-6 pe-0">
                   <div class="media border-after-xs">
                      <div class="align-self-center me-3 text-start">
-                        <h6 class="mb-1">Sale</h6>
+                        <h6 class="mb-1">Expense</h6>
                         <h4 class="mb-0">Today</h4>
                      </div>
                      <div class="media-body align-self-center"><i class="font-{{$todayTotal > $yesterdayTotal ? 'success' : 'danger'}}" data-feather="arrow-{{$todayTotal > $yesterdayTotal ? 'up' : 'down'}}"></i></div>
@@ -45,7 +45,7 @@
                <div class="col-sm-6 ps-0">
                   <div class="media">
                      <div class="align-self-center me-3 text-start">
-                        <h6 class="mb-1">Sale</h6>
+                        <h6 class="mb-1">Expense</h6>
                         <h4 class="mb-0">Month</h4>
                      </div>
                      <div class="media-body align-self-center"><i class="font-{{$thisMonthTotal > $lastMonthTotal ? 'success' : 'danger'}}" data-feather="arrow-{{$thisMonthTotal > $lastMonthTotal ? 'up' : 'down'}}"></i></div>
@@ -58,7 +58,7 @@
                <div class="col-sm-6 pe-0">
                   <div class="media border-after-xs">
                      <div class="align-self-center me-3 text-start">
-                        <h6 class="mb-1">Sale</h6>
+                        <h6 class="mb-1">Expense</h6>
                         <h4 class="mb-0">Week</h4>
                      </div>
                      <div class="media-body align-self-center"><i class="font-{{$thisWeekTotal > $lastWeekTotal ? 'success' : 'danger'}}" data-feather="arrow-{{$thisWeekTotal > $lastWeekTotal ? 'up' : 'down'}}"></i></div>
@@ -71,7 +71,7 @@
                <div class="col-sm-6 ps-0">
                   <div class="media">
                      <div class="align-self-center me-3 text-start">
-                        <h6 class="mb-1">Sale</h6>
+                        <h6 class="mb-1">Expense</h6>
                         <h4 class="mb-0">Year</h4>
                      </div>
                      <div class="media-body align-self-center"><i class="font-{{$thisYearTotal > $lastYearTotal ? 'success' : 'danger'}}" data-feather="arrow-{{$thisYearTotal > $lastYearTotal ? 'up' : 'down'}}"></i></div>
@@ -90,44 +90,32 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row m-0">
-                        <div class="col-md-4 p-3 border-right-sm">
+                        <div class="col-md-3 p-3 border-right-sm">
                             <label class="p-2">From Date</label>
                             <input type="date" name="" id="from_date" class="form-control" >
 
                         </div>
-                        <div class="col-md-4 p-3 border-right-sm">
+                        <div class="col-md-3 p-3 border-right-sm">
                             <label class="p-2">To Date</label>
                             <input type="date" name="" id="to_date" class="form-control" >
 
                         </div>
 
-                        <!-- <div class="col-md-4 p-3">
-                            <label class="p-2">Group by Sales</label>
+                        <div class="col-md-3 p-3">
+                            <label class="p-2">Filter by Type</label>
+                            <select class="form-control" id="type">
+                            <option  selected="" value="" disabled>--Select--</option>
+                            <option value="dine_in" >Daily Expenses</option>
+                            <option  value="take_away" >Other Expenses</option>                                
+                            </select>
+                        </div>
+                        <div class="col-md-3 p-3">
+                            <label class="p-2">Filter by Category</label>
                             <select class="form-control" id="category">
                             <option  selected="" value="" disabled>--Select--</option>
-                          
-                                <option value="items">items</option>
-                                <option value="date">date</option>
-                                <option value="order_type">order_type</option>
-                                <option value="payment_type">payment_type</option>
-                          
+                            <option value="Raw Material" >Raw Material</option>
+                            <option  value="Vegetable" >Vegetable</option>                                
                             </select>
-                            </select>
-
-
-                        </div> -->
-                        <div class="col-md-4 p-3">
-                            <label class="p-2">Filter by Order Type</label>
-                            <select class="form-control" id="order_type">
-                            <option  selected="" value="" disabled>--Select--</option>
-                            <option value="dine_in" >Dine In</option>
-                            <option  value="take_away" >Take Away</option>
-                            <option  value="Online" >Online</option>
-                            <option  value="On Call" >On Call</option>                          
-                            </select>
-                            </select>
-
-
                         </div>
                        
                     </div>
@@ -136,20 +124,21 @@
                     <div class="table-responsive">
                         <table class="table" id="datatable">
                             <thead>
-                                <tr><th>Order Id</th>
-                                    <th>Items Count</th>
-                                    <th>Order Type</th>
-                                    <th>Payment</th>
-                                    <th>User Details</th>
-                                    <th>Charges</th>
-                                    <th>Date</th>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Description</th>
+                                    <th>Type</th>
+                                    <th>Category</th>
+                                    <th>Items</th>
                                     <th>Amount</th>
+                                    <th>Date</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tfoot>
                                 <tr>
-
+                                    <td>Total</td>
+                                    <td id="totalSum"> </td>
                                 </tr>
                             </tfoot>
                         </table>
@@ -186,54 +175,47 @@
             serverSide: true,
             drawCallback: function () {
                 var api = this.api();
-                $( api.table().footer() ).html("<td colspan='7'>Total</td><td colspan='7'><i class='fas fa-inr'></i>"+
-                 (  0 - parseInt(api.column( 7, {page:'current'} ).data().sum()))
+                $( api.table().footer() ).html("<td colspan='5'>Total</td><td colspan='4'><i class='fas fa-inr'></i>"+
+                 (  0 - parseInt(api.column( 5, {page:'current'} ).data().sum()))
                     +"</td>");
+                // $("#totalSum").html( api.column( 5, {page:'current'} ).data().sum())
             },
             language: {
                 processing: '<div class="loader-box"><div class="loader-2"></div></div>'
             },
             ajax: {
-                'url': '/management/sales/bind',
+                'url': '/management/expense/bind',
                 'data': function(data) {
                     // Read values
                     var from_date = $('#from_date').val();
                     var to_date = $('#to_date').val();
-                    var order_type = $('#order_type').val();
+                    var type = $('#type').val();
 
                     // Append to data
                     data.from_date = from_date;
                     data.to_date = to_date;
-                    data.order_type = order_type;
+                    data.type = type;
 
                 }
             },
             columns: [{
-                    data: 'Order Id',
+                    data: 'Id',
                     Orderable: true
                 },
                 {
-                    data: 'Items Count',
+                    data: 'Description',
                     Orderable: false
                 },
                 {
-                    data: 'Order Type',
+                    data: 'Type',
                     Orderable: false
                 },                
                 {
-                    data: 'Payment',
+                    data: 'Category',
                     Orderable: false
                 },
                 {
-                    data: 'User Details',
-                    Orderable: false
-                },
-                {
-                    data: 'Charges',
-                    Orderable: false
-                },
-                {
-                    data: 'Date',
+                    data: 'Items',
                     Orderable: false
                 },
                 {
@@ -241,9 +223,14 @@
                     Orderable: false
                 },
                 {
+                    data: 'Date',
+                    Orderable: false
+                },
+                {
                     data: 'Action',
                     Orderable: false
                 },
+                
             ],
         });
 

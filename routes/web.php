@@ -533,8 +533,10 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
      Route::get('/sales/report', 'ExpenseController@viewSalesReport')->name('sales-report');
      Route::get('/sales/bind', 'ExpenseController@bindSales')->name('sales-bind');
      Route::get('/expense/other-expense', 'ExpenseController@viewOtherExpense')->name('other-expense');
+     Route::get('/expense/bind', 'ExpenseController@bindExpense')->name('expense-bind');
      Route::get('/expense/all-expense', 'ExpenseController@viewAllExpense')->name('all-expense');
      Route::get('/expense/wastages', 'ExpenseController@viewAllExpense')->name('wastages');
+     Route::get('/expense/report', 'ExpenseController@viewExpenseReport')->name('expense-report');
      
 
 

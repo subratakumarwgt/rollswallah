@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Expense;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetails;
@@ -65,6 +66,130 @@ class ExpenseController extends Controller
 
         return view("adminpanel.expenses.salesReport",$data);
     }
+	public function viewExpenseReport(){
+        $data = [];
+        $orders = new Expense();
+        $now = Carbon::now();
+        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
+        $weekEndDate = $now->endOfWeek()->format('Y-m-d');
+
+        $previous_week = date("Y-m-d",strtotime("last saturday"));
+        $previous_week_start = date("Y-m-d",strtotime("-6 days",strtotime($previous_week)));
+
+
+        $monthStartDate = $now->startOfMonth()->format('Y-m-d');
+        $monthEndDate = $now->endOfMonth()->format('Y-m-d');
+
+        $lastMonth = $now->subMonth()->month;
+        $thisMonth = $now->subMonth(-1)->month;
+        
+        $lastYear = $now->subYear()->year;
+        $thisYear = $now->subYear(-1)->year;
+        
+        // dd($weekStartDate,
+        // $weekEndDate,
+        // $monthStartDate,
+        // $monthEndDate,
+        // $previous_week,
+        // $previous_week_start,
+        // $lastMonth,
+        // $thisMonth,
+        // $thisYear,
+        // $lastYear);
+
+        $data["todayTotal"] = Expense::whereDate("created_at",">=",date("Y-m-d"))->sum("amount");
+        $data["yesterdayTotal"] = Expense::whereDate("created_at","<",date("Y-m-d"))->whereDate("created_at",">=",date("Y-m-d",strtotime("yesterday")))->sum("amount");
+
+        $data["thisWeekTotal"] = Expense::whereDate("created_at","<",$weekEndDate)->whereDate("created_at",">=",$weekStartDate)->sum("amount");
+        $data["lastWeekTotal"] = Expense::whereDate("created_at","<",$previous_week)->whereDate("created_at",">=",$previous_week_start)->sum("amount");
+
+        $data["thisMonthTotal"] =  Expense::whereMonth("created_at","=",$thisMonth)->sum("amount");
+        $data["lastMonthTotal"] = Expense::whereMonth("created_at","=",$lastMonth)->sum("amount");
+
+
+        $data["thisYearTotal"] =  Expense::whereYear("created_at","=",$thisYear)->sum("amount");
+        $data["lastYearTotal"] = Expense::whereYear("created_at","=",$lastYear)->sum("amount");
+
+        // dd($data);
+
+
+
+        return view("adminpanel.expenses.expenseReport",$data);
+    }
+    public function bindExpense(Request $request)
+    {
+		$draw = $request->draw;
+
+		$start = $request->start;
+		$rowperpage = $request->length;
+
+		$columnIndex_arr = $request->order;
+
+		$columnName_arr = $request->columns;
+		$order_arr = $request->order;
+		$search_arr = $request->search;
+		$columnIndex = $columnIndex_arr[0]['column'];
+		$columnName = $columnName_arr[$columnIndex]['data'];
+		$columnSortOrder = @$order_arr[0]['dir'];
+		$searchValue = @$search_arr['value'];
+		$recordsQuery = new Expense();
+		$sort = 0;
+		if ($searchValue != "") {
+			$sort = 1;
+			$_SESSION['key'] = $searchValue;
+			$recordsQuery = $recordsQuery->where('expenses.description', 'LIKE', '%' . $_SESSION['key'] . '%')->orWhere('expenses.type', 'LIKE', '%' . $_SESSION['key'] . '%')->orWhere('expenses.category', 'LIKE', '%' . $_SESSION['key'] . '%')->orWhere('expenses.id', 'LIKE', '%' . $_SESSION['key'] . '%');
+		}
+		if (isset($request->type) && !empty($request->type)) {
+			$recordsQuery = $recordsQuery->where('type', $request->type);
+		}
+		if (isset($request->category) && !empty($request->category)) {
+			$recordsQuery = $recordsQuery->where('category', $request->category);
+		}
+		if (isset($request->payment_type) && !empty($request->payment_type)) {
+			$recordsQuery = $recordsQuery->where('payment_type', $request->payment_type);
+		}
+		
+		if (isset($request->from_date) && !empty($request->from_date)) {
+			$recordsQuery = $recordsQuery->whereDate('orders.created_at', '>=', $request->from_date);
+		}
+		if (isset($request->to_date) && !empty($request->to_date)) {
+			$recordsQuery = $recordsQuery->whereDate('orders.created_at', '<=', $request->to_date);
+		}
+		$totalRecords = $recordsQuery->count();
+		$totalRecordswithFilter = $recordsQuery->count();
+
+		$records =  $recordsQuery->skip($start)
+			->take($rowperpage)
+			->get();
+
+		$data_arr = array();
+		$i = 1;
+		foreach ($records as $record) {
+          	$data_arr[] = array(
+				// "Image"=>$image,
+				"Id"     => $record->id,
+				"Description"     => $record->description,
+				"Type"        =>"<span class='badge badge-primary text-white'> $record->type</span>",
+				"Category"     => "<span class='badge badge-warning text-dark'>$record->category</span>",
+				"Items"        => $record->expenseDetails->count()," Items",
+				"Amount"      => '<i class="fa fa-inr"></i> '.$record->amount ,
+				"Date"        => date("d M, Y",strtotime($record->created_at)),
+                "Action"      =>'<button class="btn btn-sm btn-outline-success text-dark ml-1 viewDetails" data-expensed_details = "" ><i class="fa fa-eye"></i> </button>',
+
+
+			);
+			$i++;
+		}
+
+		$response = array(
+			"draw" => intval($draw),
+			"iTotalRecords" => $totalRecords,
+			"iTotalDisplayRecords" => $totalRecordswithFilter,
+			"aaData" => $data_arr
+		);
+
+		echo json_encode($response);
+	}
     public function bindSales(Request $request)
     {
 		$draw = $request->draw;
