@@ -527,16 +527,24 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
      //Expense Routes
     //  Route::get('/expense/bind', 'AdminDashboardController@expenseBind')->name('expense-bind');
     //  Route::get('/expense/edit/{id}', 'AdminDashboardController@expenseEdit')->name('expense-edit');
-     Route::get('/expense/daily-expense', 'ExpenseController@viewDailyExpense')->name('daily-expense');
+    
      Route::get('/sales/quick-order', 'ExpenseController@viewQuickOrder')->name('quick-order');
      Route::get('/sales/quick-order/{id}', 'ExpenseController@viewQuickOrder')->name('quick-order-id');
      Route::get('/sales/report', 'ExpenseController@viewSalesReport')->name('sales-report');
      Route::get('/sales/bind', 'ExpenseController@bindSales')->name('sales-bind');
+     Route::get('/sales/products', 'ExpenseController@viewProductList')->name('items-list');
+     Route::get('/sales/products/bind', 'ExpenseController@bindProducts')->name('products-bind');
+
+     Route::get('/expense/daily-expense', 'ExpenseController@viewDailyExpense')->name('daily-expense');
      Route::get('/expense/other-expense', 'ExpenseController@viewOtherExpense')->name('other-expense');
      Route::get('/expense/bind', 'ExpenseController@bindExpense')->name('expense-bind');
      Route::get('/expense/all-expense', 'ExpenseController@viewAllExpense')->name('all-expense');
      Route::get('/expense/wastages', 'ExpenseController@viewAllExpense')->name('wastages');
-     Route::get('/expense/report', 'ExpenseController@viewExpenseReport')->name('expense-report');
+     Route::get('/expense/report', 'ExpenseController@viewExpenseReport')->name('expense-report');  
+     Route::get('/expense/items', 'ExpenseController@viewItemList')->name('items-list');
+     Route::get('/expense/items/bind', 'ExpenseController@binditems')->name('items-bind');
+
+     
      
 
 

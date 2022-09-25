@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Expense;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetails;
@@ -16,6 +17,12 @@ class ExpenseController extends Controller
     public function viewDailyExpense(){
         return view("adminpanel.expenses.addDailyExpense");
     }
+	public function viewProductList(){
+		return view("adminpanel.expenses.products");
+	}
+	public function viewItemList(){
+		return view("adminpanel.expenses.items");
+	}
     public function viewSalesReport(){
         $data = [];
         $orders = Order::where("status","completed");
@@ -254,6 +261,171 @@ class ExpenseController extends Controller
 				"Amount"      => '<i class="fa fa-inr"></i> '. $record->total,
                 "Date"        =>date("d M, Y",strtotime($record->created_at)),
                 "Action"      =>'<button class="btn btn-sm btn-outline-success text-dark ml-1 viewDetails" data-order_details = "'.json_encode($record->orderDetails).'" ><i class="fa fa-eye"></i> </button><button class="btn btn-sm btn-outline-primary text-dark ml-1 viewCharges" data-order_details = "'.json_encode($record->chargeDetails).'" ><i class="fa fa-inr"></i> </button><button class="btn btn-sm btn-outline-primary viewDetails ml-1 text-dark" data-order_details = '.$sl.$details.$sl.' ><i class="fa fa-file-text"></i> </button>',
+
+
+			);
+			$i++;
+		}
+
+		$response = array(
+			"draw" => intval($draw),
+			"iTotalRecords" => $totalRecords,
+			"iTotalDisplayRecords" => $totalRecordswithFilter,
+			"aaData" => $data_arr
+		);
+
+		echo json_encode($response);
+	}
+	public function bindProducts(Request $request)
+    {
+		$draw = $request->draw;
+
+		$start = $request->start;
+		$rowperpage = $request->length;
+
+		$columnIndex_arr = $request->order;
+
+		$columnName_arr = $request->columns;
+		$order_arr = $request->order;
+		$search_arr = $request->search;
+		$columnIndex = $columnIndex_arr[0]['column'];
+		$columnName = $columnName_arr[$columnIndex]['data'];
+		$columnSortOrder = @$order_arr[0]['dir'];
+		$searchValue = @$search_arr['value'];
+		$recordsQuery = new Item();
+		$sort = 0;
+		if ($searchValue != "") {
+			$sort = 1;
+			$_SESSION['key'] = $searchValue;
+			$recordsQuery = $recordsQuery->where('items.sub_category', 'LIKE', '%' . $_SESSION['key'] . '%')
+				->orWhere('items.name', 'LIKE', '%' . $_SESSION['key'] . '%')
+				->orWhere('items.price', 'LIKE', '%' . $_SESSION['key'] . '%')
+				->orWhere('items.unit', 'LIKE', '%' . $_SESSION['key'] . '%')
+				->orWhere('items.id', 'LIKE', '%' . $_SESSION['key'] . '%');
+		}
+		if (isset($request->type) && !empty($request->type)) {
+			$recordsQuery = $recordsQuery->where('type', $request->type);
+		}
+		if (isset($request->sub_category) && !empty($request->sub_category)) {
+			$recordsQuery = $recordsQuery->where('sub_category', $request->sub_category);
+		}
+		//   if (isset($request->is_header) && !empty($request->is_header)) {
+		// 	$recordsQuery = $recordsQuery->where('is_header',$request->is_header);
+		// }
+		if (isset($request->from_date) && !empty($request->from_date)) {
+			$recordsQuery = $recordsQuery->whereDate('items.created_at', '>=', $request->from_date);
+		}
+		if (isset($request->to_date) && !empty($request->to_date)) {
+			$recordsQuery = $recordsQuery->whereDate('items.created_at', '<=', $request->to_date);
+		}
+		$totalRecords = $recordsQuery->count();
+		$totalRecordswithFilter = $recordsQuery->count();
+
+		$records =  $recordsQuery->skip($start)
+			->take($rowperpage)
+			->get();
+
+		$data_arr = array();
+		$i = 1;
+		$sl = "'";
+		$ice_cream = "Ice Cream <i class='fa fa-snowflake-o'></i>";
+
+		$fast_food = "Food <i class='fa fa-cutlery'></i>";
+		foreach ($records as $record) {
+			$sub = $record->sub_category == "ice_cream" ? $ice_cream : $fast_food;
+			$color = $record->sub_category != "ice_cream" ? "success" : "primary";
+			$details = $record->orderDetails;
+          	$data_arr[] = array(
+				// "Image"=>$image,
+				"Product Id"     => "PRO".$record->id,
+				"Title"     =>"<h6 class='text-$color'> $record->name </h6>",
+				"Product Type"        =>"<span class='badge badge-$color text-white'>$sub  </span>",
+				"Unit"        => "<span class='badge badge-warning text-dark'>$record->unit</span>",
+				"Price"      => '<i class="fa fa-inr"></i> '. $record->price,
+                "Action"      =>'<button class="btn btn-sm btn-outline-success text-dark ml-1 updateProduct" ><i class="fa fa-pencil"></i> </button><button class="btn btn-sm btn-outline-danger text-dark ml-1 deleteProduct" ><i class="fa fa-trash"></i> </button>',
+
+
+			);
+			$i++;
+		}
+
+		$response = array(
+			"draw" => intval($draw),
+			"iTotalRecords" => $totalRecords,
+			"iTotalDisplayRecords" => $totalRecordswithFilter,
+			"aaData" => $data_arr
+		);
+
+		echo json_encode($response);
+	}
+
+	public function bindItems(Request $request)
+    {
+		$draw = $request->draw;
+
+		$start = $request->start;
+		$rowperpage = $request->length;
+
+		$columnIndex_arr = $request->order;
+
+		$columnName_arr = $request->columns;
+		$order_arr = $request->order;
+		$search_arr = $request->search;
+		$columnIndex = $columnIndex_arr[0]['column'];
+		$columnName = $columnName_arr[$columnIndex]['data'];
+		$columnSortOrder = @$order_arr[0]['dir'];
+		$searchValue = @$search_arr['value'];
+		$recordsQuery = new Item();
+		$sort = 0;
+		if ($searchValue != "") {
+			$sort = 1;
+			$_SESSION['key'] = $searchValue;
+			$recordsQuery = $recordsQuery->where('items.sub_category', 'LIKE', '%' . $_SESSION['key'] . '%')
+				->orWhere('items.name', 'LIKE', '%' . $_SESSION['key'] . '%')
+				->orWhere('items.price', 'LIKE', '%' . $_SESSION['key'] . '%')
+				->orWhere('items.unit', 'LIKE', '%' . $_SESSION['key'] . '%')
+				->orWhere('items.id', 'LIKE', '%' . $_SESSION['key'] . '%');
+		}
+		if (isset($request->type) && !empty($request->type)) {
+			$recordsQuery = $recordsQuery->where('type',"!=", $request->type);
+		}
+		if (isset($request->sub_category) && !empty($request->sub_category)) {
+			$recordsQuery = $recordsQuery->where('sub_category', $request->sub_category);
+		}
+		//   if (isset($request->is_header) && !empty($request->is_header)) {
+		// 	$recordsQuery = $recordsQuery->where('is_header',$request->is_header);
+		// }
+		if (isset($request->from_date) && !empty($request->from_date)) {
+			$recordsQuery = $recordsQuery->whereDate('items.created_at', '>=', $request->from_date);
+		}
+		if (isset($request->to_date) && !empty($request->to_date)) {
+			$recordsQuery = $recordsQuery->whereDate('items.created_at', '<=', $request->to_date);
+		}
+		$totalRecords = $recordsQuery->count();
+		$totalRecordswithFilter = $recordsQuery->count();
+
+		$records =  $recordsQuery->skip($start)
+			->take($rowperpage)
+			->get();
+
+		$data_arr = array();
+		$i = 1;
+		$sl = "'";
+		$ice_cream = "Vegetable <i class='fa fa-fa-leaf'></i>";
+
+		$fast_food = "Raw Material <i class='fa fa-fa-houzz'></i>";
+		foreach ($records as $record) {
+			$sub = $record->type == "vegetable" ? $ice_cream : $fast_food;
+			$color = $record->type != "raw_material" ? "success" : "primary";
+			$details = $record->orderDetails;
+          	$data_arr[] = array(
+				// "Image"=>$image,
+				"Item Id"     => "IT".$record->id,
+				"Title"     =>"<h6 class='text-$color'> $record->name </h6>",
+				"Item Type"        =>"<span class='badge badge-$color text-white'>$sub  </span>",
+				"Unit"        => "<span class='badge badge-warning text-dark'>$record->unit</span>",
+				"Price"      => '<i class="fa fa-inr"></i> '. $record->price,
+                "Action"      =>'<button class="btn btn-sm btn-outline-success text-dark ml-1 updateProduct" ><i class="fa fa-pencil"></i> </button><button class="btn btn-sm btn-outline-danger text-dark ml-1 deleteProduct" ><i class="fa fa-trash"></i> </button>',
 
 
 			);
