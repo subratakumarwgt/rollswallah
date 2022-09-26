@@ -66,6 +66,15 @@
           </div>
           <div class="form-group p-1 mt-2">
             <label for="view_type">
+              Type
+            </label>
+           <select name="type" id="type" class="form-control">
+            <option value="raw_material">Raw Material</option>
+            <option value="vegetable">Vegetable</option>
+           </select>
+          </div>
+          <div class="form-group p-1 mt-2">
+            <label for="view_type">
               Price
             </label>
             <input type="number" class="form-control" id="item_price" required name="price">
@@ -386,6 +395,7 @@
     form.append("table_name", "items");
     form.append("name", $("#item_name").val());
     form.append("unit", $("#item_unit").val());
+    form.append("type", $("#type").val());
     form.append("price", $("#item_price").val());
     form.append("table_model", "Item");
 

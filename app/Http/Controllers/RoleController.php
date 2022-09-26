@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class RoleController extends ModuleController //role controller will use module controller files.
+class RoleController extends ModuleController //role controller will use module controller methods.
 {
 
     public function roleSetup(Request $request)
@@ -124,6 +124,28 @@ class RoleController extends ModuleController //role controller will use module 
 
 		}
 		return response(["success"=>true,"message"=>$message,"data"=>$role],200);
+	}
+	public function assignUsers(Request $request){
+		$validator_module = Validator::make($request->all(), [
+			"user_list" => "required",
+			"role_id_list" => "required"
+		]);
+		
+		if ($validator_module->fails()) {
+			return response(["success"=>false, "errors" => $validator_module->errors(), "message" => "Validation error, please check the form"], 400);
+		}
+		else{
+			$roles = Role::whereIn("id",explode(",",$request->role_id_list))->pluck("name");
+			$users = User::whereIn("id",explode(",",$request->user_list))->get();
+			// dd($users);
+
+			foreach ($users as $key => $user) {
+				$user->syncRoles($roles);
+				
+			}
+			return back()->with("message","Roles assigned successfully");
+		}
+
 	}
     
 }

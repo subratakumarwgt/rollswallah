@@ -1,22 +1,22 @@
-@extends('adminpanel.master')
-@section('title', 'Sample Page')
 
-@section('css')
-@endsection
+<?php $__env->startSection('title', 'Sample Page'); ?>
 
-@section('style')
-@endsection
+<?php $__env->startSection('css'); ?>
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-title')
+<?php $__env->startSection('style'); ?>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('breadcrumb-title'); ?>
 <h3>Add New User <i class="fas fa-user"></i></h3>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-items')
+<?php $__env->startSection('breadcrumb-items'); ?>
 <li class="breadcrumb-item">Users</li>
 <li class="breadcrumb-item active">Edit User</li>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-xl-6 xl-100">
@@ -35,7 +35,7 @@
 
                                     <div class="col-sm-6 col-md-3">
                                         <div class="mb-3 mt-3  shadow">
-                                            <img src="/storage/{{$user->profile->image?? 'profileimage/default.png'}}" class="img-fluid " id="img_prv">
+                                            <img src="/storage/<?php echo e($user->profile->image?? 'profileimage/default.png'); ?>" class="img-fluid " id="img_prv">
                                         </div>
                                     </div>
                                     <div class="col-md-9">
@@ -43,17 +43,17 @@
                                         <div class="row mt-5">
                                             <h6 class="">Account Info: </h6>
                                             <form id="user_account_form" class="row">
-                                                <input type="hidden" value="{{$user->id}}" id="user_new_id">
+                                                <input type="hidden" value="<?php echo e($user->id); ?>" id="user_new_id">
                                                 <div class="col-md-12 ">
                                                     <div class="mb-3">
                                                         <label class="form-label">Full Name</label>
-                                                        <input class="form-control" type="text" placeholder="Full Name" data-bs-original-title="" id="name" required value="{{$user->name}}">
+                                                        <input class="form-control" type="text" placeholder="Full Name" data-bs-original-title="" id="name" required value="<?php echo e($user->name); ?>">
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6 col-md-6">
                                                     <div class="mb-3">
                                                         <label class="form-label">Email</label>
-                                                        <input class="form-control " type="email" placeholder="Email" data-bs-original-title="" id="email" minlength="5" value="{{@$user->email}}" @if(!empty($user->email)) readonly @endif>
+                                                        <input class="form-control " type="email" placeholder="Email" data-bs-original-title="" id="email" minlength="5" value="<?php echo e(@$user->email); ?>" <?php if(!empty($user->email)): ?> readonly <?php endif; ?>>
                                                     </div>
                                                 </div>
 
@@ -62,7 +62,7 @@
                                                     <div class="input-group mb-3">
 
                                                         <div class="input-group-prepend"><span class="input-group-text">+91</span></div>
-                                                        <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="Contact number" data-bs-original-title="" title="" id="contact" value="{{@$user->contact}}" required readonly>
+                                                        <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="Contact number" data-bs-original-title="" title="" id="contact" value="<?php echo e(@$user->contact); ?>" required readonly>
                                                     </div>
                                                 </div>
 
@@ -73,7 +73,7 @@
 
                                     <h6>
                                         <div class="form-check checkbox checkbox-success mb-0">
-                                            <input class="form-check-input" id="includeProfile" type="checkbox" data-bs-original-title="" title="" {{$profile_checked}} @if(!empty($profile_checked)) disabled @endif>
+                                            <input class="form-check-input" id="includeProfile" type="checkbox" data-bs-original-title="" title="" <?php echo e($profile_checked); ?> <?php if(!empty($profile_checked)): ?> disabled <?php endif; ?>>
                                             <label class="form-check-label" for="includeProfile">Profile Info: </label>
                                         </div>
                                     </h6>
@@ -88,46 +88,46 @@
                                         <div class="col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label class="form-label">Age (in years)</label>
-                                                <input class="form-control" type="number" placeholder="Age (in years)" data-bs-original-title="" title="" id="age" value="{{@$user->profile->age}}">
+                                                <input class="form-control" type="number" placeholder="Age (in years)" data-bs-original-title="" title="" id="age" value="<?php echo e(@$user->profile->age); ?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label class="form-label">Date Of Birth</label>
-                                                <input class="form-control" type="date" placeholder="Date Of Birth" data-bs-original-title="" title="" id="dob"  value="{{@$user->profile->dob}}">
+                                                <input class="form-control" type="date" placeholder="Date Of Birth" data-bs-original-title="" title="" id="dob"  value="<?php echo e(@$user->profile->dob); ?>">
                                             </div>
                                         </div>
                                     </form>
                                     <form class="row" id="user_address_form">
                                         <h6>
                                             <div class="form-check checkbox checkbox-success mb-0">
-                                                <input class="form-check-input" id="includeAddress" type="checkbox" data-bs-original-title="" title="" {{$address_checked}} @if(!empty($address_checked)) disabled @endif>
+                                                <input class="form-check-input" id="includeAddress" type="checkbox" data-bs-original-title="" title="" <?php echo e($address_checked); ?> <?php if(!empty($address_checked)): ?> disabled <?php endif; ?>>
                                                 <label class="form-check-label" for="includeAddress">Address Info: </label>
                                             </div>
                                         </h6>
                                         <div class="col-sm-6 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">Address line 1 <small>*(required)</small></label>
-                                                <input class="form-control" type="text" placeholder="Address line 1" data-bs-original-title="" title="" required id="address_line_1" required  value="{{@$user->address->address_line_1}}">
+                                                <input class="form-control" type="text" placeholder="Address line 1" data-bs-original-title="" title="" required id="address_line_1" required  value="<?php echo e(@$user->address->address_line_1); ?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-md-7">
                                             <div class="mb-3">
                                                 <label class="form-label">Address line 2 </label>
-                                                <input class="form-control" type="text" placeholder="Address line 2" data-bs-original-title="" title="" id="address_line_2" value="{{@$user->address->address_line_2}}">
+                                                <input class="form-control" type="text" placeholder="Address line 2" data-bs-original-title="" title="" id="address_line_2" value="<?php echo e(@$user->address->address_line_2); ?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-md-5">
                                             <div class="mb-3">
                                                 <label class="form-label">Landmark </label>
-                                                <input class="form-control" type="text" placeholder="Address Landmark " data-bs-original-title="" title="" id="landmark" value="{{@$user->address->landmark}}">
+                                                <input class="form-control" type="text" placeholder="Address Landmark " data-bs-original-title="" title="" id="landmark" value="<?php echo e(@$user->address->landmark); ?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label class="form-label">State </label>
                                                 <select class="form-control" id="state">
-                                            <option value="{{@$user->address->state}}">{{@$user->address->state}}</option>        
+                                            <option value="<?php echo e(@$user->address->state); ?>"><?php echo e(@$user->address->state); ?></option>        
                                             </select>
                                             </div>
                                         </div>
@@ -135,14 +135,14 @@
                                             <div class="mb-3">
                                                 <label class="form-label">District </label>
                                                 <select class="form-control" id="district">
-                                                <option value="{{@$user->address->district}}">{{@$user->address->district}}</option> 
+                                                <option value="<?php echo e(@$user->address->district); ?>"><?php echo e(@$user->address->district); ?></option> 
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-md-4">
                                             <div class="mb-3">
                                                 <label class="form-label">PIN </label>
-                                                <input class="form-control" type="number" minlength="6" placeholder="Address PIN " data-bs-original-title="" title="" required id="zip_code" value="{{@$user->address->zip_code}}">
+                                                <input class="form-control" type="number" minlength="6" placeholder="Address PIN " data-bs-original-title="" title="" required id="zip_code" value="<?php echo e(@$user->address->zip_code); ?>">
                                             </div>
                                         </div>
                                         <div class="col-sm-6 col-md-12 p-5">
@@ -200,9 +200,9 @@
     </div>
 </div>
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
 <script>
      $("#password_submit").on('click', function(e) {
         e.preventDefault();
@@ -478,4 +478,5 @@
 <script>
 
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('adminpanel.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\subra\Documents\projects\rollswallah\resources\views/adminpanel/users/useredit.blade.php ENDPATH**/ ?>

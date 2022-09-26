@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
 
 class AdminDashboardController extends Controller
 {
@@ -723,7 +724,8 @@ class AdminDashboardController extends Controller
 
     }
     public function userList(){
-        return view("adminpanel.users.userlist");
+        $roles = Role::all();
+        return view("adminpanel.users.userlist",["roles"=>$roles]);
     } 
 
     public function userImport(){
@@ -781,9 +783,11 @@ class AdminDashboardController extends Controller
       foreach($records as $record){
           $sl_no=$i;
           $id  = $record->user_id;
+          $user = User::find($id);
+          // dd($user->roles->pluck("name"));
           $Company_name=$record->name;
           $address=$record->address_line_1.",".@$record->district.",".@$record->zip_code;
-          $profile="<strong class='small'>AGE</strong>: ".$record->age." <small>years</small>, <br><strong class='small'>DOB</strong>: ".@$record->dob;
+          $profile="<strong class='small'>AGE</strong>: ".$record->age." <small>years</small>, <br> <span class='badge badge-danger'>".@($user->getRoleNames())."</span>";
           $contact=$record->contact;
           if (!empty($record->image)) {
             $image = "<img src='/storage/".$record->image."' class='img-fluid' width='100px'>";
@@ -799,7 +803,7 @@ class AdminDashboardController extends Controller
           }
           $switch = '<div class="text-center text-end icon-state switch-sm switch-outline p-1 ">
           <label class="switch ">
-<input type="checkbox" data-bs-original-title="" title="" data-user_id = "'.$record->id.'" class="user_row"><span class="switch-state  bg-success shadow-sm"></span>
+<input type="checkbox" data-bs-original-title="" title="" data-user_id = "'.$record->user_id.'" class="user_row"><span class="switch-state  bg-success shadow-sm"></span>
       </label>    </div>';
          
           $entry="<span class='small'>".date("d M, Y",strtotime($record->created_at))."</span>";

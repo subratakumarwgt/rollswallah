@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Session;
 
 class ExpenseController extends Controller
 {
@@ -22,6 +23,23 @@ class ExpenseController extends Controller
 	}
 	public function viewItemList(){
 		return view("adminpanel.expenses.items");
+	}
+	public function quickExpense(){
+		return view("adminpanel.expenses.quickExpense");
+	}
+	public function editResource($id){
+		$item = Item::find($id);
+		if($item->type == "product"){
+			$data["child"] = "product";
+			$data["parent"] = "Sales";
+		}
+		else{
+			$data["child"] = "item";
+			$data["parent"] = "Expense";
+		}
+
+		$data["item"] = $item;
+		return view("adminpanel.expenses.updateResource",$data);
 	}
     public function viewSalesReport(){
         $data = [];
@@ -342,7 +360,7 @@ class ExpenseController extends Controller
 				"Product Type"        =>"<span class='badge badge-$color text-white'>$sub  </span>",
 				"Unit"        => "<span class='badge badge-warning text-dark'>$record->unit</span>",
 				"Price"      => '<i class="fa fa-inr"></i> '. $record->price,
-                "Action"      =>'<button class="btn btn-sm btn-outline-success text-dark ml-1 updateProduct" ><i class="fa fa-pencil"></i> </button><button class="btn btn-sm btn-outline-danger text-dark ml-1 deleteProduct" ><i class="fa fa-trash"></i> </button>',
+                "Action"      =>'<a  href = "'.route("resource-edit",["id"=>$record->id]).'" class="btn btn-sm btn-outline-success text-dark ml-1 updateProduct" ><i class="fa fa-pencil"></i> </a><button class="btn btn-sm btn-outline-danger text-dark ml-1 deleteProduct" ><i class="fa fa-trash"></i> </button>',
 
 
 			);
@@ -425,7 +443,7 @@ class ExpenseController extends Controller
 				"Item Type"        =>"<span class='badge badge-$color text-white'>$sub  </span>",
 				"Unit"        => "<span class='badge badge-warning text-dark'>$record->unit</span>",
 				"Price"      => '<i class="fa fa-inr"></i> '. $record->price,
-                "Action"      =>'<button class="btn btn-sm btn-outline-success text-dark ml-1 updateProduct" ><i class="fa fa-pencil"></i> </button><button class="btn btn-sm btn-outline-danger text-dark ml-1 deleteProduct" ><i class="fa fa-trash"></i> </button>',
+                "Action"      =>'<a href="'.route("resource-edit",["id"=>$record->id]).'" class="btn btn-sm btn-outline-success text-dark ml-1 updateProduct" ><i class="fa fa-pencil"></i> </a><button class="btn btn-sm btn-outline-danger text-dark ml-1 deleteProduct" ><i class="fa fa-trash"></i> </button>',
 
 
 			);
@@ -469,6 +487,25 @@ class ExpenseController extends Controller
         $data["order_id"] = $order->order_id;
         return view("adminpanel.expenses.addQuickOrder",$data);
     }
+
+	
+
+	public function updateResource($id,Request $request){
+     $item = Item::find($id);
+	
+	$data = $request->all();
+	unset($data["_token"]);
+
+	if($item->update($request->all())){
+		Session::flash("message","Item updated successfully!");
+		return back();
+	}
+	else{
+		Session::flash("message","Item could not be updated!");
+		return back();
+	}
+	 
+	}
    
 
 }

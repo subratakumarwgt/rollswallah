@@ -1,30 +1,30 @@
-@extends('adminpanel.master')
-@section('title', 'Sample Page')
 
-@section('css')
+<?php $__env->startSection('title', 'Sample Page'); ?>
+
+<?php $__env->startSection('css'); ?>
 <style>
   .select2-dropdown {
   z-index: 9001;
 }
 </style>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('style')
-<link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/datatables.css')}}">
+<?php $__env->startSection('style'); ?>
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/vendors/datatables.css')); ?>">
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-title')
+<?php $__env->startSection('breadcrumb-title'); ?>
 <h3>User List</h3>
 <a href="register" class="btn btn-primary btn-sm"><i class="fas fa-plus-square"></i> New User</a>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-items')
+<?php $__env->startSection('breadcrumb-items'); ?>
 <li class="breadcrumb-item">User</li>
 <li class="breadcrumb-item active">User List</li>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="roleSetupModal">
                   <div class="modal-dialog modal-dialog-center">
                      <div class="modal-content">
@@ -34,13 +34,13 @@
                         </div>
                         <div class="modal-body">
 <form action="/management/role/assign-users" id="create_form" method="POST">
-    @csrf
+    <?php echo csrf_field(); ?>
     <input type="hidden" name="id" value="0" id="role_id">
     <div class="form-group p-1 m-1">
         <select name="role_id_list" id="role_id_list" multiple="multiple" >
-          @foreach($roles as $role)
-          <option value="{{$role->id}}">{{$role->name}}</option>
-          @endforeach
+          <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+          <option value="<?php echo e($role->id); ?>"><?php echo e($role->name); ?></option>
+          <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </select>
     </div>
     <input type="hidden" value="" id="user_list" name="user_list">
@@ -64,9 +64,9 @@
                
                       <div class="col-md-6 p-3 border-right-sm">
 <label class="p-2">From</label>
-<input type="date" class="form-control shadow-sm mr-1 col-md-4" id="from_date" max="{{date('Y-m-d')}}" min="{{date('Y-m-d',strtotime('july 1,2021'))}}" >
+<input type="date" class="form-control shadow-sm mr-1 col-md-4" id="from_date" max="<?php echo e(date('Y-m-d')); ?>" min="<?php echo e(date('Y-m-d',strtotime('july 1,2021'))); ?>" >
 <label class="p-2">To</label>
-<input type="date" class="form-control shadow-sm mr-1 col-md-4" id="to_date"  max="{{date('Y-m-d')}}">
+<input type="date" class="form-control shadow-sm mr-1 col-md-4" id="to_date"  max="<?php echo e(date('Y-m-d')); ?>">
 
 </div>
                  
@@ -122,9 +122,9 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
 
 <script>
     
@@ -269,5 +269,6 @@ const assign_modal = () => {
 
 </script>
 
-<!-- <script src="{{asset('assets/js/datatable/datatables/datatable.custom.js')}}"></script> -->
-@endsection
+<!-- <script src="<?php echo e(asset('assets/js/datatable/datatables/datatable.custom.js')); ?>"></script> -->
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('adminpanel.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\subra\Documents\projects\rollswallah\resources\views/adminpanel/users/userlist.blade.php ENDPATH**/ ?>

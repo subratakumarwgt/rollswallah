@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3 class="ml-2">Items <button class="btn btn-outline-dark" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Item</button></h3>
+<h3 class="ml-2">Quick Expense <button class="btn btn-outline-dark" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Item</button></h3>
 
 
 
@@ -17,82 +17,77 @@
 
 @section('breadcrumb-items')
 <li class="breadcrumb-item">Expense</li>
-<li class="breadcrumb-item active">Items</li>
+<li class="breadcrumb-item active">quick expense</li>
 @endsection
 
 @section('content')
 
+
 <div class="container-fluid">
-    <div class="row">
+    <div class="row justify-content-center">
 
-        <div class="col-sm-12">
+        <div class="col-sm-8">
             <div class="card">
-                <div class="card-body">
-                    <div class="row m-0">
-                        <div class="col-md-4 p-3 border-right-sm">
-                            <label class="p-2">From Date</label>
-                            <input type="date" name="" id="from_date" class="form-control" >
+                <form action="" id="add_item_form" class="form" method="post" action="/management/quick-expense/add">
+                    @csrf
+                    <div class="card-body">
+
+                        <div class="modal-header">
+                            <h5> </h5>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="form-group p-1 mt-2">
+                                <label for="view_type">
+                                    Expense Description
+                                </label>
+                                <input type="text" class="form-control" id="item_name" required name="name" value="{{$item->name}}">
+                            </div>
+                            <div class="form-group p-1 mt-2">
+                                <label for="view_type">
+                                    Amount
+                                </label>
+                                <input type="text" class="form-control" id="item_unit" required name="unit" value="{{@$item->amount}}">
+                            </div>
+
+                            <div class="form-group p-1 mt-2">
+                                <label for="view_type">
+                                    Date
+                                </label>
+                               <input type="date" value="{{date('Y-m-d'}}" name="created_at" id="created_at">
+                            </div>
+                            @if(@$item->type == "product" )
+                            <div class="form-group p-1 mt-2">
+                                <label for="view_type">
+                                    Sub category
+                                </label>
+                                <select name="sub_category" id="sub_category" class="form-control">
+                                    <option value="ice_cream" @if($item->type == "ice_cream") selected @endif>Ice Cream</option>
+                                    <option value="fast_food" @if($item->type == "fast_food") selected @endif>Fast Food</option>
+                                </select>
+                            </div>
+                            @endif
+                            <div class="form-group p-1 mt-2">
+                                <label for="view_type">
+                                    Price
+                                </label>
+                                <input type="number" class="form-control" id="item_price" required name="price" value="{{$item->price}}">
+                            </div>
+
 
                         </div>
-                        <div class="col-md-4 p-3 border-right-sm">
-                            <label class="p-2">To Date</label>
-                            <input type="date" name="" id="to_date" class="form-control" >
-
-                        </div>
-
-                        <!-- <div class="col-md-4 p-3">
-                            <label class="p-2">Group by Sales</label>
-                            <select class="form-control" id="category">
-                            <option  selected="" value="" disabled>--Select--</option>
-                          
-                                <option value="items">items</option>
-                                <option value="date">date</option>
-                                <option value="item_type">item_type</option>
-                                <option value="payment_type">payment_type</option>
-                          
-                            </select>
-                            </select>
 
 
-                        </div> -->
-                        <div class="col-md-4 p-3">
-                            <label class="p-2">Filter by Items Type</label>
-                            <select class="form-control" id="item_type">
-                            <option  selected="" value="" disabled>--Select--</option>
-                            <option value="raw_material" >Raw Materials</option>
-                            <option  value="vegetable" >Vegetables</option>                                        
-                            </select>
-                            </select>
-
-
-                        </div>
-                       
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table" id="datatable">
-                            <thead>
-                                <tr><th>Item Id</th>
-                                    <th>Title</th>
-                                    <th>Item Type</th>
-                                    <th>Price</th>
-                                    <th>Unit</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-
-                                </tr>
-                            </tfoot>
-                        </table>
+                    <div class="card-footer">
+                        <button class="btn btn-outline-dark shadow-sm btn-block" type="submit"> Update <i class="fa fa-upload"></i> </button>
                     </div>
-                </div>
+
+                </form>
+
             </div>
         </div>
     </div>
-</div>
 </div>
 
 

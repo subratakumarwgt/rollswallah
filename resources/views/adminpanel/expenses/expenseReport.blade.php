@@ -9,14 +9,14 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Sales Report  <i class="fas fa-file"></i></h3>
+<h3>Expense Report   <button class="btn btn-outline-dark" id="quick_expense" onclick="quick_expense()"><i class="fa fa-plus-circle"></i> Quick Expense </button> </h3>
 
 
 
 @endsection
 
 @section('breadcrumb-items')
-<li class="breadcrumb-item">Sales</li>
+<li class="breadcrumb-item">Expense</li>
 <li class="breadcrumb-item active">Report</li>
 @endsection
 

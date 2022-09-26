@@ -99,6 +99,15 @@
           </div>
           <div class="form-group p-1 mt-2">
             <label for="view_type">
+              Sub category
+            </label>
+           <select name="sub_category" id="sub_category" class="form-control">
+            <option value="ice_cream">Ice Cream</option>
+            <option value="fast_food">Fast Food</option>
+           </select>
+          </div>
+          <div class="form-group p-1 mt-2">
+            <label for="view_type">
               Price
             </label>
             <input type="number" class="form-control" id="item_price" required name="price">
@@ -113,6 +122,8 @@
     </div>
   </div>
 </div>
+
+
 <div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="billModal" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -762,6 +773,7 @@
     form.append("table_name", "items");
     form.append("name", $("#item_name").val());
     form.append("unit", $("#item_unit").val());
+    form.append("sub_category", $("#sub_category").val());
     form.append("type", "product");
     form.append("price", $("#item_price").val());
     form.append("table_model", "Item");

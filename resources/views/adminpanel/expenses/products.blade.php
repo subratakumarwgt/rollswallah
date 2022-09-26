@@ -9,7 +9,7 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Products  <i class="fas fa-file"></i></h3>
+<h3>Products   <button class="btn btn-outline-dark  ml-1" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Product</button>  </h3>
 
 
 
@@ -21,7 +21,54 @@
 @endsection
 
 @section('content')
+<!-- Modals -->
+<div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <form action="" id="add_item_form" onsubmit="return addItemForm(event,this)">
+        <div class="modal-header">
+          <h5> <i class="fa fa-plus-square"></i> Add Product
+          </h5>
+        </div>
+        <div class="modal-body">
 
+          <div class="form-group p-1 mt-2">
+            <label for="view_type">
+              Item name
+            </label>
+            <input type="text" class="form-control" id="item_name" required name="name">
+          </div>
+          <div class="form-group p-1 mt-2">
+            <label for="view_type">
+              Unit
+            </label>
+            <input type="text" class="form-control" id="item_unit" required name="unit">
+          </div>
+          <div class="form-group p-1 mt-2">
+            <label for="view_type">
+              Sub category
+            </label>
+           <select name="sub_category" id="sub_category" class="form-control">
+            <option value="ice_cream">Ice Cream</option>
+            <option value="fast_food">Fast Food</option>
+           </select>
+          </div>
+          <div class="form-group p-1 mt-2">
+            <label for="view_type">
+              Price
+            </label>
+            <input type="number" class="form-control" id="item_price" required name="price">
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-outline-dark shadow-sm btn-block" type="submit"> Add <i class="fa fa-plus-square"></i> </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 <div class="container-fluid">
     <div class="row">
 
@@ -185,6 +232,74 @@
 
 
     });
+    const addItemForm = (e, form) => {
+    e.preventDefault()
+    loadoverlay($("#add_item_form"))
+    var form = new FormData();
+    form.append("table_name", "items");
+    form.append("name", $("#item_name").val());
+    form.append("unit", $("#item_unit").val());
+    form.append("sub_category", $("#sub_category").val());
+    form.append("type", "product");
+    form.append("price", $("#item_price").val());
+    form.append("table_model", "Item");
+
+    var settings = {
+      "url": "/api/create-data",
+      "method": "POST",
+      "timeout": 0,
+      "processData": false,
+      "mimeType": "multipart/form-data",
+      "contentType": false,
+      "data": form,
+      statusCode: {
+        400: function() {
+          hideoverlay($("#add_item_form"))
+          //  = JSON.parse();
+          $.notify({
+            message: "Something went wrong while inserting doctor!"
+          }, {
+            type: 'danger',
+            z_index: 10000,
+            timer: 2000,
+          });
+        },
+        500: function() {
+          hideoverlay($("#add_item_form"))
+          // response = JSON.parse(response);
+          $.notify({
+            message: "Something went wrong while inserting doctor!"
+          }, {
+            type: 'danger',
+            z_index: 10000,
+            timer: 2000,
+          })
+        }
+      }
+    };
+
+    $.ajax(settings).done(function(response) {
+      var response2 = JSON.parse(response)
+      hideoverlay($("#add_item_form"));
+      $.notify({
+        message: response2.message
+      }, {
+        type: 'success',
+        z_index: 10000,
+        timer: 2000,
+      })
+
+
+
+    }, function() {
+      getItemDetails()
+    });
+
+  }
+
+  const add_item = () => {
+    $("#itemModal").modal("show")
+  }
 </script>
 
 

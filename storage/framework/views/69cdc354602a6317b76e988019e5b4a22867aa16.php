@@ -1,26 +1,26 @@
-@extends('adminpanel.master')
-@section('title', 'Sample Page')
 
-@section('css')
-@endsection
+<?php $__env->startSection('title', 'Sample Page'); ?>
 
-@section('style')
-<link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/datatables.css')}}">
-@endsection
+<?php $__env->startSection('css'); ?>
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-title')
+<?php $__env->startSection('style'); ?>
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/vendors/datatables.css')); ?>">
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('breadcrumb-title'); ?>
 <h3>Role Setup  <i class="fa fa-users"></i></h3>
 
 
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-items')
+<?php $__env->startSection('breadcrumb-items'); ?>
 <li class="breadcrumb-item">Settings</li>
 <li class="breadcrumb-item active">Role Setup</li>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="roleSetupModal">
                   <div class="modal-dialog modal-dialog-center">
                      <div class="modal-content">
@@ -30,7 +30,7 @@
                         </div>
                         <div class="modal-body">
 <form action="/management/role/create" id="create_form" method="POST">
-    @csrf
+    <?php echo csrf_field(); ?>
     <input type="hidden" name="id" value="0" id="role_id">
     <div class="form-group p-1 m-1">
         <input type="text" class="form-control" id="role_name" name="name" required placeholder="Type a role name">
@@ -74,9 +74,9 @@
     </div>
 </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
 
 <script>
     $(function() {
@@ -204,6 +204,7 @@ hideoverlay($(this))
 </script>
 
 
-<!-- <script src="{{asset('assets/js/datatable/datatables/datatable.custom.js')}}"></script> -->
-@endsection
+<!-- <script src="<?php echo e(asset('assets/js/datatable/datatables/datatable.custom.js')); ?>"></script> -->
+<?php $__env->stopSection(); ?>
 <button class="btn btn-sm btn-outline-dark"><i class="fa fa-user"></i>Assign Users</button><button class="btn btn-sm btn-outline-dark"><i class="fa fa-lock"></i>Edit Permissions</button>
+<?php echo $__env->make('adminpanel.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\subra\Documents\projects\rollswallah\resources\views/adminpanel/modules/role_setup.blade.php ENDPATH**/ ?>

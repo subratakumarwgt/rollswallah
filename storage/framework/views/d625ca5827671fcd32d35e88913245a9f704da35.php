@@ -9,7 +9,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('breadcrumb-title'); ?>
-<h3 class="ml-2">Items  <i class="fas fa-file"></i></h3>
+<h3 class="ml-2">Items <button class="btn btn-outline-dark" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Item</button></h3>
 
 
 
@@ -185,6 +185,72 @@
 
 
     });
+    const add_item = () => {
+    $("#itemModal").modal("show")
+  }
+const addItemForm = (e, form) => {
+    e.preventDefault()
+    loadoverlay($("#add_item_form"))
+    var form = new FormData();
+    form.append("table_name", "items");
+    form.append("name", $("#item_name").val());
+    form.append("unit", $("#item_unit").val());
+    form.append("type", $("#type").val());
+    form.append("price", $("#item_price").val());
+    form.append("table_model", "Item");
+
+    var settings = {
+      "url": "/api/create-data",
+      "method": "POST",
+      "timeout": 0,
+      "processData": false,
+      "mimeType": "multipart/form-data",
+      "contentType": false,
+      "data": form,
+      statusCode: {
+        400: function() {
+          hideoverlay($("#add_item_form"))
+          //  = JSON.parse();
+          $.notify({
+            message: "Something went wrong while inserting Item!"
+          }, {
+            type: 'danger',
+            z_index: 10000,
+            timer: 2000,
+          });
+        },
+        500: function() {
+          hideoverlay($("#add_item_form"))
+          // response = JSON.parse(response);
+          $.notify({
+            message: "Something went wrong while inserting doctor!"
+          }, {
+            type: 'danger',
+            z_index: 10000,
+            timer: 2000,
+          })
+        }
+      }
+    };
+
+    $.ajax(settings).done(function(response) {
+      var response2 = JSON.parse(response)
+      hideoverlay($("#add_item_form"));
+      $.notify({
+        message: response2.message
+      }, {
+        type: 'success',
+        z_index: 10000,
+        timer: 2000,
+      })
+
+
+
+    }, function() {
+    //   getItemDetails()
+    });
+
+  }
 </script>
 
 

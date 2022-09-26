@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Application;
@@ -508,6 +509,7 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
      Route::post('modules-permission-update', 'ModuleController@modulePermissionUpdate')->name('modules-permission-update');
      Route::get('role-setup', 'RoleController@roleSetup')->name('role-setup');
      Route::get('role/bind', 'RoleController@roleBind')->name('role-bind');
+     Route::post("role/assign-users","RoleController@assignUsers")->name("assign-users");
      
      Route::post('/role/create', 'RoleController@createNewrole')->name('role-create');
     Route::get('/module/bind', 'ModuleController@moduleBind')->name('module-bind');
@@ -532,7 +534,7 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
      Route::get('/sales/quick-order/{id}', 'ExpenseController@viewQuickOrder')->name('quick-order-id');
      Route::get('/sales/report', 'ExpenseController@viewSalesReport')->name('sales-report');
      Route::get('/sales/bind', 'ExpenseController@bindSales')->name('sales-bind');
-     Route::get('/sales/products', 'ExpenseController@viewProductList')->name('items-list');
+     Route::get('/sales/products', 'ExpenseController@viewProductList')->name('products-list');
      Route::get('/sales/products/bind', 'ExpenseController@bindProducts')->name('products-bind');
 
      Route::get('/expense/daily-expense', 'ExpenseController@viewDailyExpense')->name('daily-expense');
@@ -543,6 +545,10 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
      Route::get('/expense/report', 'ExpenseController@viewExpenseReport')->name('expense-report');  
      Route::get('/expense/items', 'ExpenseController@viewItemList')->name('items-list');
      Route::get('/expense/items/bind', 'ExpenseController@binditems')->name('items-bind');
+     Route::get('/expense/quick-expense', 'ExpenseController@quickExpense')->name('quick-expense');
+
+     Route::get('/update-resource/{id}', 'ExpenseController@editResource')->name('resource-edit');
+     Route::post('/update-resource/{id}', 'ExpenseController@updateResource')->name('resource-update');
 
      
      

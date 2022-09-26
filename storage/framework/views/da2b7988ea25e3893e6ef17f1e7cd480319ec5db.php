@@ -19,6 +19,7 @@
 <!-- Responsive css-->
 <link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/responsive.css')); ?>">
 <?php ($modules = \App\Models\Module::whereNull("parent_id")->get()); ?>
+
 <div class="sidebar-wrapper">
 	<div>
 		<div class="logo-wrapper">
@@ -48,6 +49,7 @@
                     <?php ($sub_modules = \App\Models\Module::where("parent_id",$module->id)->get()); ?>
 
                     <?php $__currentLoopData = $sub_modules; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sub_module): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+					
 					<?php if(Auth::User()->can('see_module_'.$sub_module->slug)): ?>
 
                     <?php if(!empty($sub_module->has_child)): ?>
