@@ -253,7 +253,7 @@
        res = JSON.parse(res)
       return res.items
     })
-    localStorage.setItem("items",JSON.stringify(items))    
+    return items    
 
   
   }
@@ -273,8 +273,10 @@
         setPrice(this)
 
     }))
-  const setPrice = (item_obj) => {
-    items = JSON.parse(JSON.parse(localStorage.getItem("items")))
+    const setPrice = async (item_obj) => {
+    items = await getItemDetails()
+    console.log(items, "etProce")
+    items = JSON.parse(items)
     let item = items.items.filter((value, key) => {
       return value.id == $(item_obj).val()
     })

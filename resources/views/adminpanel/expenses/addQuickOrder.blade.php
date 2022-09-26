@@ -590,7 +590,7 @@
   }))
   const setPrice = async (item_obj) => {
     items = await getItemDetails()
-    console.log(items, "etProce")
+    // console.log(items, "etProce")
     items = JSON.parse(items)
     let item = items.items.filter((value, key) => {
       return value.id == $(item_obj).val()
