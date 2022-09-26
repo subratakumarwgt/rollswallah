@@ -28,12 +28,12 @@
 
         <div class="col-sm-8">
             <div class="card">
-                <form action="" id="add_item_form" class="form" method="post" action="/management/quick-expense/add">
+                <form  id="add_item_form" class="form" method="post" action="/management/expense/quick-expense/add">
                     <?php echo csrf_field(); ?>
                     <div class="card-body">
 
                         <div class="modal-header">
-                            <h5> </h5>
+                            <h5>Add Quick Expense </h5>
                         </div>
                         <div class="modal-body">
 
@@ -41,22 +41,28 @@
                                 <label for="view_type">
                                     Expense Description
                                 </label>
-                                <input type="text" class="form-control" id="item_name" required name="name" value="<?php echo e($item->name); ?>">
+                                <input type="text" class="form-control" id="description" required name="description" value="<?php echo e(@$item->description); ?>">
                             </div>
                             <div class="form-group p-1 mt-2">
                                 <label for="view_type">
                                     Amount
                                 </label>
-                                <input type="text" class="form-control" id="item_unit" required name="unit" value="<?php echo e(@$item->amount); ?>">
+                                <input type="text" class="form-control" id="amount" required name="amount" value="<?php echo e(@$item->amount); ?>">
                             </div>
 
                             <div class="form-group p-1 mt-2">
                                 <label for="view_type">
                                     Date
                                 </label>
-                               <input type="date" value="<?php echo e(date('Y-m-d'); ?>" name="created_at" id="created_at">
+                               <input type="date" value="<?php echo e(date('Y-m-d')); ?>" name="created_at" id="created_at" class="form-control" required>
                             </div>
-                            <?php if(@$item->type == "product" ): ?>
+                            <div class="form-group p-1 mt-2">
+                                <label for="view_type">
+                                    Created By:  <strong><?php echo e(Auth::User()->name); ?></strong>
+                                </label>
+                               <input type="hidden" readonly value="<?php echo e(Auth::User()->id); ?>" name="created_by" id="created_by" class="" required>
+                            </div>
+                            <!-- <?php if(@$item->type == "product" ): ?>
                             <div class="form-group p-1 mt-2">
                                 <label for="view_type">
                                     Sub category
@@ -66,12 +72,18 @@
                                     <option value="fast_food" <?php if($item->type == "fast_food"): ?> selected <?php endif; ?>>Fast Food</option>
                                 </select>
                             </div>
-                            <?php endif; ?>
+                            <?php endif; ?> -->
                             <div class="form-group p-1 mt-2">
                                 <label for="view_type">
-                                    Price
+                                    Type
                                 </label>
-                                <input type="number" class="form-control" id="item_price" required name="price" value="<?php echo e($item->price); ?>">
+                                <input type="text" class="form-control" id="item_price" required name="type" value="<?php echo e(@$item->type ?? 'Other Expenses'); ?>" required readonly>
+                            </div>
+                            <div class="form-group p-1 mt-2">
+                                <label for="view_type">
+                                    Category
+                                </label>
+                                <input type="text" class="form-control" id="category" required name="category" value="<?php echo e(@$item->category ?? 'Sallary'); ?>" required>
                             </div>
 
 

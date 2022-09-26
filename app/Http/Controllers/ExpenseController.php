@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\OrderDetails;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class ExpenseController extends Controller
 {
@@ -505,6 +506,28 @@ class ExpenseController extends Controller
 		return back();
 	}
 	 
+	}
+
+	public function addQuickExpense(Request $request){
+		$validator = Validator::make($request->all(), [
+			"description" => "required|string|min:5",
+			"amount" => "required|string",
+			"created_by" => "required|exists:users,id",
+			"type" => "required|string",
+			"category" => "required",
+			]);
+
+
+			if(!$validator->fails()){
+				$expense = Expense::create($request->all());
+
+				if($expense){
+					return back()->with("message","Expense added of amount $request->amount Rs, on $request->created_at ");
+				}
+			}
+			else{
+				return back()->with("message",json_encode($validator->errors()));
+			}
 	}
    
 

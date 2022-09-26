@@ -9,7 +9,7 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('breadcrumb-title'); ?>
-<h3>Expense Report   <button class="btn btn-outline-dark" id="quick_expense" onclick="quick_expense()"><i class="fa fa-plus-circle"></i> Quick Expense </button> </h3>
+<h3>Expense Report   <a class="btn btn-outline-dark" href="<?php echo e(route('quick-expense')); ?>" id="quick_expense" onclick="quick_expense()"><i class="fa fa-plus-circle"></i> Quick Expense </a> </h3>
 
 
 

@@ -546,6 +546,7 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
      Route::get('/expense/items', 'ExpenseController@viewItemList')->name('items-list');
      Route::get('/expense/items/bind', 'ExpenseController@binditems')->name('items-bind');
      Route::get('/expense/quick-expense', 'ExpenseController@quickExpense')->name('quick-expense');
+     Route::post('/expense/quick-expense/add', 'ExpenseController@addQuickExpense')->name('quick-expense-add');
 
      Route::get('/update-resource/{id}', 'ExpenseController@editResource')->name('resource-edit');
      Route::post('/update-resource/{id}', 'ExpenseController@updateResource')->name('resource-update');

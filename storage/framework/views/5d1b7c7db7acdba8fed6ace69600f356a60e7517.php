@@ -95,7 +95,7 @@
         </div>
     </div>
 </div>
-</div>
+
 
 
 <?php $__env->stopSection(); ?>
