@@ -17,19 +17,21 @@ class ChartController extends Controller
 
         $salesVsExpense = $sales
         ->where("orders.status","completed")
-        ->select('expenses.*','orders.*',DB::raw('sum(orders.total) as orderTotal'),DB::raw('DATE(orders.created_at) as orderDate'),DB::raw('DATE(expenses.created_at) as expenseDate'))
-        ->join('expenses', DB::raw(DATE("orders.created_at")), '=', DB::raw(DATE("expenses.created_at")))
+        ->select(DB::raw('sum(orders.total) as orderTotal'),DB::raw('sum(expenses.amount) as expenseTotal'),DB::raw('DATE(orders.created_at) as orderDate'),DB::raw('DATE(expenses.created_at) as expenseDate'))
+        ->join('expenses', DB::raw('DATE("expenses.created_at")'), '=',  DB::raw('DATE("orders.created_at")'))
         ->groupBy('orderDate')
         ->get();
-          dd($salesVsExpense);
+         $dataSets[0] = ["Year", "Sales","Expenses"];
+        foreach ($salesVsExpense as $key => $sale) {
+        $dataSet = [
+            date("d M,Y",strtotime($sale->orderDate)),
+           $sale->orderTotal,
+           $sale->expenseTotal
+        ];
+        array_push($dataSets,$dataSet);
+      }
 
-        return response([
-            ["Year", "Sales", "Expenses", "Profit"],
-            ["2018", 1e3, 900, 250],
-            ["2019", 1170, 460, 300],
-            ["2020", 660, 1120, 400],
-            ["2021", 1030, 540, 450]
-          ],200);
+        return response($dataSets,200);
     }
 }
 //    public function getOrderBarChart(){
