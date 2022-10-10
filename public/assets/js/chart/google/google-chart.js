@@ -2,15 +2,12 @@ google.charts.load('current', {packages: ['corechart', 'bar']});
 google.charts.load('current', {'packages':['line']});
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawBasic);
-function drawBasic() {
+async function drawBasic() {
+var orderData = await  $.get("/api/get-order-bar-chart",(data)=>{
+  return data
+})
   if ($("#column-chart1").length > 0) {
-      var a = google.visualization.arrayToDataTable([
-        ["Year", "Sales", "Expenses", "Profit"],
-        ["2018", 1e3, 400, 250],
-        ["2019", 1170, 460, 300],
-        ["2020", 660, 1120, 400],
-        ["2021", 1030, 540, 450]
-      ]),
+      var a = google.visualization.arrayToDataTable(orderData),
       b = {
         chart: {
           title: "Company Performance",
@@ -30,13 +27,7 @@ function drawBasic() {
     c.draw(a, google.charts.Bar.convertOptions(b))
   }
   if ($("#column-chart2").length > 0) {
-      var a = google.visualization.arrayToDataTable([
-        ["Year", "Sales", "Expenses", "Profit"],
-        ["2018", 1e3, 400, 250],
-        ["2019", 1170, 460, 300],
-        ["2020", 660, 1120, 400],
-        ["2021", 1030, 540, 450]
-      ]),
+      var a = google.visualization.arrayToDataTable(orderData),
       b = {
         chart: {
           title: "Company Performance",

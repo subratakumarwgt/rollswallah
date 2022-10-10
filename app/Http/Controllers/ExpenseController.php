@@ -92,6 +92,60 @@ class ExpenseController extends Controller
 
         return view("adminpanel.expenses.salesReport",$data);
     }
+	public function dashboardView(){
+		$data = [];
+        $orders = new Expense();
+        $now = Carbon::now();
+        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
+        $weekEndDate = $now->endOfWeek()->format('Y-m-d');
+
+        $previous_week = date("Y-m-d",strtotime("last saturday"));
+        $previous_week_start = date("Y-m-d",strtotime("-6 days",strtotime($previous_week)));
+
+
+        $monthStartDate = $now->startOfMonth()->format('Y-m-d');
+        $monthEndDate = $now->endOfMonth()->format('Y-m-d');
+
+        $lastMonth = $now->subMonth()->month;
+        $thisMonth = $now->subMonth(-1)->month;
+        
+        $lastYear = $now->subYear()->year;
+        $thisYear = $now->subYear(-1)->year;
+        
+        
+
+        $data["todayTotal_expense"] = Expense::whereDate("created_at",">=",date("Y-m-d"))->sum("amount");
+        $data["yesterdayTotal_expense"] = Expense::whereDate("created_at","<",date("Y-m-d"))->whereDate("created_at",">=",date("Y-m-d",strtotime("yesterday")))->sum("amount");
+
+        $data["thisWeekTotal_expense"] = Expense::whereDate("created_at","<",$weekEndDate)->whereDate("created_at",">=",$weekStartDate)->sum("amount");
+        $data["lastWeekTotal_expense"] = Expense::whereDate("created_at","<",$previous_week)->whereDate("created_at",">=",$previous_week_start)->sum("amount");
+
+        $data["thisMonthTotal_expense"] =  Expense::whereMonth("created_at","=",$thisMonth)->sum("amount");
+        $data["lastMonthTotal_expense"] = Expense::whereMonth("created_at","=",$lastMonth)->sum("amount");
+
+
+        $data["thisYearTotal_expense"] =  Expense::whereYear("created_at","=",$thisYear)->sum("amount");
+        $data["lastYearTotal_expense"] = Expense::whereYear("created_at","=",$lastYear)->sum("amount");
+
+		$data["todayTotal"] = Order::where("status","completed")->whereDate("created_at",">=",date("Y-m-d"))->sum("total");
+        $data["yesterdayTotal"] = Order::where("status","completed")->whereDate("created_at","<",date("Y-m-d"))->whereDate("created_at",">=",date("Y-m-d",strtotime("yesterday")))->sum("total");
+
+        $data["thisWeekTotal"] = Order::where("status","completed")->whereDate("created_at","<",$weekEndDate)->whereDate("created_at",">=",$weekStartDate)->sum("total");
+        $data["lastWeekTotal"] = Order::where("status","completed")->whereDate("created_at","<",$previous_week)->whereDate("created_at",">=",$previous_week_start)->sum("total");
+
+        $data["thisMonthTotal"] =  Order::where("status","completed")->whereMonth("created_at","=",$thisMonth)->sum("total");
+        $data["lastMonthTotal"] = Order::where("status","completed")->whereMonth("created_at","=",$lastMonth)->sum("total");
+
+
+        $data["thisYearTotal"] =  Order::where("status","completed")->whereYear("created_at","=",$thisYear)->sum("total");
+        $data["lastYearTotal"] = Order::where("status","completed")->whereYear("created_at","=",$lastYear)->sum("total");
+
+        // dd($data);
+
+
+
+        return view("adminpanel.dashboard",$data);
+	}
 	public function viewExpenseReport(){
         $data = [];
         $orders = new Expense();

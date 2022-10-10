@@ -47,3 +47,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
   Route::post('/save-order-details', '\App\Http\Controllers\CrudController@saveOrderDetails')->name('save-order-details');
   Route::post('/save-charge-details', '\App\Http\Controllers\CrudController@saveChargeDetails')->name('save-charge-details');
   Route::get('/get-order/{id}', '\App\Http\Controllers\CrudController@getOrderDetails')->name('get-order');
+
+  //chart api routes
+  Route::get('/get-order-bar-chart', '\App\Http\Controllers\ChartController@getOrderBarChart')->name('get-order-bar-chart');

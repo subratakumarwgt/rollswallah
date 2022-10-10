@@ -429,7 +429,7 @@ Route::get('log-out', function(){
     redirect()->back();
 })->name('log-out');
 Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'middleware'=>'auth.admin'],function () {
-    Route::get('/dashboard', 'AdminDashboardController@dashboard')->name('admin-dashboard');
+    Route::get('/dashboard', 'ExpenseController@dashboardView')->name('admin-dashboard');
     Route::get('/static-assets', 'AdminDashboardController@assetList')->name('static-assets');
     Route::get('/asset/bind', 'AdminDashboardController@assetBind')->name('asset-bind');
     Route::get('/asset/edit/{id}', 'AdminDashboardController@assetEdit')->name('asset-edit');
