@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Expense;
 use App\Models\Order;
+use App\Models\OrderDetails;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,42 +15,80 @@ class ChartController extends Controller
     public function getOrderBarChart(){
         $sales = new Order();
         $expenses = new Expense();
-
-        $salesVsExpense = $sales
-        ->where("orders.status","completed")
-        ->select(DB::raw('sum(orders.total) as orderTotal'),DB::raw('sum(expenses.amount) as expenseTotal'),DB::raw('DATE(orders.created_at) as orderDate'),DB::raw('DATE(expenses.created_at) as expenseDate'))
-        ->join('expenses', DB::raw('DATE("expenses.created_at")'), '=',  DB::raw('DATE("orders.created_at")'))
-        ->groupBy('orderDate')
-        ->get();
-         $dataSets[0] = ["Year", "Sales","Expenses"];
+        $salesVsExpense =DB::select(DB::raw("SELECT A.day as day, A.orderTotal, B.expenseTotal
+        FROM (SELECT DATE(created_at) AS day, SUM(total) AS orderTotal
+              FROM orders GROUP BY day ) AS A
+        LEFT JOIN (SELECT DATE(created_at) AS day, SUM(amount) AS expenseTotal
+                    FROM expenses GROUP BY day) AS B ON A.day = B.day  ORDER BY A.day LIMIT 10")) ;
+      
+       
+         $dataSets[0] = ["Day", "Sales(₹)","Expenses(₹)"];
         foreach ($salesVsExpense as $key => $sale) {
         $dataSet = [
-            date("d M,Y",strtotime($sale->orderDate)),
-           $sale->orderTotal,
-           $sale->expenseTotal
+            date("d M,D",strtotime($sale->day)),
+           $sale->orderTotal ?? 0,
+           $sale->expenseTotal ?? 0
         ];
         array_push($dataSets,$dataSet);
-      }
+        }
 
         return response($dataSets,200);
     }
+    public function getItemRevenueBarChart(){
+        $sales = new OrderDetails();
+       
+        $salesVsExpense = $sales->select(DB::raw("SUM(quantity) as units"),DB::raw("SUM(subtotal) as revenue"),"item_id",DB::raw("items.name as product"))->groupBy("item_id")->join("items",'order_details.item_id', '=', 'items.id')->orderBy("revenue","desc")->take(5)->get();
+
+    //    dd($salesVsExpense->toArray());
+       
+         $dataSets[0] = ["Product","Revenue(₹)"];
+        foreach ($salesVsExpense as $key => $sale) {
+        $dataSet = [
+            $sale->product,
+         
+           intval($sale->revenue) ?? 0
+        ];
+        array_push($dataSets,$dataSet);
+        }
+        // dd($dataSets);
+
+        return response($dataSets,200);
+    }
+    public function getItemUnitBarChart(){
+        $sales = new OrderDetails();
+       
+        $salesVsExpense = $sales->select(DB::raw("SUM(quantity) as units"),DB::raw("SUM(subtotal) as revenue"),"item_id",DB::raw("items.name as product"))->groupBy("item_id")->join("items",'order_details.item_id', '=', 'items.id')->orderBy("units","desc")->take(5)->get();
+
+    //    dd($salesVsExpense->toArray());
+       
+         $dataSets[0] = ["Product","Units"];
+        foreach ($salesVsExpense as $key => $sale) {
+        $dataSet = [
+            $sale->product,
+         
+           intval($sale->units) ?? 0
+        ];
+        array_push($dataSets,$dataSet);
+        }
+        // dd($dataSets);
+
+        return response($dataSets,200);
+    }
+    public function getItemTypePieChart(){
+        $sales = new OrderDetails(); 
+        $salesVsExpense = $sales->select(DB::raw("SUM(subtotal) as revenue"),DB::raw("items.sub_category as type"))->groupBy("sub_category")->join("items",'order_details.item_id', '=', 'items.id')->get();
+        // dd($salesVsExpense->toArray());
+             $dataSets[0] = ["Product Type", "Revenue Generated (₹)"];
+          foreach ($salesVsExpense as $key => $sale) {
+            $dataSet = [
+               ucfirst(str_replace("_"," ",$sale->type)),
+               intval($sale->revenue)
+            ];
+            array_push($dataSets,$dataSet);
+          }
+            // dd($dataSets);
+        return response(
+            $dataSets
+          ,200);
+    }
 }
-//    public function getOrderBarChart(){
-//     $sales = new Order();
-//     $expenses = new Expense();
-
-//     $sales = $sales->where("status","completed")->select(DB::raw("SUM(total) as orderTotal"),DB::raw('DATE(created_at) as date'))->groupBy("date")->orderBy("date")->take(5)->get();
-//     $expenses = $expenses->select(DB::raw("SUM(amount) as expenseTotal"),DB::raw('DATE(created_at) as date'))->groupBy("date")->take(5)->get();
-//     $dataSets[0] = ["Year", "Sales"];
-//       foreach ($sales as $key => $sale) {
-//         $dataSet = [
-//             date("d M,Y",strtotime($sale->date)),
-//            $sale->orderTotal
-//         ];
-//         array_push($dataSets,$dataSet);
-//       }
-
-//     return response(
-//         $dataSets
-//       ,200);
-// }

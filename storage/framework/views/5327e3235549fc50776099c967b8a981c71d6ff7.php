@@ -253,9 +253,7 @@
        res = JSON.parse(res)
       return res.items
     })
-    return items    
-
-  
+    return items  
   }
   
   getAllItems($(".item_name").bind("change", function() {

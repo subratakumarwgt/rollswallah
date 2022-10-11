@@ -3,15 +3,16 @@ google.charts.load('current', {'packages':['line']});
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawBasic);
 async function drawBasic() {
-var orderData = await  $.get("/api/get-order-bar-chart",(data)=>{
+var salesExpenseData = await  $.get("/api/get-order-bar-chart",(data)=>{
   return data
 })
+
   if ($("#column-chart1").length > 0) {
-      var a = google.visualization.arrayToDataTable(orderData),
+      var a = google.visualization.arrayToDataTable(salesExpenseData),
       b = {
         chart: {
-          title: "Company Performance",
-          subtitle: "Sales, Expenses, and Profit: 2014-2017"
+          title: "Sales Vs Expense Bar Chart",
+        
         },
         bars: "vertical",
         vAxis: {
@@ -26,12 +27,16 @@ var orderData = await  $.get("/api/get-order-bar-chart",(data)=>{
     c = new google.charts.Bar(document.getElementById("column-chart1"));
     c.draw(a, google.charts.Bar.convertOptions(b))
   }
+  var itemRevenueData = await $.get("/api/get-item-revenue-bar-chart",(data)=>{
+    return data
+  })
+
   if ($("#column-chart2").length > 0) {
-      var a = google.visualization.arrayToDataTable(orderData),
+      var a = google.visualization.arrayToDataTable(itemRevenueData),
       b = {
         chart: {
-          title: "Company Performance",
-          subtitle: "Sales, Expenses, and Profit: 2014-2017"
+          title: "top 5 Items by Revenue",
+          subtitle: "Revenue generated"
         },
         bars: "horizontal",
         vAxis: {
@@ -44,6 +49,28 @@ var orderData = await  $.get("/api/get-order-bar-chart",(data)=>{
       c = new google.charts.Bar(document.getElementById("column-chart2"));
       c.draw(a, google.charts.Bar.convertOptions(b))
   }
+  var itemUnitData = await $.get("/api/get-item-unit-bar-chart",(data)=>{
+    return data
+  })
+
+  if ($("#unitItem").length > 0) {
+    var a = google.visualization.arrayToDataTable(itemUnitData),
+    b = {
+      chart: {
+        title: "top 5 Items by Units Sold",
+        subtitle: "Units sold"
+      },
+      bars: "horizontal",
+      vAxis: {
+        format: "decimal"
+      },
+      height: 400,
+      width:'100%',
+      colors: [CubaAdminConfig.primary, CubaAdminConfig.secondary , "#51bb25"]
+    },
+    c = new google.charts.Bar(document.getElementById("unitItem"));
+    c.draw(a, google.charts.Bar.convertOptions(b))
+}
   if ($("#pie-chart1").length > 0) {
       var data = google.visualization.arrayToDataTable([
         ['Task', 'Hours per Day'],
@@ -81,20 +108,17 @@ var orderData = await  $.get("/api/get-order-bar-chart",(data)=>{
       var chart = new google.visualization.PieChart(document.getElementById('pie-chart2'));
       chart.draw(data, options);
   }
+  var itemTypeData = await $.get("/api/get-item-type-pie-chart",(data)=>{
+    return data
+  })
   if ($("#pie-chart3").length > 0) {
-      var data = google.visualization.arrayToDataTable([
-        ['Task', 'Hours per Day'],
-        ['Work',     2],
-        ['Eat',      2],
-        ['Commute',  11],
-        ['Watch TV', 2],
-        ['Sleep',    7]
-      ]);
+      var data = google.visualization.arrayToDataTable(itemTypeData);
       var options = {
-        title: 'My Daily Activities',
+        title: 'Revenue (₹) [Ice Creams Vs Fast Food]',
+        is3D: true,
         pieHole: 0.4,
         width:'100%',
-        height: 300,
+        height: 400,
         colors: ["#f8d62b", "#a927f9", "#51bb25", CubaAdminConfig.secondary , CubaAdminConfig.primary]
       };
       var chart = new google.visualization.PieChart(document.getElementById('pie-chart3'));
@@ -216,15 +240,9 @@ var orderData = await  $.get("/api/get-order-bar-chart",(data)=>{
       chart.draw(data, options);
   }
   if ($("#area-chart2").length > 0) {
-    var data = google.visualization.arrayToDataTable([
-      ['Year', 'Cars', 'Trucks' , 'Drones' , 'Segways'],
-      ['2013',  100, 400, 2000, 400],
-      ['2014',  500, 700, 530, 800],
-      ['2015',  2000, 1000, 620, 120],
-      ['2016',  120, 201, 2501, 540]
-    ]);
+    var data = google.visualization.arrayToDataTable(salesExpenseData);
     var options = {
-      title: 'Company Performance',
+      title: 'Sales Timeline',
       hAxis: {title: 'Year',  titleTextStyle: {color: '#333'}},
       vAxis: {minValue: 0},
       width:'100%',

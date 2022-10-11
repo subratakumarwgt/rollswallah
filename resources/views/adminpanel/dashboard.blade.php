@@ -29,7 +29,7 @@
          <div class="widget-joins card widget-arrow">
             <div class="row">
                <div class="col-sm-6 pe-0">
-                  <div class="media border-after-xs">
+                  <div class="media ">
                      <div class="align-self-center me-3 text-start">
                         <h6 class="mb-1">Expense</h6>
                         <h4 class="mb-0">Today</h4>
@@ -54,7 +54,7 @@
                      </div>
                   </div>
                </div>
-               <div class="col-sm-6 pe-0">
+               <!-- <div class="col-sm-6 pe-0">
                   <div class="media border-after-xs">
                      <div class="align-self-center me-3 text-start">
                         <h6 class="mb-1">Expense</h6>
@@ -79,7 +79,7 @@
                         <span class="mb-1">{{$thisYearTotal_expense > $lastYearTotal_expense ? '+' : '-'}} (last year) <i class="fa fa-inr"></i> {{$lastYearTotal_expense}}</span>
                      </div>
                   </div>
-               </div>
+               </div> -->
             </div>
          </div>
       </div>
@@ -92,7 +92,7 @@
          <div class="widget-joins card widget-arrow">
             <div class="row">
                <div class="col-sm-6 pe-0">
-                  <div class="media border-after-xs">
+                  <div class="media ">
                      <div class="align-self-center me-3 text-start">
                         <h6 class="mb-1">Sale</h6>
                         <h4 class="mb-0">Today</h4>
@@ -117,7 +117,7 @@
                      </div>
                   </div>
                </div>
-               <div class="col-sm-6 pe-0">
+               <!-- <div class="col-sm-6 pe-0">
                   <div class="media border-after-xs">
                      <div class="align-self-center me-3 text-start">
                         <h6 class="mb-1">Sale</h6>
@@ -142,43 +142,76 @@
                         <span class="mb-1">{{$thisYearTotal > $lastYearTotal ? '+' : '-'}} (last year) <i class="fa fa-inr"></i> {{$lastYearTotal}}</span>
                      </div>
                   </div>
-               </div>
+               </div> -->
             </div>
          </div>
       </div>
             </div>
         </div>
         <div class="row">
+       
         <div class="col-sm-6 col-xl-6 box-col-6 mt-2">
 			<div class="card">
-				<div class="card-header">
-					<h5>Sales vs. Expense</h5>
+         <div class="card-header">
+					<h5>Top Selling Items by <span class="digits">Units </span></h5>
 				</div>
 				<div class="card-body chart-block">
-					<div class="chart-overflow" id="column-chart2"></div>
+					<div class="chart-overflow" id="unitItem"><div class="loader-box">
+                     <div class="loader-2"></div>
+                  </div></div>
+				</div>
+			</div>
+		</div>
+        <div class="col-sm-6 col-xl-6 box-col-6 mt-2">
+			<div class="card">
+         <div class="card-header">
+					<h5>Top Selling Items by <span class="digits">Revenue </span></h5>
+				</div>
+				<div class="card-body chart-block">
+					<div class="chart-overflow" id="column-chart2"><div class="loader-box">
+                     <div class="loader-2"></div>
+                  </div></div>
+				</div>
+			</div>
+		</div>
+      <div class="col-sm-12 col-xl-12 box-col-12">
+			<div class="card">
+				<div class="card-header">
+					<h5>Sales Vs Expense Chart <span class="digits"> </span></h5>
+				</div>
+				<div class="card-body chart-block">
+					<div class="chart-overflow" id="column-chart1"><div class="loader-box">
+                     <div class="loader-2"></div>
+                  </div></div>
+				</div>
+			</div>
+		</div>
+      <div class="col-sm-6 col-xl-6 box-col-6">
+			<div class="card">
+         <div class="card-header">
+					<h5>Ice Creams vs. Fast Food<span class="digits"> </span></h5>
+				</div>
+				<div class="card-body p-0 chart-block">
+					<div class="chart-overflow" id="pie-chart3"><div class="loader-box">
+                     <div class="loader-2"></div>
+                  </div></div>
 				</div>
 			</div>
 		</div>
   	<div class="col-sm-6 col-xl-6 box-col-6">
 			<div class="card">
-				<div class="card-header">
-					<h5>Order Chart <span class="digits">2</span></h5>
+         <div class="card-header">
+					<h5>Sale vs Expense Timeline <span class="digits"> </span></h5>
 				</div>
 				<div class="card-body p-0 chart-block">
-					<div class="chart-overflow" id="area-chart2"></div>
+					<div class="chart-overflow" id="area-chart2"><div class="loader-box">
+                     <div class="loader-2"></div>
+                  </div></div>
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-6 col-xl-6 box-col-6">
-			<div class="card">
-				<div class="card-header">
-					<h5>Column Chart <span class="digits">1 </span></h5>
-				</div>
-				<div class="card-body chart-block">
-					<div class="chart-overflow" id="column-chart1"></div>
-				</div>
-			</div>
-		</div>
+
+	
 
         </div>
       
