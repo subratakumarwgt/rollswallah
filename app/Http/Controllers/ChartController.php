@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DailyExpense;
 use App\Models\Expense;
 use App\Models\Order;
 use App\Models\OrderDetails;
@@ -37,7 +38,7 @@ class ChartController extends Controller
     public function getItemRevenueBarChart(){
         $sales = new OrderDetails();
        
-        $salesVsExpense = $sales->select(DB::raw("SUM(quantity) as units"),DB::raw("SUM(subtotal) as revenue"),"item_id",DB::raw("items.name as product"))->groupBy("item_id")->join("items",'order_details.item_id', '=', 'items.id')->orderBy("revenue","desc")->take(5)->get();
+        $salesVsExpense = $sales->whereDate("order_details.created_at",">=",date("Y-m-1"))->select(DB::raw("SUM(quantity) as units"),DB::raw("SUM(subtotal) as revenue"),"item_id",DB::raw("items.name as product"))->groupBy("item_id")->join("items",'order_details.item_id', '=', 'items.id')->orderBy("revenue","desc")->take(5)->get();
 
     //    dd($salesVsExpense->toArray());
        
@@ -57,7 +58,7 @@ class ChartController extends Controller
     public function getItemUnitBarChart(){
         $sales = new OrderDetails();
        
-        $salesVsExpense = $sales->select(DB::raw("SUM(quantity) as units"),DB::raw("SUM(subtotal) as revenue"),"item_id",DB::raw("items.name as product"))->groupBy("item_id")->join("items",'order_details.item_id', '=', 'items.id')->orderBy("units","desc")->take(5)->get();
+        $salesVsExpense = $sales->whereDate("order_details.created_at",">=",date("Y-m-1"))->select(DB::raw("SUM(quantity) as units"),DB::raw("SUM(subtotal) as revenue"),"item_id",DB::raw("items.name as product"))->groupBy("item_id")->join("items",'order_details.item_id', '=', 'items.id')->orderBy("units","desc")->take(5)->get();
 
     //    dd($salesVsExpense->toArray());
        
@@ -76,7 +77,7 @@ class ChartController extends Controller
     }
     public function getItemTypePieChart(){
         $sales = new OrderDetails(); 
-        $salesVsExpense = $sales->select(DB::raw("SUM(subtotal) as revenue"),DB::raw("items.sub_category as type"))->groupBy("sub_category")->join("items",'order_details.item_id', '=', 'items.id')->get();
+        $salesVsExpense = $sales->whereDate("order_details.created_at",">=",date("Y-m-1"))->select(DB::raw("SUM(subtotal) as revenue"),DB::raw("items.sub_category as type"))->groupBy("sub_category")->join("items",'order_details.item_id', '=', 'items.id')->get();
         // dd($salesVsExpense->toArray());
              $dataSets[0] = ["Product Type", "Revenue Generated (₹)"];
           foreach ($salesVsExpense as $key => $sale) {
@@ -90,5 +91,41 @@ class ChartController extends Controller
         return response(
             $dataSets
           ,200);
+    }
+    public function getOrderTimeChart(){
+        $sales = new Order(); 
+        $salesVsExpense = $sales->where("status","completed")->whereDate("created_at",">=",date("Y-m-1"))->select(DB::raw("COUNT(id) AS order_count,DATE(created_at) AS order_date"))->groupBy("order_date")->get();
+             $dataSets[0] = ["Order Date", "Order Placed"];
+          foreach ($salesVsExpense as $key => $sale) {
+            $dataSet = [
+                date("d M,D",strtotime($sale->order_date)),
+               intval($sale->order_count)
+            ];
+            array_push($dataSets,$dataSet);
+          }
+        return response(
+            $dataSets
+          ,200);
+
+    }
+    public function getExpenseBarChart(){
+        $sales = new DailyExpense();
+       
+        $salesVsExpense = $sales->whereDate("daily_expenses.created_at",">=",date("Y-m-1"))->select(DB::raw("SUM(quantity) as units"),DB::raw("SUM(subtotal) as revenue"),"item_id",DB::raw("items.name as product"))->groupBy("item_id")->join("items",'daily_expenses.item_id', '=', 'items.id')->orderBy("revenue","desc")->take(5)->get();
+
+    //    dd($salesVsExpense->toArray());
+       
+         $dataSets[0] = ["Item","Cost(₹)"];
+        foreach ($salesVsExpense as $key => $sale) {
+        $dataSet = [
+            $sale->product,
+         
+           intval($sale->revenue) ?? 0
+        ];
+        array_push($dataSets,$dataSet);
+        }
+        // dd($dataSets);
+
+        return response($dataSets,200);
     }
 }

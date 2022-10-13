@@ -56,8 +56,8 @@ class ExpenseController extends Controller
         $monthStartDate = $now->startOfMonth()->format('Y-m-d');
         $monthEndDate = $now->endOfMonth()->format('Y-m-d');
 
-        $lastMonth = $now->subMonth()->month;
-        $thisMonth = $now->subMonth(-1)->month;
+		$lastMonth =date("m",strtotime("last month"));
+        $thisMonth = date("m");
         
         $lastYear = $now->subYear()->year;
         $thisYear = $now->subYear(-1)->year;
@@ -106,8 +106,8 @@ class ExpenseController extends Controller
         $monthStartDate = $now->startOfMonth()->format('Y-m-d');
         $monthEndDate = $now->endOfMonth()->format('Y-m-d');
 
-        $lastMonth = $now->subMonth()->month;
-        $thisMonth = $now->subMonth(-1)->month;
+        $lastMonth =date("m",strtotime("last month"));
+        $thisMonth = date("m");
         
         $lastYear = $now->subYear()->year;
         $thisYear = $now->subYear(-1)->year;
@@ -160,22 +160,13 @@ class ExpenseController extends Controller
         $monthStartDate = $now->startOfMonth()->format('Y-m-d');
         $monthEndDate = $now->endOfMonth()->format('Y-m-d');
 
-        $lastMonth = $now->subMonth()->month;
-        $thisMonth = $now->subMonth(-1)->month;
+		$lastMonth =date("m",strtotime("last month"));
+        $thisMonth = date("m");
         
         $lastYear = $now->subYear()->year;
         $thisYear = $now->subYear(-1)->year;
         
-        // dd($weekStartDate,
-        // $weekEndDate,
-        // $monthStartDate,
-        // $monthEndDate,
-        // $previous_week,
-        // $previous_week_start,
-        // $lastMonth,
-        // $thisMonth,
-        // $thisYear,
-        // $lastYear);
+        
 
         $data["todayTotal"] = Expense::whereDate("created_at",">=",date("Y-m-d"))->sum("amount");
         $data["yesterdayTotal"] = Expense::whereDate("created_at","<",date("Y-m-d"))->whereDate("created_at",">=",date("Y-m-d",strtotime("yesterday")))->sum("amount");

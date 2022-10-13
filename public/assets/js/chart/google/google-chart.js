@@ -12,6 +12,7 @@ var salesExpenseData = await  $.get("/api/get-order-bar-chart",(data)=>{
       b = {
         chart: {
           title: "Sales Vs Expense Bar Chart",
+          subtitle:"Last 10 days"
         
         },
         bars: "vertical",
@@ -26,7 +27,51 @@ var salesExpenseData = await  $.get("/api/get-order-bar-chart",(data)=>{
       },
     c = new google.charts.Bar(document.getElementById("column-chart1"));
     c.draw(a, google.charts.Bar.convertOptions(b))
-  }
+  
+}
+var orderTimeData = await $.get("/api/get-order-time-chart",(data)=>{
+  return data
+})
+
+if ($("#column-chart10").length > 0) {
+    var a = google.visualization.arrayToDataTable(orderTimeData),
+    b = {
+      chart: {
+        title: "Order vs Date",
+        subtitle: "order time line last 10 days"
+      },
+      bars: "vertical",
+      vAxis: {
+        format: "decimal"
+      },
+      height: 400,
+      width:'100%',
+      colors: [CubaAdminConfig.primary, CubaAdminConfig.secondary , "#51bb25"]
+    },
+    c = new google.charts.Bar(document.getElementById("column-chart10"));
+    c.draw(a, google.charts.Bar.convertOptions(b))
+}
+var expenseData = await $.get("/api/get-expense-bar-chart",(data)=>{
+  return data
+})
+if ($("#column-chart50").length > 0) {
+  var a = google.visualization.arrayToDataTable(expenseData),
+  b = {
+    chart: {
+      title: "Top 5 expenses",
+      subtitle: "5 expensive items this month"
+    },
+    bars: "horizontal",
+    vAxis: {
+      format: "decimal"
+    },
+    height: 400,
+    width:'100%',
+    colors: [CubaAdminConfig.primary, CubaAdminConfig.secondary , "#51bb25"]
+  },
+  c = new google.charts.Bar(document.getElementById("column-chart50"));
+  c.draw(a, google.charts.Bar.convertOptions(b))
+}
   var itemRevenueData = await $.get("/api/get-item-revenue-bar-chart",(data)=>{
     return data
   })
@@ -36,7 +81,7 @@ var salesExpenseData = await  $.get("/api/get-order-bar-chart",(data)=>{
       b = {
         chart: {
           title: "top 5 Items by Revenue",
-          subtitle: "Revenue generated"
+          subtitle: "Top Selling Items and Revenue generated this month"
         },
         bars: "horizontal",
         vAxis: {
@@ -58,7 +103,7 @@ var salesExpenseData = await  $.get("/api/get-order-bar-chart",(data)=>{
     b = {
       chart: {
         title: "top 5 Items by Units Sold",
-        subtitle: "Units sold"
+        subtitle: "Top 5 Selling Items by Units sold this month so far"
       },
       bars: "horizontal",
       vAxis: {
@@ -114,7 +159,8 @@ var salesExpenseData = await  $.get("/api/get-order-bar-chart",(data)=>{
   if ($("#pie-chart3").length > 0) {
       var data = google.visualization.arrayToDataTable(itemTypeData);
       var options = {
-        title: 'Revenue (₹) [Ice Creams Vs Fast Food]',
+        title: 'Revenue (₹) [Ice Creams Vs Fast Food] (This Month)',
+        subtitle: 'Ice Creams Vs Fast Food this month so far',
         is3D: true,
         pieHole: 0.4,
         width:'100%',

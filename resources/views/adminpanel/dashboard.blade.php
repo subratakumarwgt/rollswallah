@@ -210,6 +210,31 @@
 				</div>
 			</div>
 		</div>
+      <div class="col-sm-6 col-xl-6 box-col-6">
+			<div class="card">
+				<div class="card-header">
+					<h5>Top 5 expenses</h5>
+				</div>
+				<div class="card-body chart-block">
+					<div class="chart-overflow" id="column-chart50"><div class="loader-box">
+                     <div class="loader-2"></div>
+                  </div>
+               </div>
+				</div>
+			</div>
+		</div>
+      <div class="col-sm-6 col-xl-6 box-col-6">
+			<div class="card">
+				<div class="card-header">
+					<h5>Orders Timeline <span class="digits"> </span></h5>
+				</div>
+				<div class="card-body chart-block">
+					<div class="chart-overflow" id="column-chart10"><div class="loader-box">
+                     <div class="loader-2"></div>
+                  </div></div>
+				</div>
+			</div>
+		</div>
 
 	
 

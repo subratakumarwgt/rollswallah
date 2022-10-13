@@ -53,3 +53,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
   Route::get('/get-item-revenue-bar-chart', '\App\Http\Controllers\ChartController@getItemRevenueBarChart')->name('get-item-revenue-bar-chart');
   Route::get('/get-item-unit-bar-chart', '\App\Http\Controllers\ChartController@getItemUnitBarChart')->name('get-item-unit-bar-chart');
   Route::get('/get-item-type-pie-chart', '\App\Http\Controllers\ChartController@getItemTypePieChart')->name('get-item-type-pie-chart');
+  Route::get('/get-order-time-chart', '\App\Http\Controllers\ChartController@getOrderTimeChart')->name('get-order-time-chart');
+  Route::get('/get-expense-bar-chart', '\App\Http\Controllers\ChartController@getExpenseBarChart')->name('get-expense-bar-chart');
