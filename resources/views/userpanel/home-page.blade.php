@@ -7,9 +7,9 @@
     <meta name="description" content="All Is Well is solution for all of your medical queries including checkup, appointments, diagnosis medicine and non medical supliments at one roof">
     <meta name="keywords" content="All Is Well is solution for all of your medical queries including checkup, appointments, diagnosis medicine and non medical supliments at one roof">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="{{asset('/assets/images/favicon.ico')}}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{asset('/assets/images/favicon.ico')}}" type="image/x-icon">
-    <title>All Is Well - Things About To Be Better</title>
+    <link rel="icon" href="{{asset('/assets/images/favico.ico')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('/assets/images/favico.ico')}}" type="image/x-icon">
+    <title>Rollswallah - Have some rolls</title>
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap" rel="stylesheet">
@@ -79,13 +79,13 @@
         <div class="container-fluid">
           <div class="sticky-header">
             <header>                       
-              <nav class="navbar navbar-b navbar-trans navbar-expand-xl fixed-top nav-padding" id="sidebar-menu"><a class="navbar-brand p-0" href="#"><img class="img-fluid" src="{{asset('assets/images/landing/landing_logo.png')}}" alt=""></a>
+              <nav class="navbar navbar-b navbar-trans navbar-expand-xl fixed-top nav-padding" id="sidebar-menu"><a class="navbar-brand p-0" href="#"><img class="img-fluid" src="{{asset('assets/images/rollswallah.png')}}" alt=""></a>
                 <button class="navbar-toggler navabr_btn-set custom_nav" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
                 <div class="navbar-collapse justify-content-end collapse hidenav" id="navbarDefault">
                   <ul class="navbar-nav navbar_nav_modify" id="scroll-spy">
-                    <li class="nav-item"><a class="nav-link" href="/doctors">Doctors</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#components">Diagnostic Centres</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#applications">Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/doctors">Ice Creams</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#components">Fast Food</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#applications">Party Orders</a></li>
                     <li class="nav-item"><a class="nav-link" href="#frameworks">Contact Us</a></li>
                     @if(!Auth::check())
                     <li class="nav-item buy-btn"><a class="nav-link js-scroll" href="/login" target="_blank">Login/Signup</a></li>
@@ -98,25 +98,36 @@
             </header>
           </div>
           <div class="row">
-            <div class="col-xl-5 col-lg-6">
-              <div class="content">
+          
+            <div class="col-xl-3 col-lg-3">
+              <div class="content"> 
                 <div>
-                  <h1 class="wow fadeIn">One stop  </h1>
-                  <h1 class="wow fadeIn">For all medical Requirements</h1>
-                  <h2 class="txt-secondary wow fadeIn">Reliable, Secure, in-town Service</h2>
-                  <p class="mt-3 wow fadeIn">All Is Well is solution for all of your medical queries including checkup, appointments, diagnosis medicine and non medical supliments at one roof</p>
-                  <button class="btn btn-pill btn-dark btn-lg btn-gradient shadow"><i class="fa fa-check-circle"></i> Book an Appointment</button>
+                  <h1 class="wow fadeIn">Rollswallah</h1>
+                  <h2 class="txt-secondary wow fadeIn">Pure Veg Food Corner</h2>
+                 
+                  <!-- <h2 class="txt-secondary wow fadeIn">Healthy, Best Ice Cream Parlour, in-town </h2>
+                  <p class="mt-3 wow fadeIn">All Is Well is solution for all of your medical queries including checkup, appointments, diagnosis medicine and non medical supliments at one roof</p> -->
+                  <button class="btn btn-pill btn-dark btn-lg btn-gradient shadow"><i class="fa fa-check-circle"></i> Order Now!</button>
                   
-                 </div>
+                 </div> 
               </div>
             </div>
-            <div class="col-xl-7 col-lg-6">                 
-              <div class="wow fadeIn"><img class="screen1" src="{{asset('assets/images/landing/profile.png')}}" alt=""></div>
+            <div class="col-xl-8 col-lg-8">                 
+              <div class="wow fadeIn"><img class="screen1" src="{{asset('assets/images/rollsbg1.png')}}" alt=""></div>
               <!-- <div class="wow fadeIn"><img class="screen2" src="{{asset('assets/images/landing/profile2.png')}}" alt="" width="400px" style="opacity: 0.4;"></div> -->
             </div>
+           
           </div>
         </div>
       </div>
+      <div class="row justify-content-center p-3 ">
+                    <!-- <img src="{{asset('assets/images/icecreambg1.png')}}" alt=""> -->
+                    <h3 class="text-center m-3 h2 wow fade-in">Our Top Selling Ice cream Rolls</h3>
+                    <img src="{{asset('posters/1.png')}}" alt="" class="col-md-3">
+                    <img src="{{asset('posters/2.png')}}" alt="" class="col-md-3">
+                    <img src="{{asset('posters/3.png')}}" alt="" class="col-md-3">
+                    <img src="{{asset('posters/4.png')}}" alt="" class="col-md-3">
+                  </div>
     
       <section class="section-space cuba-demo-section layout" id="layout">
         <div class="container">
@@ -124,9 +135,11 @@
             <div class="col-sm-12 wow pulse">
               <div class="cuba-demo-content">
                 <div class="couting">
-                  <h2>100+ Trusted Doctors <i class="fas fa-user-md"></i></h2>
-                  <p>Get appointment all the trusted doctors inside and outside the city</p>
-                  <p> <button class="btn btn-pill btn-dark  btn-outline-primary-2x btn-air-primary text-white btn-lg"> See all the doctors</button></p>
+                  <h2>50+ Ice Cream Rolls </h2>
+                 
+                 
+                  <p>Get the best ice cream in the city</p>
+                  <p> <button class="btn btn-pill btn-dark  btn-outline-primary-2x btn-air-primary text-white btn-lg"> See all the Ice Creams</button></p>
                 </div>
               </div>
             </div>
@@ -140,10 +153,10 @@
             <div class="col-sm-12 wow pulse">
               <div class="cuba-demo-content mt50">
                 <div class="couting">
-                  <h2>100+ Products <i class="fas fa-pump-soap"></i></h2>
+                  <h2>50+ Fast Food Items </h2>
                 </div>
-                <p>Variety of products at very attractive prices. </p>
-                <p> <button class="btn btn-pill btn-dark  btn-outline-primary-2x btn-air-primary text-white btn-lg" >See all products</button></p>
+                <p>Variety of Veg Items at very attractive prices. </p>
+                <p> <button class="btn btn-pill btn-dark  btn-outline-primary-2x btn-air-primary text-white btn-lg" >See all Items</button></p>
               </div>
             </div>
           </div>
