@@ -509,8 +509,7 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
      Route::post('modules-permission-update', 'ModuleController@modulePermissionUpdate')->name('modules-permission-update');
      Route::get('role-setup', 'RoleController@roleSetup')->name('role-setup');
      Route::get('role/bind', 'RoleController@roleBind')->name('role-bind');
-     Route::post("role/assign-users","RoleController@assignUsers")->name("assign-users");
-     
+     Route::post("role/assign-users","RoleController@assignUsers")->name("assign-users");     
      Route::post('/role/create', 'RoleController@createNewrole')->name('role-create');
     Route::get('/module/bind', 'ModuleController@moduleBind')->name('module-bind');
      Route::get('render-sidebar', 'ModuleController@renderSideBar')->name('render-sidebar');

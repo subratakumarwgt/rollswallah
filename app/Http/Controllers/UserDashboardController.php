@@ -73,7 +73,7 @@ class UserDashboardController extends Controller
         }
        $categories = StaticAsset::getAssetsByTitle("product_categories");
        $subcategories =  StaticAsset::getAssetsByTitle("product_sub_categories");
-        $products = Product::where('status',1)->whereNull('varient_of')->orWhere('varient_of','0');
+        $products = Product::where('status',1);
         if (isset($request->search) && !empty($request->search)) {
            $products = $products->where("title","LIKE","%".$request->search."%")->orWhere("tags_json","LIKE","%".$request->search."%");
         }

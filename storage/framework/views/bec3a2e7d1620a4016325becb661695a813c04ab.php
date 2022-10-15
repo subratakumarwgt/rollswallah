@@ -1,30 +1,30 @@
-@extends('userpanel.master')
-@section('title', 'Dashboard')
 
-@section('css')
-<link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/animate.css')}}">
+<?php $__env->startSection('title', 'Dashboard'); ?>
 
-<link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/owlcarousel.css')}}">
-@endsection
+<?php $__env->startSection('css'); ?>
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/vendors/animate.css')); ?>">
 
-@section('style')
-@endsection
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/vendors/owlcarousel.css')); ?>">
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-title')
+<?php $__env->startSection('style'); ?>
+<?php $__env->stopSection(); ?>
 
-@endsection
+<?php $__env->startSection('breadcrumb-title'); ?>
 
-@section('breadcrumb-items')
+<?php $__env->stopSection(); ?>
 
-@endsection
-@section('banner')
-<div class="" style="height: 200px;position:fixed;filter: blur(12px);-webkit-filter: blur(12px);"><img src="{{asset('assets/images/bg_3-33.jpg')}}" alt="" style="min-width: 1000px;"></div>
-@endsection
-@section('content')
-<input type="hidden" id="user_id" value="{{$user_id}}">
+<?php $__env->startSection('breadcrumb-items'); ?>
+
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('banner'); ?>
+<div class="" style="height: 200px;position:fixed;filter: blur(12px);-webkit-filter: blur(12px);"><img src="<?php echo e(asset('assets/images/bg_3-33.jpg')); ?>" alt="" style="min-width: 1000px;"></div>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('content'); ?>
+<input type="hidden" id="user_id" value="<?php echo e($user_id); ?>">
 <div class="row justify-content-center">
          <div class="col-12">
-        <div class="knowledgebase-bg"><img class="bg-img-cover bg-center" src="{{asset('assets/images/product-search.png')}}" alt="looginpage" style="width: 500px;"></div>
+        <div class="knowledgebase-bg"><img class="bg-img-cover bg-center" src="<?php echo e(asset('assets/images/product-search.png')); ?>" alt="looginpage" style="width: 500px;"></div>
         <div class="knowledgebase-search">
             <div>
                 <h3>Search your product here</h3>
@@ -41,11 +41,11 @@
             <div class="card-header h4 text-primary">Categories</div>
             <div class="card-body">
                 <div class="owl-carousel owl-theme" id="owl-carousel-13">
-                    @foreach($categories as $category)
+                    <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="item">
-         <div class="card-body bg-white shadow-sm text-primary border-bottom border-danger rounded"> <a href="/"><i class="fa fa-dot-circle-o text-dark" aria-hidden="true"></i> {{strtoupper($category)}} </a></div>
+         <div class="card-body bg-white shadow-sm text-primary border-bottom border-danger rounded"> <a href="/"><i class="fa fa-dot-circle-o text-dark" aria-hidden="true"></i> <?php echo e(strtoupper($category)); ?> </a></div>
                     </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
         </div>
@@ -53,11 +53,11 @@
             <div class="card-header h5 text-primary">Collections</div>
             <div class="card-body">
                 <div class="owl-carousel owl-theme" id="owl-carousel-13-1">
-                    @foreach($subcategories as $category)
+                    <?php $__currentLoopData = $subcategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="item">                                   
-        <div class="card-body bg-white shadow-sm text-dark border-bottom  border-primary rounded "> <a href="/"><i class="fa fa-heart text-danger" aria-hidden="true"></i> {{strtoupper($category)}}  </a></div>
+        <div class="card-body bg-white shadow-sm text-dark border-bottom  border-primary rounded "> <a href="/"><i class="fa fa-heart text-danger" aria-hidden="true"></i> <?php echo e(strtoupper($category)); ?>  </a></div>
                      </div>
-                    @endforeach
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
         </div>
@@ -72,9 +72,9 @@
              <div class="col-md-12">
                  <div class="row">
                  <div class="card-header card-header h5 text-primary mb-2">Items</div>
-        @if($products->count() > 0)
+        <?php if($products->count() > 0): ?>
        
-        @foreach($products as $product)
+        <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
       
             <div class="col-xl-3 col-md-3 col-sm-6 xl-3">
              
@@ -84,17 +84,17 @@
                <div class="row">
                     <div class="col-md-12 col-sm-12 col-5">
                      <div class="product-img">
-                        <img class="img-fluid" src="/{{$product->image}}" alt="" height="180px">
-                        @if(!empty($product->on_offer))
+                        <img class="img-fluid" src="/<?php echo e($product->image); ?>" alt="" height="180px">
+                        <?php if(!empty($product->on_offer)): ?>
                         <div class="ribbon ribbon-danger text-white border-danger ribbon-bottom-left ">offer!</div>
-                        @endif
+                        <?php endif; ?>
                         <div class="product-hover">
                            <ul>
                               <li>
-                                 <button class="btn add-to-cart" type="button" data-product = "{{$product->id}}"><i class="icon-shopping-cart"></i></button>
+                                 <button class="btn add-to-cart" type="button" data-product = "<?php echo e($product->id); ?>"><i class="icon-shopping-cart"></i></button>
                               </li>
                               <li>
-                                 <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter_{{$product->id}}"><i class="icon-eye"></i></button>
+                                 <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter_<?php echo e($product->id); ?>"><i class="icon-eye"></i></button>
                               </li>
                               <!-- <li>
                                  <button class="btn" type="button"><i class="icofont icofont-law-alt-2"></i></button>
@@ -104,16 +104,17 @@
                      </div>
                     </div>
                     <div class="col-md-12 col-sm-12 col-7">
-                     <div class="modal fade" id="exampleModalCenter_{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter_{{$product->id}}" aria-hidden="true">
+                     <div class="modal fade" id="exampleModalCenter_<?php echo e($product->id); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter_<?php echo e($product->id); ?>" aria-hidden="true">
                         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                           <div class="modal-content" id="modal_content_{{$product->id}}">
+                           <div class="modal-content" id="modal_content_<?php echo e($product->id); ?>">
                               <div class="modal-header">
                                  <div class="product-box row">
-                                    <div class="product-img col-lg-6"><img class="img-fluid" src="/{{$product->image}}" alt="" id="img_{{$product->id}}"></div>
+                                    <div class="product-img col-lg-6"><img class="img-fluid" src="/<?php echo e($product->image); ?>" alt="" id="img_<?php echo e($product->id); ?>"></div>
                                     <div class="product-details col-lg-6 text-start">
-                                       <h4 id="title_{{$product->id}}" class="">{{$product->title}}</h4>
-                                       <div class="product-price" id="price_{{$product->id}}"><i class="fa fa-inr"></i>{{$product->price}}
-                            <del class="text-danger" id="pre_price_{{$product->id}}"> MRP: <i class="fa fa-inr"></i>{{$product->pre_price}}</del>
+                                       <h4 id="title_<?php echo e($product->id); ?>" class=""><?php echo e($product->title); ?></h4>
+                                       <div class="product-price" id="price_<?php echo e($product->id); ?>"><i class="fa fa-inr"></i><?php echo e($product->price); ?>
+
+                            <del class="text-danger" id="pre_price_<?php echo e($product->id); ?>"> MRP: <i class="fa fa-inr"></i><?php echo e($product->pre_price); ?></del>
                                        </div>
                                      
                                       
@@ -121,11 +122,11 @@
                                           <h6 class="f-w-600">Quantity</h6>
                                           <fieldset>
                                              <div class="input-group">
-                                                <input class="touchspin text-center" type="text" value="1" id="product_qty_{{$product->id}}" readonly="">
+                                                <input class="touchspin text-center" type="text" value="1" id="product_qty_<?php echo e($product->id); ?>" readonly="">
                                              </div>
                                           </fieldset>
                                           <div class="addcart-btn">
-                                             <button class="btn btn-dark btn-pill add-to-cart" type="button" data-quantity="{{$product->id}}" data-product = "{{$product->id}}" id="addBtn_{{$product->id}}">Add to Cart</button>
+                                             <button class="btn btn-dark btn-pill add-to-cart" type="button" data-quantity="<?php echo e($product->id); ?>" data-product = "<?php echo e($product->id); ?>" id="addBtn_<?php echo e($product->id); ?>">Add to Cart</button>
                                              
                                           </div>
                                        </div>
@@ -137,9 +138,10 @@
                         </div>
                      </div>
                      <div class="product-details">                       
-                        <strong class="h6 product_title_1" > {{$product->title}}</strong>
-                        <div class="product-price text-success "><i class="fa fa-inr"></i> {{$product->price}}
-                           <del class="text-danger"><small><i class="fa fa-inr"></i> {{$product->pre_price}}   </small> </del>
+                        <strong class="h6 product_title_1" > <?php echo e($product->title); ?></strong>
+                        <div class="product-price text-success "><i class="fa fa-inr"></i> <?php echo e($product->price); ?>
+
+                           <del class="text-danger"><small><i class="fa fa-inr"></i> <?php echo e($product->pre_price); ?>   </small> </del>
                         </div>
                      </div>
                     </div>
@@ -147,15 +149,15 @@
                </div>
             </div>
             </div>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
          </div>
-        @else
+        <?php else: ?>
         <div class="alert alert-danger">Sorry! We could not load more products</div>
-        @endif
-        @if($products->hasMorePages())
-        <div class="col-md-10 pull-right bg-white rounded"><a class="nav-link" href=" {{$products->nextPageUrl()}}">See More...</a></div>
-        @endif
+        <?php endif; ?>
+        <?php if($products->hasMorePages()): ?>
+        <div class="col-md-10 pull-right bg-white rounded"><a class="nav-link" href=" <?php echo e($products->nextPageUrl()); ?>">See More...</a></div>
+        <?php endif; ?>
         <div class="col-md-12 bg-white mt-3">
                <div class="card-body">
                   <div class="collection-filter-block">
@@ -201,16 +203,16 @@
 
 
 
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
 
 
-<script src="{{asset('assets/js/touchspin/touchspin.js')}}"></script>
-<script src="{{asset('assets/js/touchspin/input-groups.min.js')}}"></script>
-<script src="{{asset('assets/js/owlcarousel/owl.carousel.js')}}"></script>
+<script src="<?php echo e(asset('assets/js/touchspin/touchspin.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/touchspin/input-groups.min.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/owlcarousel/owl.carousel.js')); ?>"></script>
 
-<script src="{{asset('assets/js/product-tab.js')}}"></script>
+<script src="<?php echo e(asset('assets/js/product-tab.js')); ?>"></script>
 <script>
     var owl_carousel_custom = {
         init: function() {
@@ -388,4 +390,5 @@ $.each($(".product_title_1"),function(){
 })
 </script>
 
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('userpanel.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\subra\Documents\projects\rollswallah\resources\views/userpanel/product-list.blade.php ENDPATH**/ ?>

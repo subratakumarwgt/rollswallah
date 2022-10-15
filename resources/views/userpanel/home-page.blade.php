@@ -59,6 +59,9 @@
   .img-wrapper-rounded img {
     height: 200px;
   }
+  .img-height-200{
+    height: 200px !important;
+  }
     </style>
   </head>
 
@@ -69,12 +72,12 @@
       <div class="landing-home">
         <ul class="decoration">
           <li class="one"><img class="img-fluid" src="{{asset('assets/images/landing/decore/1.png')}}" alt=""></li>
-          <li class="two"><img class="img-fluid" src="{{asset('assets/images/landing/decore/2.png')}}" alt=""></li>
+          <li class="two"><img class="img-fluid" src="{{asset('assets/images/landing/decore/veg.png')}}" alt=""></li>
           <li class="three"><img class="img-fluid" src="{{asset('assets/images/landing/decore/4.png')}}" alt=""></li>
           <li class="four"><img class="img-fluid" src="{{asset('assets/images/landing/decore/3.png')}}" alt=""></li>
-          <li class="five"><img class="img-fluid" src="{{asset('assets/images/landing/2.png')}}" alt=""></li>
-          <li class="six"><img class="img-fluid" src="{{asset('assets/images/landing/decore/cloud.png')}}" alt=""></li>
-          <li class="seven"><img class="img-fluid" src="{{asset('assets/images/landing/2.png')}}" alt=""></li>
+          <li class="five"><img class="img-fluid" src="{{asset('assets/images/landing/veg.png')}}" alt=""></li>
+          <li class="six"><img class="img-fluid" src="{{asset('assets/images/landing/decore/food.png')}}" alt=""></li>
+          <li class="seven"><img class="img-fluid" src="{{asset('assets/images/landing/veg.png')}}" alt=""></li>
         </ul>
         <div class="container-fluid">
           <div class="sticky-header">
@@ -103,74 +106,117 @@
               <div class="content"> 
                 <div>
                   <h1 class="wow fadeIn">Rollswallah</h1>
-                  <h2 class="txt-secondary wow fadeIn">Pure Veg Food Corner</h2>
+                  <h2 class="txt-secondary wow fadeIn">Pure Veg Food Corner & Ice Cream Parlour</h2>
                  
                   <!-- <h2 class="txt-secondary wow fadeIn">Healthy, Best Ice Cream Parlour, in-town </h2>
                   <p class="mt-3 wow fadeIn">All Is Well is solution for all of your medical queries including checkup, appointments, diagnosis medicine and non medical supliments at one roof</p> -->
-                  <button class="btn btn-pill btn-dark btn-lg btn-gradient shadow"><i class="fa fa-check-circle"></i> Order Now!</button>
+                  <button class="btn btn-pill btn-dark btn-lg btn-gradient shadow"><i class="fa fa-cutlery"></i> See menu!</button>
                   
                  </div> 
               </div>
             </div>
-            <div class="col-xl-8 col-lg-8">                 
-              <div class="wow fadeIn"><img class="screen1" src="{{asset('assets/images/rollsbg1.png')}}" alt=""></div>
-              <!-- <div class="wow fadeIn"><img class="screen2" src="{{asset('assets/images/landing/profile2.png')}}" alt="" width="400px" style="opacity: 0.4;"></div> -->
+            <div class="col-xl-8 col-lg-8 col-sm-12">                 
+              <div class="wow fadeIn"><img class="screen1" src="{{asset('assets/images/rollsbg1.png')}}" alt="" width="600px" style="opacity: 0.7;"></div>
+              <div class="wow fadeIn"><img class="screen2" src="{{asset('assets/images/rollsbg.png')}}" alt="" width="600px" style="opacity: 0.8;"></div>
             </div>
            
           </div>
         </div>
       </div>
-      <div class="row justify-content-center p-3 ">
-                    <!-- <img src="{{asset('assets/images/icecreambg1.png')}}" alt=""> -->
-                    <h3 class="text-center m-3 h2 wow fade-in">Our Top Selling Ice cream Rolls</h3>
-                    <img src="{{asset('posters/1.png')}}" alt="" class="col-md-3">
-                    <img src="{{asset('posters/2.png')}}" alt="" class="col-md-3">
-                    <img src="{{asset('posters/3.png')}}" alt="" class="col-md-3">
-                    <img src="{{asset('posters/4.png')}}" alt="" class="col-md-3">
-                  </div>
-    
-      <section class="section-space cuba-demo-section layout" id="layout">
+      <section class="section-space cuba-demo-section layout " id="layout">
         <div class="container">
           <div class="row">
             <div class="col-sm-12 wow pulse">
               <div class="cuba-demo-content">
                 <div class="couting">
-                  <h2>50+ Ice Cream Rolls </h2>
-                 
-                 
+                  <h2 class="mb-2 txt-secondary">50+ Ice Cream Rolls </h2>                 
                   <p>Get the best ice cream in the city</p>
-                  <p> <button class="btn btn-pill btn-dark  btn-outline-primary-2x btn-air-primary text-white btn-lg"> See all the Ice Creams</button></p>
+                  <p> <button class="btn btn-pill btn-dark  btn-outline-primary-2x btn-air-primary text-white btn-lg"><i class="fa fa-eye"></i> See all the Ice Creams</button></p>
                 </div>
+                
               </div>
+              <div class="owl-carousel owl-theme owl-carousel-deal" id="owl-carousel-12">
+          <div class="item">
+          <div class="img-wrapper-rounded shadow-sm border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 19</div><img src="{{asset('assets/images/product/1.png')}}" alt="" class="img-height-200"></div>
+          <div class="h6 text-center">BRU COFFEE GOLD</div>
+          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> 200
+            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>220 </del> 
+          </div>                   
+                      
+        </div>
+        <div class="item">
+          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 25</div><img src="{{asset('assets/images/product/1.png')}}" alt="" class="img-height-200"></div>
+          <div class="h6 text-center">BRU COFFEE GOLD</div>
+          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> 200
+            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>220 </del> 
+          </div>
+        </div>
+        <div class="item">
+          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 5</div><img src="{{asset('assets/images/product/1.png')}}" alt="" class="img-height-200"></div>
+          <div class="h6 text-center">BRU COFFEE GOLD</div>
+          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> 200
+            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>220 </del> 
+          </div>
+        </div>
+        <div class="item">
+          <div class="img-wrapper-rounded shadow border-bottom border-primary  bg-light align-middle text-center text-primary pt-5" >  <h6 class=""><a href="/" class=""><i class="fa fa-eye"></i> See All Items <i class="fa fa-share"></i></a></h6></div>
+         
+        </div>
+      </div>
             </div>
           </div>
         </div>
        
       </section>
-      <section class="section-space cuba-demo-section bg-Widget pb-0 bg-primary">
+     
+    
+      
+      <section class="section-space cuba-demo-section bg-Widget pb-5 bg-dark">
         <div class="container">
           <div class="row">
             <div class="col-sm-12 wow pulse">
               <div class="cuba-demo-content mt50">
                 <div class="couting">
-                  <h2>50+ Fast Food Items </h2>
+                  <h2>Veg Fast Food Items </h2>
+      
                 </div>
+                
                 <p>Variety of Veg Items at very attractive prices. </p>
-                <p> <button class="btn btn-pill btn-dark  btn-outline-primary-2x btn-air-primary text-white btn-lg" >See all Items</button></p>
+                <p> <button class="btn btn-pill btn-white  btn-outline-primary-2x btn-air-primary text-white btn-lg" ><i class="fa fa-eye"></i> See all food items</button></p>
               </div>
+              <div class="owl-carousel owl-theme owl-carousel-deal" id="owl-carousel-12">
+          <div class="item">
+          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 19</div><img src="{{asset('assets/images/product/1.png')}}" alt="" class="img-height-200"></div>
+          <div class="h6 text-center">BRU COFFEE GOLD</div>
+          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> 200
+            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>220 </del> 
+          </div>                   
+                      
+        </div>
+        <div class="item">
+          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 25</div><img src="{{asset('assets/images/product/1.png')}}" alt="" class="img-height-200"></div>
+          <div class="h6 text-center">BRU COFFEE GOLD</div>
+          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> 200
+            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>220 </del> 
+          </div>
+        </div>
+        <div class="item">
+          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 5</div><img src="{{asset('assets/images/product/1.png')}}" alt="" class="img-height-200"></div>
+          <div class="h6 text-center">BRU COFFEE GOLD</div>
+          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> 200
+            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>220 </del> 
+          </div>
+        </div>
+        <div class="item">
+          <div class="img-wrapper-rounded shadow border-bottom border-primary  bg-light align-middle text-center text-primary pt-5" >  <h6 class=""><a href="/" class="">See All Items <i class="fa fa-share"></i></a></h6></div>
+         
+        </div>
+      </div>
+
             </div>
           </div>
         </div>
-        <div class="container-fluid o-hidden">
-          <div class="row landing-cards">
-            <div class="col-lg-8">
-              <div class="row">
-               
-                </div>             
-              </div>
-            </div>
-           
-            </div>
+       
           
       </section>
      <!--  <section class="section-space cuba-demo-section email_bg">
@@ -188,92 +234,8 @@
           </div>
         </div>
       </section> -->
-     <div class="row justify-content-center p-2">
-  <div class="col-md-12 h5 p-3">Offers/Combos/Items:</div>
-  <div class="col-md-12  p-2">
-    <div class="card-header h6 bg-primary text-light">Todays Great Deals</div>
-    <div class="card-header bg-light text-primary"> <a href="/" class="">See All Items <i class="fa fa-share"></i></a></div>    
-    <div class="card-body bg-white mb-4">
-      <div class="owl-carousel owl-theme owl-carousel-deal" id="owl-carousel-12">
-        <div class="item">
-          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 19</div><img src="{{asset('assets/images/product/1.png')}}" alt="" height="200px"></div>
-          <div class="h6 text-center">BRU COFFEE GOLD</div>
-          <div class=" text-success small text-center border border-success rounded"><i class="fa fa-inr small"></i> 200
-            <del class="text-danger"><small>MRP </small><i class="fa fa-inr small"></i>220 </del> 
-          </div>                   
-                      
-        </div>
-        <div class="item">
-          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 25</div><img src="{{asset('assets/images/product/1.png')}}" alt="" height="200px"></div>
-          <div class="h6 text-center">BRU COFFEE GOLD</div>
-          <div class=" text-success small text-center border border-success rounded"><i class="fa fa-inr small"></i> 200
-            <del class="text-danger"><small>MRP </small><i class="fa fa-inr small"></i>220 </del> 
-          </div>
-        </div>
-        <div class="item">
-          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 5</div><img src="{{asset('assets/images/product/1.png')}}" alt="" height="200px"></div>
-          <div class="h6 text-center">BRU COFFEE GOLD</div>
-          <div class=" text-success small text-center border border-success rounded"><i class="fa fa-inr small"></i> 200
-            <del class="text-danger"><small>MRP </small><i class="fa fa-inr small"></i>220 </del> 
-          </div>
-        </div>
-        <div class="item">
-          <div class="img-wrapper-rounded shadow border-bottom border-primary  bg-light align-middle text-center text-primary pt-5" >  <h6 class=""><a href="/" class="">See All Items <i class="fa fa-share"></i></a></h6></div>
-         
-        </div>
-      </div>
-    </div>
-    <div class="card-header h6 bg-primary text-light">Upto 10% Off On Beauty Products <small class="text-danger">(*)</small></div>
-    <div class="card-header bg-light text-primary"> <a href="/" class="">See All Items <i class="fa fa-share"></i></a></div>
-    <div class="card-body bg-white mb-4">
-      <div class="owl-carousel owl-theme owl-carousel-12 owl-responsive" id="owl-carousel-12">
-        <div class="item"><img src="{{asset('assets/images/other-images/bg-profile.png')}}" alt="" height="200px"></div>
-        <div class="item"><img src="{{asset('assets/images/other-images/bg-profile.png')}}" alt="" height="200px"></div>        
-        <!-- <div class="item">  </div> -->
-      </div>
-    </div>
-    <div class="card-header h6 bg-primary text-light">Combo Saving upto <i class="fa fa-inr small"></i>50 </div>
-    <div class="card-header bg-light text-primary"> <a href="/" class="">See All Items <i class="fa fa-share"></i></a></div>
+<div class="row justify-content-center p-2">
 
-    <div class="card-body bg-white mb-4">
-      <div class="owl-carousel owl-theme owl-carousel-deal" id="owl-carousel-12">
-        <div class="item">
-          <div class="img-wrapper-sqaure shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-right">Save  <i class="fa fa-inr small"></i> 50</div><img src="{{asset('assets/images/product/1.png')}}" alt="" height="200px"></div>
-          <div class="h6 text-center">BRU COFFEE GOLD</div>
-          <div class=" text-success small text-center border border-success rounded"><i class="fa fa-inr small"></i> 200
-            <del class="text-danger"><small>MRP </small><i class="fa fa-inr small"></i>220 </del> <button class="btn add-to-cart" type="button" data-product = ""><i class="fa fa-plus-circle"></i> <i class="icon-shopping-cart"></i></button>
-          </div>
-         
-        </div>
-        <div class="item">
-          <div class="img-wrapper-sqaure shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-right">Save  <i class="fa fa-inr small"></i> 19</div><img src="{{asset('assets/images/product/1.png')}}" alt="" height="200px"></div>
-          <div class="h6 text-center">BRU COFFEE GOLD</div>
-          <div class=" text-success small text-center border border-success rounded"><i class="fa fa-inr small"></i> 200
-            <del class="text-danger"><small>MRP </small><i class="fa fa-inr small"></i>220 </del> <button class="btn add-to-cart" type="button" data-product = ""><i class="fa fa-plus-circle"></i> <i class="icon-shopping-cart"></i></button>
-          </div>
-        </div>
-        <div class="item">
-          <div class="img-wrapper-sqaure shadow border-bottom border-primary"><img src="{{asset('assets/images/product/1.png')}}" alt="" height="200px"></div>
-          <div class="h6 text-center">BRU COFFEE GOLD</div>
-          <div class=" text-success small text-center border border-success rounded"><i class="fa fa-inr small"></i> 200
-            <del class="text-danger"><small>MRP </small><i class="fa fa-inr small"></i>220 </del>  <button class="btn add-to-cart" type="button" data-product = ""><i class="fa fa-plus-circle"></i> <i class="icon-shopping-cart"></i></button>
-          </div>
-        </div>
-        <div class="item">
-          <div class="img-wrapper-square shadow border-bottom border-primary  bg-light align-middle text-center text-primary pt-5" >  <h6 class=""><a href="/" class="">See All Items <i class="fa fa-share"></i></a></h6></div>
-         
-        </div>
-      </div>
-    </div>
-
-    <div class="card-header h6 bg-primary text-light">Upto 5% Off On Health & Hygine*</div>
-    <div class="card-header bg-light text-primary"> <a href="/" class="">See All Items <i class="fa fa-share"></i></a></div>
-    <div class="card-body bg-white mb-4">
-      <div class="owl-carousel owl-theme owl-carousel-12" id="owl-carousel-12">
-        <div class="item"><img src="{{asset('assets/images/big-masonry/3.jpg')}}" alt="" height="200px"></div>
-        <div class="item"><img src="{{asset('assets/images/big-masonry/3.jpg')}}" alt="" height="200px"></div>
-      </div>
-    </div>
     <div class="row justify-content-center">
         <div class="col-md-10 bg-white mt-3">
                <div class="card-body">
@@ -283,8 +245,8 @@
                            <div class="media ">
                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
                               <div class="media-body">
-                                 <h5>Free Shipping Above <i class="fa fa-inr small"></i>500</h5>
-                                 <p>Free Shipping World Wide</p>
+                                 <h5>Free Delivery Above <i class="fa fa-inr"></i>300</h5>
+                                 <p>No delivery charge above Rs 300</p>
                               </div>
                            </div>
                         </div>
@@ -292,8 +254,8 @@
                            <div class="media">
                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                               <div class="media-body">
-                                 <h5>24 X 7 Service                                    </h5>
-                                 <p>Online Booking Service For Patients</p>
+                                 <h5>Quality & Taste Assured</h5>
+                                 <p>We work hard to make the tastiest dishes in the city</p>
                               </div>
                            </div>
                         </div>
@@ -482,8 +444,9 @@
       <footer class="footer-bg">
         <div class="container">
           <div class="landing-center ptb50">
-            <div class="title"><img class="img-fluid" src="{{asset('assets/images/landing/landing_logo.png')}}" alt=""></div>
+            <div class="title"><img class="img-fluid" src="{{asset('assets/images/rollswallah.png')}}" alt=""></div>
             <div class="footer-content">
+              <h5>Copyright (c) Rollswallah 2022-2050 all rights reserved</h5>
              </div>
           </div>
         </div>
