@@ -82,7 +82,10 @@ class AdminDashboardController extends Controller
         return view('adminpanel.dashboard');
     }
     public function contactList(){
-        return view('adminpanel.contacts.contactlist');
+      
+      $regions = StaticAsset::getAssetsByTitle("customer_regions");
+        
+        return view('adminpanel.contacts.contactlist',["regions" => $regions]);
     }
     public function onlineUsers(){
       return view('adminpanel.users.onlineusers');
@@ -267,9 +270,7 @@ class AdminDashboardController extends Controller
     }
     public function centreImport(){
         return view('adminpanel.centres.centreimport');
-    }
-
-    
+    }    
     public function centreBind(Request $request)
     {
       $draw = $request->draw;

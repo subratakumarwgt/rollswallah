@@ -390,7 +390,7 @@ Route::group(['namespace' => '\App\Http\Controllers'],function () {
 
     Route::get('/profile-password','UserDashboardController@profileEdit')->name('profile-password');
 
-    Route::get('/products','UserDashboardController@productView')->name('products');
+    Route::get('/menu','UserDashboardController@productView')->name('menu');
 
     Route::get('/cart-items','UserDashboardController@cartView')->name('cart-items');
 

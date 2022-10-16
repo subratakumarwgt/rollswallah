@@ -86,10 +86,10 @@
                 <button class="navbar-toggler navabr_btn-set custom_nav" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
                 <div class="navbar-collapse justify-content-end collapse hidenav" id="navbarDefault">
                   <ul class="navbar-nav navbar_nav_modify" id="scroll-spy">
-                    <li class="nav-item"><a class="nav-link" href="/doctors">Ice Creams</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#components">Fast Food</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#applications">Party Orders</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#frameworks">Contact Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/menu?category=ice_cream">Ice Creams</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/menu?category=fast_food">Fast Food</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/party-prders">Party Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/contact-us">Contact Us</a></li>
                     <?php if(!Auth::check()): ?>
                     <li class="nav-item buy-btn"><a class="nav-link js-scroll" href="/login" target="_blank">Login/Signup</a></li>
                     <?php else: ?>
@@ -235,7 +235,6 @@
         </div>
       </section> -->
 <div class="row justify-content-center p-2">
-
     <div class="row justify-content-center">
         <div class="col-md-10 bg-white mt-3">
                <div class="card-body">
@@ -274,8 +273,8 @@
                </div>
                <!-- silde-bar colleps block end here-->
             </div>
-            </div>
-  </div>
+        </div>
+    </div>
 </div>
 <script src="<?php echo e(asset('assets/js/jquery-3.5.1.min.js')); ?>"></script>
 <!-- Bootstrap js-->

@@ -1,22 +1,22 @@
-@extends('adminpanel.master')
-@section('title', 'Sample Page')
 
-@section('css')
-@endsection
+<?php $__env->startSection('title', 'Sample Page'); ?>
 
-@section('style')
-@endsection
+<?php $__env->startSection('css'); ?>
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-title')
+<?php $__env->startSection('style'); ?>
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('breadcrumb-title'); ?>
 <h3>Add New Product  <i class="fas fa-pump-medical"></i></h3>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-items')
+<?php $__env->startSection('breadcrumb-items'); ?>
 <li class="breadcrumb-item">Products</li>
 <li class="breadcrumb-item active">Add Product</li>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="container-fluid">
    <div class="row">
       <div class="col-sm-12">
@@ -29,15 +29,15 @@
 							<div class="col-sm-6 col-md-3">
 								<div class="mb-3 mt-1  border shadow">
 								
-									<div class="ribbon ribbon-warning text-dark border-danger ribbon-bottom-left ">{{@$product->brand}}</div>
-									@if(empty($product->varient))
-						<img src="/{{$product->image ?? 'storage/productimage/productdefault.png'}}" class="img-fluid " id="img_prv">
-									@elseif(empty($product->image) && !empty($product->varient))
-						<img src="/{{$product->varient->image ?? 'storage/productimage/productdefault.png'}}" class="img-fluid " id="img_prv">
-						@else
-						<img src="/{{$product->varient->image ?? 'storage/productimage/productdefault.png'}}" class="img-fluid " id="img_prv">
-									@endif
-										<div><span class="badge badge-danger">{{@$product->short_name}}</span></div>
+									<div class="ribbon ribbon-warning text-dark border-danger ribbon-bottom-left "><?php echo e(@$product->brand); ?></div>
+									<?php if(empty($product->varient)): ?>
+						<img src="/<?php echo e($product->image ?? 'storage/productimage/productdefault.png'); ?>" class="img-fluid " id="img_prv">
+									<?php elseif(empty($product->image) && !empty($product->varient)): ?>
+						<img src="/<?php echo e($product->varient->image ?? 'storage/productimage/productdefault.png'); ?>" class="img-fluid " id="img_prv">
+						<?php else: ?>
+						<img src="/<?php echo e($product->varient->image ?? 'storage/productimage/productdefault.png'); ?>" class="img-fluid " id="img_prv">
+									<?php endif; ?>
+										<div><span class="badge badge-danger"><?php echo e(@$product->short_name); ?></span></div>
 								
 								</div>
 								<div class="mb-3 mt-3">
@@ -47,13 +47,13 @@
 							</div>
                             <div class="col-md-9">
                             <form id="product_form">
-                                <input type="hidden" id="id" value="{{$product->id}}" >		
+                                <input type="hidden" id="id" value="<?php echo e($product->id); ?>" >		
                                 <div class="row">
                     
                                 <div class="col-md-12">
                                 <div class="mb-3">
 									<label class="form-label">Product Title</label>
-									<input class="form-control" type="text" placeholder="Title/name" data-bs-original-title="" id="name" required value="{{$product->title}}">
+									<input class="form-control" type="text" placeholder="Title/name" data-bs-original-title="" id="name" required value="<?php echo e($product->title); ?>">
 								</div>
                             </div>
                               
@@ -62,9 +62,9 @@
 									<label class="form-label">Category</label>
 									<select class='form-control' required id="category">
                                         <option selected disabled>__Select__</option>
-                                        @foreach($categories as $category)
-                                        <option value="{{$category}}" @if($product->category == $category) selected @endif>{{$category}}</option>
-                                        @endforeach
+                                        <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($category); ?>" <?php if($product->category == $category): ?> selected <?php endif; ?>><?php echo e($category); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
 								</div>
 							</div>
@@ -73,9 +73,9 @@
 									<label class="form-label" >Subcategory</label>
 									<select class='form-control' id="sub_category">
                                         <option selected disabled required> __Select__</option>
-                                        @foreach($sub_categories as $category)
-                                        <option value="{{$category}}" @if($product->sub_category == $category) selected @endif>{{$category}}</option>
-                                        @endforeach
+                                        <?php $__currentLoopData = $sub_categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($category); ?>" <?php if($product->sub_category == $category): ?> selected <?php endif; ?>><?php echo e($category); ?></option>
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     </select>
 								</div>
 							</div>
@@ -83,11 +83,11 @@
 								<div class="mb-3">
 									<label class="form-label">Search Tags <small>(, Seperated tags)</small></label>
 								<select class="form-control" multiple="multiple" id="tags_json">
-									@if(!empty($product->tags_json))
-                                    @foreach(json_decode(@$product->tags_json,true) as $tag)
-                                    <option value="{{@$tag}}"selected>{{@$tag}}</option>
-                                    @endforeach
-                                    @endif
+									<?php if(!empty($product->tags_json)): ?>
+                                    <?php $__currentLoopData = json_decode(@$product->tags_json,true); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $tag): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e(@$tag); ?>"selected><?php echo e(@$tag); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
                                 </select>
 								</div>
 							</div>
@@ -99,13 +99,13 @@
 							<div class="col-sm-6 col-md-3">
 								<div class="mb-3">
 									<label class="form-label">M.R.P  <i class="fa fa-inr"></i> </label>
-									<input class="form-control" type="number" placeholder="Current Price " data-bs-original-title="" title="" required id="pre_price" value="{{$product->pre_price}}" readonly>
+									<input class="form-control" type="number" placeholder="Current Price " data-bs-original-title="" title="" required id="pre_price" value="<?php echo e($product->pre_price); ?>" readonly>
 								</div>
 							</div>
 							<div class="col-sm-6 col-md-3">
 								<div class="mb-3">
 									<label class="form-label">Customer Price <i class="fa fa-inr"></i></label>
-									<input class="form-control" type="number" placeholder="Offer Price " data-bs-original-title="" title="" required id="price" value="{{$product->price}}">
+									<input class="form-control" type="number" placeholder="Offer Price " data-bs-original-title="" title="" required id="price" value="<?php echo e($product->price); ?>">
 								</div>
 							</div>
 							
@@ -113,8 +113,8 @@
 								<div class="mb-3">
 									<label class="form-label">on Offer? </label>
 									<select class='form-control' id="on_offer">
-                                        <option value="0" @if($product->on_offer == 0) selected @endif>No</option>
-                                        <option value="1"  @if($product->on_offer == 1) selected @endif>Yes</option>
+                                        <option value="0" <?php if($product->on_offer == 0): ?> selected <?php endif; ?>>No</option>
+                                        <option value="1"  <?php if($product->on_offer == 1): ?> selected <?php endif; ?>>Yes</option>
                                     </select>
 								</div>
 							</div>
@@ -122,22 +122,22 @@
                             <div class="col-sm-6 col-md-4">
 								<div class="mb-3">
 									<label class="form-label">Stock <small>(in units)*</small></label>
-									<input class="form-control" type="number" placeholder="Stock in units" data-bs-original-title="" title="" value="10" min="0" id="stock" value="{{$product->stock}}">
+									<input class="form-control" type="number" placeholder="Stock in units" data-bs-original-title="" title="" value="10" min="0" id="stock" value="<?php echo e($product->stock); ?>">
 								</div>
 							</div>
                             <div class="col-sm-6 col-md-4">
 								<div class="mb-3">
 									<label class="form-label">Status <small>(default Active)*</small></label>
 									<select class='form-control' id="status">
-                                        <option value="0" @if($product->status == 0) selected @endif>Inactive </option>
-                                        <option value="1" @if($product->status == 1) selected @endif> Active </option>
+                                        <option value="0" <?php if($product->status == 0): ?> selected <?php endif; ?>>Inactive </option>
+                                        <option value="1" <?php if($product->status == 1): ?> selected <?php endif; ?>> Active </option>
                                     </select>
 								</div>
 							</div>
 							<div class="col-md-12 mb-3">
 								<div>
 									<label class="form-label">Product Description</label>
-									<textarea class="form-control" rows="5" placeholder="Enter About your description" required id="description"> {{$product->description}}</textarea>
+									<textarea class="form-control" rows="5" placeholder="Enter About your description" required id="description"> <?php echo e($product->description); ?></textarea>
 								</div>
 							</div>
                             <div class="col-md-12">
@@ -155,9 +155,9 @@
       </div>
    </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
 <script>
     $("#submit").on('click',function(e){
         e.preventDefault();
@@ -438,4 +438,5 @@
 <script>
 	
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('adminpanel.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\subra\Documents\projects\rollswallah\resources\views/adminpanel/products/productedit.blade.php ENDPATH**/ ?>

@@ -48,7 +48,7 @@
           <div class="cart-box"><i data-feather="shopping-cart"></i><span class="badge rounded-pill badge-primary" id="cart_count"><?php echo e($cart_rows->count()); ?></span></div>
           <ul class="cart-dropdown onhover-show-div" style="overflow-y: scroll;overflow-x: none;max-height: 550px !important">
             <li id="cart_row">
-              <h6 class="mb-0 f-20">Shoping Bag</h6>
+              <h6 class="mb-0 f-20"><i class="fa fa-shopping-cart"></i>  Food Cart</h6>
               <i data-feather="shopping-cart"></i>
             </li>
             <?php $__currentLoopData = $cart_rows; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cart): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -70,7 +70,7 @@
             <li>
             
             </li>
-            <li><a class="btn btn-block w-100 mb-2 btn-primary view-cart" href="<?php echo e(route('cart-items')); ?>">Go to shoping bag</a><a class="btn btn-block w-100 btn-secondary view-cart" href="<?php echo e(route('checkout')); ?>">Checkout</a></li>
+            <li><a class="btn btn-block w-100 mb-2 btn-primary view-cart" href="<?php echo e(route('cart-items')); ?>"><i class="fa fa-eye"></i> See Cart</a><a class="btn btn-block w-100 btn-secondary view-cart" href="<?php echo e(route('checkout')); ?>">Checkout</a></li>
           </ul>
         </li>
       
@@ -90,9 +90,6 @@
           </div>
           <ul class="profile-dropdown onhover-show-div">
             <li><a href="#"><i data-feather="user"></i><span>Account </span></a></li>
-            <li><a href="#"><i data-feather="mail"></i><span>Inbox</span></a></li>
-            <li><a href="#"><i data-feather="file-text"></i><span>Taskboard</span></a></li>
-            <li><a href="#"><i data-feather="settings"></i><span>Settings</span></a></li>
             <li><a href="/log-out"><i data-feather="log-in"> </i><span>Log Out</span></a></li>
           </ul>
         </li>

@@ -6,7 +6,7 @@
 			<div class="back-btn"><i class="fa fa-angle-left"></i></div>
 			<div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="grid"> </i></div>
 		</div>
-		<div class="logo-icon-wrapper"><a href="<?php echo e('/'); ?>"><img class="img-fluid" src="<?php echo e(asset('assets/images/rollswallah.png')); ?>" width="150px" alt=""></a></div>
+		<div class="logo-icon-wrapper"><a href="<?php echo e('/'); ?>"><img class="img-fluid" src="<?php echo e(asset('assets/images/rollswallah.png')); ?>" width="30px" alt=""></a></div>
 		<nav class="sidebar-main">
 			<div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
 			<div id="sidebar-menu">
@@ -33,7 +33,7 @@
 						</div>
 					</li>
 					
-					<li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav <?php echo e(Route::currentRouteName()=='doctors-list' ? 'active' : ''); ?>" href="<?php echo e(route('doctors-list')); ?>"><i class="fa fa-cutlery text-secondary h5"></i><span>  Menu</span></a></li>
+					<li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav <?php echo e(Route::currentRouteName()=='menu' ? 'active' : ''); ?>" href="<?php echo e(route('menu')); ?>"><i class="fa fa-cutlery text-secondary h5"></i><span>  Menu</span></a></li>
 					<li class="sidebar-list "><a class="sidebar-link sidebar-title link-nav <?php echo e(Route::currentRouteName()=='diagnostic-centre' ? 'active' : ''); ?>" href="<?php echo e(route('diagnostic-centres-list')); ?>"><i class="fas fa-shopping-cart text-secondary h5"></i><span>  My Cart (1)</span></a></li>
 					<li class="sidebar-list "><a class="sidebar-link sidebar-title link-nav <?php echo e(Route::currentRouteName()=='diagnostic-centre' ? 'active' : ''); ?>" href="#"><i class="fas fa-play text-secondary h5"></i><span>   Videos</span></a></li>
 			
@@ -47,7 +47,7 @@
 						</div>
 					</li>
 					<li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav <?php echo e(Route::currentRouteName()=='profile-password' ? 'active' : ''); ?>" href="<?php echo e(route('profile-password')); ?>"><i class="fas fa-user-lock text-secondary h5"></i><span> Profile & Password</span></a></li>
-					<li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav <?php echo e(Route::currentRouteName()=='my-booking-list' ? 'active' : ''); ?>" href="<?php echo e(route('my-booking-list')); ?>"><i class="fas fa-address-card text-secondary h5"></i><span> My Appointments</span></a></li>
+					<!-- <li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav <?php echo e(Route::currentRouteName()=='my-booking-list' ? 'active' : ''); ?>" href="<?php echo e(route('my-booking-list')); ?>"><i class="fas fa-address-card text-secondary h5"></i><span> My Appointments</span></a></li> -->
 					<li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav <?php echo e(Route::currentRouteName()=='diagnostic-centre' ? 'active' : ''); ?>" href="<?php echo e(route('pathological-labs-list')); ?>"><i class="fas fa-user-clock text-secondary h5"></i><span> Order History</span></a></li>
 					<li class="sidebar-list"><a class="sidebar-link sidebar-title link-nav <?php echo e(Route::currentRouteName()=='diagnostic-centre' ? 'active' : ''); ?>" href="<?php echo e(route('pathological-labs-list')); ?>"><i class="fas fa-inr text-secondary h5"></i><span> Payments</span></a></li>
 					<?php endif; ?>

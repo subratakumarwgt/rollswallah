@@ -1,25 +1,25 @@
-@extends('adminpanel.master')
-@section('title', 'Sample Page')
 
-@section('css')
-@endsection
+<?php $__env->startSection('title', 'Sample Page'); ?>
 
-@section('style')
-<link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/datatables.css')}}">
-@endsection
+<?php $__env->startSection('css'); ?>
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-title')
+<?php $__env->startSection('style'); ?>
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/vendors/datatables.css')); ?>">
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('breadcrumb-title'); ?>
 <h3>Contact List</h3>
 
 <button class="btn btn-primary btn-sm"  data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-plus-circle"></i> New Customer</button>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-items')
+<?php $__env->startSection('breadcrumb-items'); ?>
 <li class="breadcrumb-item">Customers</li>
 <li class="breadcrumb-item active">List</li>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="modal fade modal-bookmark" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                  <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
@@ -54,10 +54,10 @@
                                                    <label for="con-mail">Region</label>
                                                  
                                                          <select class="form-control" id="region1">
-                                                         @foreach($regions as $region)
-                                                            <option value="{{$region}}">{{$region}}</option>
+                                                         <?php $__currentLoopData = $regions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $region): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            <option value="<?php echo e($region); ?>"><?php echo e($region); ?></option>
                                                             
-                                                            @endforeach
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                          </select>
                                                    
                                                       </div>
@@ -81,9 +81,9 @@
                
                       <div class="col-md-6 p-3 border-right-sm">
 <label class="p-2">From</label>
-<input type="date" class="form-control shadow-sm mr-1 col-md-4" id="from_date" max="{{date('Y-m-d')}}" min="{{date('Y-m-d',strtotime('july 1,2021'))}}" >
+<input type="date" class="form-control shadow-sm mr-1 col-md-4" id="from_date" max="<?php echo e(date('Y-m-d')); ?>" min="<?php echo e(date('Y-m-d',strtotime('july 1,2021'))); ?>" >
 <label class="p-2">To</label>
-<input type="date" class="form-control shadow-sm mr-1 col-md-4" id="to_date"  max="{{date('Y-m-d')}}">
+<input type="date" class="form-control shadow-sm mr-1 col-md-4" id="to_date"  max="<?php echo e(date('Y-m-d')); ?>">
 
 </div>
                  
@@ -135,9 +135,9 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
+<?php $__env->startSection('script'); ?>
 
 <script>
      $(function() {
@@ -245,5 +245,6 @@ $("#from_date").change(function(){
 });
 </script>
 
-<!-- <script src="{{asset('assets/js/datatable/datatables/datatable.custom.js')}}"></script> -->
-@endsection
+<!-- <script src="<?php echo e(asset('assets/js/datatable/datatables/datatable.custom.js')); ?>"></script> -->
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('adminpanel.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\subra\Documents\projects\rollswallah\resources\views/adminpanel/contacts/contactlist.blade.php ENDPATH**/ ?>

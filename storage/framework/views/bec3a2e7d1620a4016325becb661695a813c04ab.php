@@ -8,6 +8,18 @@
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('style'); ?>
+<style>
+    .product_img_wrapper{
+        height: 260px;
+        overflow: hidden;
+    }
+    @media(max-width:600px) {
+        .product_img_wrapper{
+        height: 120px;
+        overflow: hidden;
+    }
+    }
+</style>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('breadcrumb-title'); ?>
@@ -22,45 +34,40 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <input type="hidden" id="user_id" value="<?php echo e($user_id); ?>">
-<div class="row justify-content-center">
-         <div class="col-12">
-        <div class="knowledgebase-bg"><img class="bg-img-cover bg-center" src="<?php echo e(asset('assets/images/product-search.png')); ?>" alt="looginpage" style="width: 500px;"></div>
-        <div class="knowledgebase-search">
-            <div>
-                <h3>Search your product here</h3>
-                <form class="form-inline" action="#" method="get">
-                    <div class="mb-3 w-100"><i data-feather="search"></i>
-                        <input class="form-control w-100" type="text" placeholder="Search by Name, Clinic, Specialist etc." title="" id="search_product">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+<div class="row justify-content-center">    
+    <!-- <div class="col-md-12">
+        <img src="<?php echo e(asset('assets/images/icecreambg1.png')); ?>" alt="" width="100%" >
+    </div>  -->
   
         <div class="col-md-12">
-            <div class="card-header h4 text-primary">Categories</div>
+            <div class="card-header h6 text-primary">Categories</div>
             <div class="card-body">
                 <div class="owl-carousel owl-theme" id="owl-carousel-13">
                     <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="item">
-         <div class="card-body bg-white shadow-sm text-primary border-bottom border-danger rounded"> <a href="/"><i class="fa fa-dot-circle-o text-dark" aria-hidden="true"></i> <?php echo e(strtoupper($category)); ?> </a></div>
+                    <div class="item border border-success shadow">
+                    <div class="card-body  shadow-sm <?php if($category != $_GET['category']): ?> text-light bg-dark <?php else: ?> text-primary bg-light <?php endif; ?> rounded"> <a href="/"><i class="fa fa-dot-circle-o text-light" aria-hidden="true"></i> <?php echo e(strtoupper($category)); ?> </a></div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12">
-            <div class="card-header h5 text-primary">Collections</div>
-            <div class="card-body">
-                <div class="owl-carousel owl-theme" id="owl-carousel-13-1">
                     <?php $__currentLoopData = $subcategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="item">                                   
-        <div class="card-body bg-white shadow-sm text-dark border-bottom  border-primary rounded "> <a href="/"><i class="fa fa-heart text-danger" aria-hidden="true"></i> <?php echo e(strtoupper($category)); ?>  </a></div>
+                     <div class="card-body bg-dark text-white shadow-sm  border-bottom  border-primary rounded "> <a href="/"><i class="fa fa-heart text-danger" aria-hidden="true"></i> <?php echo e(strtoupper($category)); ?>  </a></div>
                      </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </div>
             </div>
         </div>
+        <!-- <div class="col-md-12">
+            <div class="card-header h5 text-primary">Collections</div>
+            <div class="card-body">
+                <div class="owl-carousel owl-theme" id="owl-carousel-13-1">
+                    <?php $__currentLoopData = $subcategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="item">                                   
+                     <div class="card-body bg-white shadow-sm text-dark border-bottom  border-primary rounded "> <a href="/"><i class="fa fa-heart text-danger" aria-hidden="true"></i> <?php echo e(strtoupper($category)); ?>  </a></div>
+                     </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
+            </div>
+        </div> -->
          </div>
 <div class="container-fluid product-wrapper mt-4">
    <div class="product-grid">
@@ -71,7 +78,7 @@
          <div class="row justify-content-center">
              <div class="col-md-12">
                  <div class="row">
-                 <div class="card-header card-header h5 text-primary mb-2">Items</div>
+                 <div class="card-header card-header h6 text-primary mb-2">Menu <i class="fa fa-cutlery"></i></div>
         <?php if($products->count() > 0): ?>
        
         <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -83,8 +90,8 @@
                <div class="card">
                <div class="row">
                     <div class="col-md-12 col-sm-12 col-5">
-                     <div class="product-img">
-                        <img class="img-fluid" src="/<?php echo e($product->image); ?>" alt="" height="180px">
+                     <div class="product-img  product_img_wrapper" >
+                        <img class="img-fluid" src="/<?php echo e($product->image); ?>" alt="" >
                         <?php if(!empty($product->on_offer)): ?>
                         <div class="ribbon ribbon-danger text-white border-danger ribbon-bottom-left ">offer!</div>
                         <?php endif; ?>
@@ -114,7 +121,7 @@
                                        <h4 id="title_<?php echo e($product->id); ?>" class=""><?php echo e($product->title); ?></h4>
                                        <div class="product-price" id="price_<?php echo e($product->id); ?>"><i class="fa fa-inr"></i><?php echo e($product->price); ?>
 
-                            <del class="text-danger" id="pre_price_<?php echo e($product->id); ?>"> MRP: <i class="fa fa-inr"></i><?php echo e($product->pre_price); ?></del>
+                                        <del class="text-danger" id="pre_price_<?php echo e($product->id); ?>"> MRP: <i class="fa fa-inr"></i><?php echo e($product->pre_price); ?></del>
                                        </div>
                                      
                                       
@@ -143,6 +150,9 @@
 
                            <del class="text-danger"><small><i class="fa fa-inr"></i> <?php echo e($product->pre_price); ?>   </small> </del>
                         </div>
+                        <div class="addcart-btn">
+                            <button class="btn btn-dark btn-pill add-to-cart" type="button" data-quantity="<?php echo e($product->id); ?>" data-product = "<?php echo e($product->id); ?>" id="addBtn_<?php echo e($product->id); ?>">Add <i class="fa fa-shopping-cart"></i></button>
+                        </div>
                      </div>
                     </div>
                   </div>
@@ -158,43 +168,7 @@
         <?php if($products->hasMorePages()): ?>
         <div class="col-md-10 pull-right bg-white rounded"><a class="nav-link" href=" <?php echo e($products->nextPageUrl()); ?>">See More...</a></div>
         <?php endif; ?>
-        <div class="col-md-12 bg-white mt-3">
-               <div class="card-body">
-                  <div class="collection-filter-block">
-                     <div class="row p-4">
-                        <div class="col-md-4 ">
-                           <div class="media ">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-truck"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
-                              <div class="media-body">
-                                 <h5>Free Shipping Above <i class="fa fa-inr small"></i>500</h5>
-                                 <p>Free Shipping World Wide</p>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-md-4 ">
-                           <div class="media">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                              <div class="media-body">
-                                 <h5>24 X 7 Service                                    </h5>
-                                 <p>Online Booking Service For Patients</p>
-                              </div>
-                           </div>
-                        </div>
-                        <div class="col-md-4 ">
-                           <div class="media">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-gift"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
-                              <div class="media-body">
-                                 <h5>Festival Offer                                 </h5>
-                                 <p>Offers & Savings all time</p>
-                              </div>
-                           </div>
-                        </div>
-                       
-                     </div>
-                  </div>
-               </div>
-               <!-- silde-bar colleps block end here-->
-            </div>
+      
         </div>
         </div>
     </div>

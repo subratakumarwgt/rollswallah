@@ -10,6 +10,11 @@ class StaticAsset extends Model
     use HasFactory;
     protected $guarded = [];
     public static function getAssetsByTitle($title){
-        return json_decode(StaticAsset::where('title',$title)->first()->list_json);
+        try {
+            return json_decode(StaticAsset::where('title',$title)->first()->list_json);
+        } catch (\Throwable $th) {
+           dd($title);
+        }
+        
     }
 }
