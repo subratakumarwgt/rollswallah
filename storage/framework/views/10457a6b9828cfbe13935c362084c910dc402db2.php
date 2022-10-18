@@ -192,23 +192,23 @@
 
         <div class="card-body table-responsive">
           <div class="row">
-            <div class="col-md-6  border-right"><button class="btn btn-outline-dark  ml-1" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Product</button>
+            <div class="col-md-9 mb-4  border-right"><button class="btn btn-outline-dark  ml-1" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Product</button>
               <button class="btn btn-outline-dark  ml-1" id="add_new_charge" onclick="add_charge()"><i class="fa fa-plus-circle"></i> New Charges</button>
               <button class="btn btn-outline-dark border-success ml-1" id="add_new_order" onclick='newOrder()'><i class="fa fa-plus-circle"></i> New Order</button>
             </div>
-            <div class="col-md-3 mb-3">
-              <div class="input-group">
-                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-phone"></i> </span></div>
-                <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="(+91) Contact number (mandatory)" data-bs-original-title="" title="" id="user_contact" value="<?php echo e(@$order->user_contact); ?>" required>
+            <div class="col-md-4 mb-4">
+              <div class="input-group" id="user_contact_group">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-phone"></i> (+91)  </span></div>
+                <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="Contact number (mandatory)" data-bs-original-title="" title="" id="user_contact" value="<?php echo e(@$order->user_contact); ?>" required>
               </div>
             </div>
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-4">
               <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-map-marker"></i> </span></div>
                 <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="customer address(optional)" data-bs-original-title="" title="" id="user_address" value="" >
               </div>
             </div>
-            <div class="col-md-3 mb-3">
+            <div class="col-md-4 mb-4">
               <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-map-marker"></i> </span></div>
                 <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="customer name(optional)" data-bs-original-title="" title="" id="user_name" value="" >
@@ -975,7 +975,7 @@
         }
       };
 
-      if($("#user_contact").valid())
+      if($("#user_contact").val().length == 10)
       await $.ajax(settings).done(function(response) {
         hideoverlay($("#quick_order_table"))
         $.notify({
@@ -1001,10 +1001,12 @@
 
       });
       else{
+        $("#user_contact_group").hasClass("border border-danger") ? " " : $("#user_contact_group").addClass("border border-danger")
+        hideoverlay($("#quick_order_table"))
         $.notify({
-          message: "Please provide user contact"
+          message: "Please provide valid user contact"
         }, {
-          type: 'success',
+          type: 'danger',
           z_index: 10000,
           timer: 2000,
         })
