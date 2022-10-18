@@ -20,8 +20,12 @@ class UserDashboardController extends Controller
     //
 
     public function index(Request $request){
+        $data['ice_creams'] = Product::where("category","ice cream")->get();
         
-      return view('userpanel.home-page',);
+        $data['fast_foods'] = Product::where("category","fast food")->get();
+        
+        
+      return view('userpanel.home-page',$data);
     }
      public function loginView()
     {
@@ -77,6 +81,9 @@ class UserDashboardController extends Controller
         if (isset($request->search) && !empty($request->search)) {
            $products = $products->where("title","LIKE","%".$request->search."%")->orWhere("tags_json","LIKE","%".$request->search."%");
         }
+        if (isset($request->category) && !empty($request->category)) 
+        $products = $products->where("category",$request->category);
+
         $products = $products->paginate(9);
         return view('userpanel.product-list',['products'=>$products,'categories'=>$categories,'subcategories'=>$subcategories,'user_id'=>$user_id]);
     }

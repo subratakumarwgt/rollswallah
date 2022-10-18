@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\NewBooking;
+use App\Events\NewOrder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Redirect;
@@ -13,6 +14,7 @@ use App\Models\Booking;
 use App\Models\Cart;
 use App\Models\Centre;
 use App\Models\Charge;
+use App\Models\Contact;
 use App\Models\Doctor;
 use App\Models\Payment;
 use App\Models\Product;
@@ -759,12 +761,78 @@ class CrudController extends Controller
 		}
 
 	}
+	public function placeOrder(Request $request)
+	{
+		$log_slug = "order_error_";
+		try {
+			$validator_password = Validator::make($request->all(), [
+				"order_type" => "required",
+				"id" => "required",
+				"payment_type"=>"required|min:10",
+				"total" => "required",
+				"item_count" => "required|exists:centres,id",
+				"product_qty_json" => "required|exists:doctors,id",
+				"status" => "required",
+				"user_contact" => "required",
+				"payment_id" => "exists:payments,id"
+	
+			]);
+			if ($validator_password->fails()) {
+				$this->logger($log_slug.date("Y-m-d_H-i-s"),['data'=>$request->all(),"errors"=> $validator_password->errors()]);
+				return response(['status' => false, "errors" => $validator_password->errors(),"message"=>"Invalid order request"], 400);
+			}
+			// $slot = Slots::where('doctor_id',$request->doctor_id)->whereDate('date',$request->order_date)->where('centre_id',$request->centre_id)->first();
+			// if (empty($slot) || empty($slot->free_slots)) {
+			// 	$this->logger($log_slug.date("Y-m-d_H-i-s"),['data'=>$request->all(),"errors"=> "Insufficient slots"]);
+			// 	return response(['status' => false, "errors" => "Insufficient slots","data"=>"Insufficient slots! Please try with a different date"], 400);
+			// }
+			// if (strtotime('now')>strtotime($request->order_date)) {
+			// 	$this->logger($log_slug.date("Y-m-d_H-i-s"),['data'=>$request->all(),"errors"=> "Invalid order date"]);
+			// 	return response(['status' => false, "errors" => "Invalid order date","message"=>"Invalid order date"], 400);
+			// }
+			if (!empty(User::where('contact',$request->user_contact)->count())) {
+				$request->user_id = User::where('contact',$request->user_contact)->first()->id;
+				$array = array_merge($request->all(),['user_id'=>$request->user_id]);
+			}
+			elseif(!empty(Contact::where('number',$request->user_contact)->count())){
+				$request->contact_id = Contact::where('number',$request->user_contact)->first()->id;
+				$array = array_merge($request->all(),['contact_id'=>$request->contact_id]);
+			}
+			else{
+				$contactData = [
+					"number"  => $request->user_contact,
+					"name"    => @$request->user_name,
+					"address" => @$request->user_address,
+				];
+
+				$contact = Contact::create($contactData);
+				$request->contact_id = $contact->id;
+				$array = array_merge($request->all(),['contact_id'=>$request->contact_id]);
+			}
+			// $array = array_merge($array,['centre_contact'=>Centre::find($request->centre_id)->details]);
+			// $array = array_merge($array,['centre_address'=>Centre::find($request->centre_id)->address]);
+			//$request->centre_contact = Centre::find($request->centre_id)->details;		
+			$order = Order::where("order_id",$request->id)->update($array) ? Order::where("order_id",$request->id)->first() : null;
+			if(empty($order))
+			{
+				$this->logger($log_slug.date("Y-m-d_H-i-s"),['data'=>$request->all(),"errors"=> "Order update function issue"]);
+				return response(['status' => false, "errors" => null,"message"=>"Order could not be updated"], 400);
+			
+			}
+
+			event(new NewOrder($order));
+			return response(['status' => true, "data" => $array,"message"=>"Order placed successfully","details"=>$order], 200);
+		} catch (\Throwable $th) {
+			$this->logger($log_slug.date("Y-m-d_H-i-s"),["errors"=> $th->getMessage()]);
+		    return response(['status' => false, "errors" => $th->getMessage(),"message"=>"Something went wrong!"], 400);	
+		}
+	}
 		public function makeOrder(Request $request)
 		{
 			$log_slug = "razor_pay_order_error_";
 			try {
 				if (!isset($request->amount) || !isset($request->order_type) || empty($request->amount) || empty($request->order_type) ) {
-				$this->logger($log_slug.date("Y-m-d_H-i-s"),["errors"=> $th->getMessage()]);
+				$this->logger($log_slug.date("Y-m-d_H-i-s"),["errors"=> "Razor pay order issue due to insufficient inputs"]);
 				return response(['status' => false, "errors" => "Invalid parameters","message"=>"Something went wrong!"], 400);
 				}
 				$client = new Api($this->api_key, $this->secret_key);

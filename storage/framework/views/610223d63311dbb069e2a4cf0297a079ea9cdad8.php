@@ -16,9 +16,8 @@
 <script src="<?php echo e(asset('assets/js/datepicker/date-picker/datepicker.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/notify/bootstrap-notify.min.js')); ?>"></script>
 <script src="https://kit.fontawesome.com/568e34549e.js" crossorigin="anonymous"></script>
-<script src="<?php echo e(asset('assets/js/form-validation-custom.js')); ?>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.js"></script>
+<!-- <script src="<?php echo e(asset('assets/js/form-validation-custom.js')); ?>"></script> -->
+
 <script src="<?php echo e(asset('assets/js/select2/select2.full.min.js')); ?>"></script>
 <script>
     function loadoverlay(object) {
@@ -188,7 +187,8 @@ let new_user_row = $(`
 <?php if(Route::current()->getName() != 'popover'): ?>
 <script src="<?php echo e(asset('assets/js/tooltip-init.js')); ?>"></script>
 <?php endif; ?>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js" integrity="sha512-6S5LYNn3ZJCIm0f9L6BCerqFlQ4f5MwNKq+EthDXabtaJvg3TuFLhpno9pcm+5Ynm6jdA9xfpQoMz2fcjVMk9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- Plugins JS Ends-->
 <!-- Theme js-->
 <script src="<?php echo e(asset('assets/js/script.js')); ?>"></script>

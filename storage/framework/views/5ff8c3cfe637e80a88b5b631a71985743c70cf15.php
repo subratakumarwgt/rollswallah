@@ -7,9 +7,9 @@
     <meta name="description" content="All Is Well is solution for all of your medical queries including checkup, appointments, diagnosis medicine and non medical supliments at one roof">
     <meta name="keywords" content="All Is Well is solution for all of your medical queries including checkup, appointments, diagnosis medicine and non medical supliments at one roof">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="<?php echo e(asset('/assets/images/favicon.ico')); ?>" type="image/x-icon">
-    <link rel="shortcut icon" href="<?php echo e(asset('/assets/images/favicon.ico')); ?>" type="image/x-icon">
-    <title>All is Well - Home </title>
+    <link rel="icon" href="<?php echo e(asset('/assets/images/favico.ico')); ?>" type="image/x-icon">
+    <link rel="shortcut icon" href="<?php echo e(asset('/assets/images/favico.ico')); ?>" type="image/x-icon">
+    <title>Rolls Wallah | Have some rolls... </title>
     <!-- Google font-->
     <link href="https://fonts.googleapis.com/css?family=Rubik:400,400i,500,500i,700,700i&amp;display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,500,500i,700,700i,900&amp;display=swap" rel="stylesheet">

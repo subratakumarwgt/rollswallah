@@ -88,7 +88,7 @@
                   <ul class="navbar-nav navbar_nav_modify" id="scroll-spy">
                     <li class="nav-item"><a class="nav-link" href="/menu?category=ice_cream">Ice Creams</a></li>
                     <li class="nav-item"><a class="nav-link" href="/menu?category=fast_food">Fast Food</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/party-prders">Party Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/party-orders">Party Orders</a></li>
                     <li class="nav-item"><a class="nav-link" href="/contact-us">Contact Us</a></li>
                     @if(!Auth::check())
                     <li class="nav-item buy-btn"><a class="nav-link js-scroll" href="/login" target="_blank">Login/Signup</a></li>
@@ -136,28 +136,16 @@
                 
               </div>
               <div class="owl-carousel owl-theme owl-carousel-deal" id="owl-carousel-12">
+                @foreach($ice_creams as $item)
           <div class="item">
-          <div class="img-wrapper-rounded shadow-sm border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 19</div><img src="{{asset('assets/images/product/1.png')}}" alt="" class="img-height-200"></div>
-          <div class="h6 text-center">BRU COFFEE GOLD</div>
-          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> 200
-            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>220 </del> 
-          </div>                   
-                      
-        </div>
-        <div class="item">
-          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 25</div><img src="{{asset('assets/images/product/1.png')}}" alt="" class="img-height-200"></div>
-          <div class="h6 text-center">BRU COFFEE GOLD</div>
-          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> 200
-            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>220 </del> 
+          <div class="img-wrapper-rounded shadow-sm border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> {{ $item->pre_price - $item->price }}</div><img src="/{{$item->image}}" alt="" class="img-height-200"></div>
+          <div class="h6 text-center">{{$item->title}}</div>
+          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> {{$item->price}}
+            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>{{$item->pre_price}} </del> 
+          </div>               
           </div>
-        </div>
-        <div class="item">
-          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 5</div><img src="{{asset('assets/images/product/1.png')}}" alt="" class="img-height-200"></div>
-          <div class="h6 text-center">BRU COFFEE GOLD</div>
-          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> 200
-            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>220 </del> 
-          </div>
-        </div>
+                @endforeach
+        
         <div class="item">
           <div class="img-wrapper-rounded shadow border-bottom border-primary  bg-light align-middle text-center text-primary pt-5" >  <h6 class=""><a href="/" class=""><i class="fa fa-eye"></i> See All Items <i class="fa fa-share"></i></a></h6></div>
          
@@ -171,7 +159,7 @@
      
     
       
-      <section class="section-space cuba-demo-section bg-Widget pb-5 bg-dark">
+      <!-- <section class="section-space cuba-demo-section bg-Widget pb-5 bg-dark">
         <div class="container">
           <div class="row">
             <div class="col-sm-12 wow pulse">
@@ -185,28 +173,15 @@
                 <p> <button class="btn btn-pill btn-white  btn-outline-primary-2x btn-air-primary text-white btn-lg" ><i class="fa fa-eye"></i> See all food items</button></p>
               </div>
               <div class="owl-carousel owl-theme owl-carousel-deal" id="owl-carousel-12">
+              @foreach($ice_creams as $item)
           <div class="item">
-          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 19</div><img src="{{asset('assets/images/product/1.png')}}" alt="" class="img-height-200"></div>
-          <div class="h6 text-center">BRU COFFEE GOLD</div>
-          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> 200
-            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>220 </del> 
-          </div>                   
-                      
-        </div>
-        <div class="item">
-          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 25</div><img src="{{asset('assets/images/product/1.png')}}" alt="" class="img-height-200"></div>
-          <div class="h6 text-center">BRU COFFEE GOLD</div>
-          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> 200
-            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>220 </del> 
+          <div class="img-wrapper-square shadow-sm border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> {{ $item->pre_price - $item->price }}</div><img src="/{{$item->image}}" alt="" class="img-height-200"></div>
+          <div class="h6 text-center">{{$item->title}}</div>
+          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> {{$item->price}}
+            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>{{$item->pre_price}} </del> 
+          </div>               
           </div>
-        </div>
-        <div class="item">
-          <div class="img-wrapper-rounded shadow border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> 5</div><img src="{{asset('assets/images/product/1.png')}}" alt="" class="img-height-200"></div>
-          <div class="h6 text-center">BRU COFFEE GOLD</div>
-          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> 200
-            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i>220 </del> 
-          </div>
-        </div>
+                @endforeach
         <div class="item">
           <div class="img-wrapper-rounded shadow border-bottom border-primary  bg-light align-middle text-center text-primary pt-5" >  <h6 class=""><a href="/" class="">See All Items <i class="fa fa-share"></i></a></h6></div>
          
@@ -218,7 +193,7 @@
         </div>
        
           
-      </section>
+      </section> -->
      <!--  <section class="section-space cuba-demo-section email_bg">
         <div class="container">
           <div class="row">

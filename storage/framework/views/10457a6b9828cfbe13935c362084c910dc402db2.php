@@ -199,13 +199,19 @@
             <div class="col-md-3 mb-3">
               <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-phone"></i> </span></div>
-                <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="(+91) Contact number" data-bs-original-title="" title="" id="user_contact" value="<?php echo e(@$order->user_contact); ?>" required>
+                <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="(+91) Contact number (mandatory)" data-bs-original-title="" title="" id="user_contact" value="<?php echo e(@$order->user_contact); ?>" required>
               </div>
             </div>
             <div class="col-md-3 mb-3">
               <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-map-marker"></i> </span></div>
-                <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="customer address" data-bs-original-title="" title="" id="user_address" value="" required>
+                <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="customer address(optional)" data-bs-original-title="" title="" id="user_address" value="" >
+              </div>
+            </div>
+            <div class="col-md-3 mb-3">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-map-marker"></i> </span></div>
+                <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="customer name(optional)" data-bs-original-title="" title="" id="user_name" value="" >
               </div>
             </div>
           </div>
@@ -447,6 +453,8 @@
 <script src="<?php echo e(asset('assets/js/counter/counter-custom.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/printThis.js')); ?>"></script>
 <script src="<?php echo e(asset('assets/js/print.js')); ?>"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js" integrity="sha512-6S5LYNn3ZJCIm0f9L6BCerqFlQ4f5MwNKq+EthDXabtaJvg3TuFLhpno9pcm+5Ynm6jdA9xfpQoMz2fcjVMk9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
   $("#from_date").prop('max', $("#to_date").val());
   $("#to_date").change(function() {
@@ -901,11 +909,11 @@
     if (confirm("Are you sure you want to complete order?")) {
       await saveDraft()
       $.notify({
-        message: "Expenses being added!"
+        message: "Order being added!"
       }, {
         type: 'warning',
         z_index: 10000,
-        timer: 2000,
+        timer: 1000,
       });
 
       let data = {}
@@ -957,7 +965,7 @@
             hideoverlay($("#quick_order_table"))
             // response = JSON.parse(response);
             $.notify({
-              message: "Something went wrong while inserting doctor!"
+              message: "Something went wrong while placing order!"
             }, {
               type: 'danger',
               z_index: 10000,
@@ -967,6 +975,7 @@
         }
       };
 
+      if($("#user_contact").valid())
       await $.ajax(settings).done(function(response) {
         hideoverlay($("#quick_order_table"))
         $.notify({
@@ -991,6 +1000,15 @@
       }, function() {
 
       });
+      else{
+        $.notify({
+          message: "Please provide user contact"
+        }, {
+          type: 'success',
+          z_index: 10000,
+          timer: 2000,
+        })
+      }
 
 
 
