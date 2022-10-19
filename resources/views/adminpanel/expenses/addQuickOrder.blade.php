@@ -233,11 +233,9 @@
               <div class="border p-2 text-center rounded border-primary bg-light text-primary shadow-sm">
                 <strong>Order Type</strong> : <span class="text-dark editable_value editable_expense_type">dine_in</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
                 <div class="p-1 hide_input d-none"> <select name="" id="order_type" class="form-control editable">
-                    <option value="on_call">on_call</option>
-                    <option value="dine_in" default>dine_in</option>
-                    <option value="take_away">take_away</option>
-                    <option value="swiggy">swiggy</option>
-                    <option value="zomato">zomato</option>
+                    @foreach($payment_type as $type)
+                    <option value="{{$type}}">{{$type}}</option>
+                    @endforeach
                   </select></div>
               </div>
             </div>
@@ -245,9 +243,9 @@
               <div class="border p-2 text-center rounded border-primary bg-light text-primary shadow-sm">
                 <strong>Payment Type</strong> : <span class="text-dark editable_value editable_expense_category">cash</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>
                 <div class="p-1 hide_input d-none"> <select name="" id="payment_category" class="form-control editable">
-                    <option value="cash">cash</option>
-                    <option value="online">online</option>
-                    <option value="credit">credit</option>
+                    @foreach($order_type as $type)
+                    <option value="{{$type}}">{{$type}}</option>
+                    @endforeach
                   </select>
                 </div>
 
@@ -941,7 +939,7 @@
       form.append("table_model", "Order");
 
       var settings = {
-        "url": "/api/update-data",
+        "url": "/api/place-order",
         "method": "POST",
         "timeout": 0,
         "processData": false,

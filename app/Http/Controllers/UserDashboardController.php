@@ -106,32 +106,44 @@ class UserDashboardController extends Controller
         $user_id = Session::getId();
         $items = Cart::where('user_id',$user_id)->get();
         $subtotal = 0;
+        $subtotal_total = 0;
+        $discount = 0;
         foreach ($items as $key => $value) {
-           $subtotal += ($value->product->price*$value->quantity);
+            $subtotal_total += ($value->product->pre_price * $value->quantity);
+            $discount += ((!empty($value->product->on_offer) ?( $value->product->pre_price-$value->product->price) : 0 )* $value->quantity);      
+            $subtotal += ((!empty($value->product->on_offer) ? $value->product->price : $value->product->pre_price )* $value->quantity);
         }
-        return view('userpanel.cart',['items'=>$items,'subtotal'=>$subtotal]);
+        return view('userpanel.cart',['items'=>$items,'subtotal'=>$subtotal,"subtotal_total" =>$subtotal_total, "discount" => $discount]);
     }
     public function checkout($subtotal=0){
         if (Auth::check()) {
-               $userid=Auth::User()->id;
+               $user_id=Auth::User()->id;
               
           }
           else{
-            $userid = Session::getId();
+            $user_id = Session::getId();
           }
-              if (Cart::where('user_id',$userid)->count() > 0) {
+              if (Cart::where('user_id',$user_id)->count() > 0) {
                   # code...
-              //  $user = \App\User::find($userid);
+              //  $user = \App\User::find($user_id);
     
-            foreach (Cart::where('user_id',$userid)->get() as $cart) {
-                $subtotal = $subtotal + ($cart->product->price * $cart->quantity);
-            }
-            $item_html = view('userpanel.components.checkoutcart',['cart_items'=>Cart::where('user_id',$userid)->get()])->render();
+              $items = Cart::where('user_id',$user_id)->get();
+              $subtotal = 0;
+              $subtotal_total = 0;
+              $discount = 0;
+              foreach ($items as $key => $value) {
+                  $subtotal_total += ($value->product->pre_price * $value->quantity);
+                  $discount += ((!empty($value->product->on_offer) ?( $value->product->pre_price-$value->product->price) : 0 )* $value->quantity);      
+                  $subtotal += ((!empty($value->product->on_offer) ? $value->product->price : $value->product->pre_price )* $value->quantity);
+              }
+            $item_html = view('userpanel.components.checkoutcart',['cart_items'=>$items])->render();
            //  $charges = \App\charges::find(1);
     
             return view('userpanel.newcheckout',[
-              'user_id' => $userid,
+              'user_id' => $user_id,
                 'subtotal' => $subtotal,
+                "subtotal_total" => $subtotal_total,
+                "discount" => $discount,
                 'charges' => "",
                 'item_html'=>$item_html
             ]);

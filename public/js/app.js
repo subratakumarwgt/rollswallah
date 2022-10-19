@@ -25577,7 +25577,7 @@ window.api_auth_token = "8629c4608a7cba5fd2a7a1677c2a97a6"; // const notifier = 
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  // authEndpoint: '/api/broadcasting/auth',
+  authEndpoint: '/api/broadcasting/auth',
   key: 'alliswell_pusher',
   cluster: 'mt1',
   wsHost: window.location.hostname,
@@ -25594,8 +25594,8 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\subra\Documents\Projects\alliswell\Cuba\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\subra\Documents\Projects\alliswell\Cuba\resources\css\app.css */"./resources/css/app.css");
+__webpack_require__(/*! C:\Users\subra\Documents\projects\rollswallah\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\Users\subra\Documents\projects\rollswallah\resources\css\app.css */"./resources/css/app.css");
 
 
 /***/ })

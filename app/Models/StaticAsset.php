@@ -13,7 +13,7 @@ class StaticAsset extends Model
         try {
             return json_decode(StaticAsset::where('title',$title)->first()->list_json);
         } catch (\Throwable $th) {
-           dd($title);
+           return [];
         }
         
     }

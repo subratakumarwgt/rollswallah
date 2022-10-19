@@ -7,6 +7,7 @@ use App\Models\Item;
 use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderDetails;
+use App\Models\StaticAsset;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -529,6 +530,8 @@ class ExpenseController extends Controller
             $data["order"] = $order;
            
         }
+		$data["order_type"] = StaticAsset::getAssetsByTitle("order_type");
+		$data["payment_type"] = StaticAsset::getAssetsByTitle("payment_type");
         
         $data["order_id"] = $order->order_id;
         return view("adminpanel.expenses.addQuickOrder",$data);

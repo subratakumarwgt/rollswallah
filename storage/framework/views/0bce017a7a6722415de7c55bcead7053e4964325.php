@@ -63,7 +63,10 @@
             <div class="row mb-4">
 
               <div class="col-md-5 col-lg-3 col-xl-3">
-                <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0">
+                <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0 p-3">
+                <?php if(!empty($item->product->on_offer)): ?>
+                        <div class="ribbon ribbon-danger text-white border-danger ribbon-bottom-left ">Offer!</div>
+                        <?php endif; ?>
                   <img class="img-fluid w-100" src="/<?php echo e($item->product->image); ?>" alt="Sample">
                   <!-- <a href="#!">
                   <div class="mask">
@@ -80,8 +83,9 @@
                   <div class="d-flex justify-content-between">
                     <div class="col-md-6">
                       <h5 class="h5"><?php echo e($item->product->title); ?></h5>
-                      <p class="mb-0"><span><strong id="summary" class=" text-secondary  "><i class="fa fa-inr"></i> <?php echo e($item->product->price); ?></strong></span></p class="mb-0">
-
+                      <p class="mb-0"><span><strong id="summary" class=" text-secondary  "><i class="fa fa-inr"></i> <?php echo e((!empty($item->product->on_offer) ? $item->product->price : $item->product->pre_price )); ?></strong></span>
+                        <span class="text-danger"><?php if(!empty($item->product->on_offer)): ?><del><i class="fa fa-inr"></i> <?php echo e($item->product->pre_price); ?></del><?php endif; ?> </span></p class="mb-0">
+                         <span class=" text-danger"><?php echo e((!empty($item->product->on_offer) ? "You saved Rs. ".($item->product->pre_price - $item->product->price) : "" )); ?></span></span>
                     </div>
                     <div>
 
@@ -141,7 +145,11 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-0">
                 Subtotal
-                <span><i class="fa fa-inr"></i><strong id="carttotal"><?php echo e($subtotal); ?></strong> </span>
+                <span><i class="fa fa-inr"></i><strong id="carttotal"><?php echo e($subtotal_total); ?></strong> </span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center  px-0 pb-0">
+                Discount
+                <span class="text-danger"><i class="fa fa-inr"></i><strong id="carttotal"> - <?php echo e($discount); ?></strong> </span>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center px-0">
                 Delivery Charge

@@ -712,6 +712,7 @@ class AdminDashboardController extends Controller
 
     public function productEdit($id){
         $product = Product::find($id);
+        // dd($product);
         $data= [
             'categories'=> StaticAsset::getAssetsByTitle("product_categories"),
             'sub_categories' => StaticAsset::getAssetsByTitle("product_sub_categories"),

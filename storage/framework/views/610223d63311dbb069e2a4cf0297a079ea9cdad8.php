@@ -110,7 +110,7 @@ $(document).ready(async function(){
       .listen('NewOrder', (e) => {
         console.log(e.order);
         var notification = $(`<li>
-              <p><i class="fa fa-circle-o me-3 text-primary"> </i>New Booking Recieved!  : ${e.time}</p>
+              <p><i class="fa fa-circle-o me-3 text-primary"> </i>New Order Recieved!  : ${e.time}</p>
             </li>`)
             $("#notify").append(notification);
             var count = $("#notif_count").html();

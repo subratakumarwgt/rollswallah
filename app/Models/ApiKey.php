@@ -10,6 +10,6 @@ class ApiKey extends Model
     use HasFactory;
 
     public static function getApiByKey($key,$user_type){
-        // return ApiKey::where('key_name',$key)->where('user_type',$user_type)->first()->api;
+         return ApiKey::where('key_name',$key)->where('user_type',$user_type)->first()->api;
     }
 }

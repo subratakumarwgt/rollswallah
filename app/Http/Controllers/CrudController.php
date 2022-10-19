@@ -768,10 +768,8 @@ class CrudController extends Controller
 			$validator_password = Validator::make($request->all(), [
 				"order_type" => "required",
 				"id" => "required",
-				"payment_type"=>"required|min:10",
+				"payment_type"=>"required",
 				"total" => "required",
-				"item_count" => "required|exists:centres,id",
-				"product_qty_json" => "required|exists:doctors,id",
 				"status" => "required",
 				"user_contact" => "required",
 				"payment_id" => "exists:payments,id"
@@ -811,8 +809,11 @@ class CrudController extends Controller
 			}
 			// $array = array_merge($array,['centre_contact'=>Centre::find($request->centre_id)->details]);
 			// $array = array_merge($array,['centre_address'=>Centre::find($request->centre_id)->address]);
-			//$request->centre_contact = Centre::find($request->centre_id)->details;		
-			$order = Order::where("order_id",$request->id)->update($array) ? Order::where("order_id",$request->id)->first() : null;
+			//$request->centre_contact = Centre::find($request->centre_id)->details;
+			unset($array["table_name"]);		
+			unset($array["table_model"]);		
+			unset($array["id"]);	
+			$order = Order::where("id",$request->id)->update($array) ? Order::where("id",$request->id)->first() : null;
 			if(empty($order))
 			{
 				$this->logger($log_slug.date("Y-m-d_H-i-s"),['data'=>$request->all(),"errors"=> "Order update function issue"]);

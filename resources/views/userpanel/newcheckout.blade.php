@@ -35,7 +35,7 @@
                     <span class="text-muted p-3 h-3">Your cart</span>
                     <span class="badge badge-primary badge-pill" id="item_count">3</span>
                 </h4>
-                <ul class="list-group mb-3 bg-white shadow-sm p-3" id="cartrowx">
+                <ul class="list-group mb-3 bg-white shadow-sm p-1" id="cartrowx">
                  {!!$item_html!!}
                     <!-- <li class="list-group-item d-flex justify-content-between bg-primary-light">
                         <div class="text-dark">
@@ -44,18 +44,22 @@
                         </div>
                         <span class="text-dark">-<i class="fa fa-inr"></i> 5</span>
                     </li> -->
-                    <li class="list-group-item border-none d-flex justify-content-between align-items-center  p-2 ">
-                        Subtotal
-                        <span><i class="fa fa-inr"></i> {{$subtotal ?? ''}}</span>
-                    </li>
-                    <li class="list-group-item border-none d-flex justify-content-between align-items-center p-2  p-2">
-                        Delivery Charge
-                        <span><i class="fa fa-inr"></i> <strong id="delivery"> {{$charges->delivery_charge ?? "0"}}</strong></span>
-                    </li>
-                    <li class="list-group-item border-none d-flex justify-content-between align-items-center p-2  p-2">
-                        Packing Charge
-                        <span><i class="fa fa-inr"></i> <strong id="packing"> {{$charges->packing_charge ?? "0"}}</strong></span>
-                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center  p-1">
+                Subtotal
+                <span><i class="fa fa-inr"></i><strong id="carttotal">{{$subtotal_total}}</strong> </span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center  p-1">
+                Discount
+                <span class="text-danger"><i class="fa fa-inr"></i><strong id="carttotal"> - {{$discount}}</strong> </span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center p-1">
+                Delivery Charge
+                <span><i class="fa fa-inr"></i><strong id="delivery">{{$charges->delivery_charge ?? "0"}}</strong></span>
+              </li>
+              <li class="list-group-item d-flex justify-content-between align-items-center p-1">
+                Packing Charge
+                <span><i class="fa fa-inr"></i><strong id="packing"> {{$charges->packing_charge ?? "0"}}</strong></span>
+              </li>
                     <li class="list-group-item border-none d-flex justify-content-between ">
                         <span>Total (INR)</span>
                         <strong class="badge badge-dark badge-xl"><i class="fa fa-inr"></i><text id=""> {{@$charges->packing_charge + @$charges->delivery_charge + @$subtotal }}</text></strong>
@@ -75,8 +79,8 @@
                                                 <div class="pt-4 col-md-12">
         
             <h5 class="mb-1">Expected Delivery</h5>
-
-            <p class="mb-0"> {{date("d M,Y",strtotime("+1 day"))}} - {{date("d M,Y",strtotime("+2 day"))}}</p>
+            <p class="mb-0">in 40 Minutes (approx) </p>            
+            <p class="mb-0"> {{date("H:i, d M",strtotime("+40 minutes"))}} - {{date("H:i, d M",strtotime("+1 hour"))}}</p>
           </div>
            <div class="col-md-12 pt-4">
 
@@ -107,14 +111,14 @@
                             <label for="email">Email <span class="text-muted">(*)</span></label>
                             <input type="email" class="form-control" id="email" placeholder="you@example.com" value="{{@Auth::User()->email}}">
                             <div class="invalid-feedback">
-                                Please enter a valid email address for shipping updates.
+                                Please enter a valid email address for delivery updates.
                             </div>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="email">Contact <span class="text-muted">(*)</span></label>
                             <input type="email" class="form-control" id="contact" placeholder="7005006004" value="{{@Auth::User()->contact}}">
                             <div class="invalid-feedback">
-                                Please enter a Contact Number for shipping updates.
+                                Please enter a Contact Number for delivery updates.
                             </div>
                         </div>
                     </div>
@@ -122,7 +126,7 @@
                         <label for="address">Address <span class="text-muted">(*)</span></label>
                         <input type="text" class="form-control" id="address" placeholder="1234 Main St" required="" value="{{@Auth::User()->address}}">
                         <div class="invalid-feedback">
-                            Please enter your shipping address.
+                            Please enter your delivery address.
                         </div>
                     </div>
 
@@ -165,12 +169,6 @@
                         <div id="orderMessage"></div>
                     </div>
                     <input type="hidden" name="token" id="token" value="{{csrf_token()}}">
-
-
-
-
-
-
                     <input type="hidden" name="amount" value="{{$subtotal + @$charges->packing_charge + @$charges->delivery_charge}}" id="fTotal">
                     <button class="btn btn-secondary btn-lg btn-block" type="submit" id="orderButton" disabled="true" >Continue to
                         Order</button>

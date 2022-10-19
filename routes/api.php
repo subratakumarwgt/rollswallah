@@ -38,6 +38,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
   Route::post('/validate-appointment', '\App\Http\Controllers\CrudController@validateAppointment')->name('validate-appointment');
   Route::post('/make-order', '\App\Http\Controllers\CrudController@makeOrder')->name('make-order');
   Route::post('/make-purchase', '\App\Http\Controllers\CrudController@makePurchase')->name('make-purchase');
+  Route::post('/place-order', '\App\Http\Controllers\CrudController@placeOrder')->name('place-order');
   Route::post('/add-to-cart', '\App\Http\Controllers\CrudController@addToCart')->name('add-to-cart');
   Route::post('/cart/change-quantity', '\App\Http\Controllers\CrudController@changeQuantity')->name('cart.change-quantity');
   Route::post('/broadcasting/auth','\App\Http\Controllers\AdminDashboardController@verifyBroadcast')->name('broadcast-auth');
