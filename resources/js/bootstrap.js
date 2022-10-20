@@ -22,7 +22,12 @@ window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    authEndpoint: '/api/broadcasting/auth',
+    authEndpoint: '/broadcasting/auth',
+    auth: {
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        }
+    },
     key: 'alliswell_pusher',
     cluster: 'mt1',
     wsHost: window.location.hostname,

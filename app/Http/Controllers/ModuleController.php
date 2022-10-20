@@ -14,12 +14,15 @@ use App\Models\ModuleHasPermssion as ModPer;
 use App\Models\User;
 use App\Models\Module;
 use App\Notifications\PushNotify;
+use Illuminate\Notifications\Notification as NotificationsNotification;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Minishlink\WebPush\Notification as WebPushNotification;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
-use Notification;
+
 
 class ModuleController extends Controller
 {
@@ -348,16 +351,17 @@ class ModuleController extends Controller
         $token = $request->keys['auth'];
         $key = $request->keys['p256dh'];
         $user = Auth::user();
-        // $user->updatePushSubscription($endpoint, $key, $token);
+         
         
-        return response()->json(['success' => true],200);
+        return response()->json(['success' =>$user->updatePushSubscription($endpoint, $key, $token)],200);
 	}
 	public function sendPush(Request $request)
 	{
 
 		$newObj = new PushNotify("New Title!","New body hello hii bye!!","See now","url");
-	
-		Notification::send(User::all(),$newObj);
-		return redirect()->back();
+		$notification = new PushNotify("New Title!","New body hello hii bye!!","See now","url");
+	    dd(Auth::User()->notifyNow($notification));
+		$ss = Notification::sendNow(User::where("id",11)->get(),$newObj);
+		print_r($ss);
 	}
 }

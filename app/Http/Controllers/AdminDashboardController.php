@@ -29,8 +29,9 @@ class AdminDashboardController extends Controller
     $this->secret_key = 'tWkIxUcqup9ohJc7GnweJxHo';
   }
     public function verifyBroadcast(Request $request){
+        $user = Auth::User();
         
-        return response(['status'=>true,'data'=>$request->all()],200);
+        return response(['auth'=>md5("hello"), "user_data" => $user],200);
     }
     public function slotDelete($id){
         $p = Slots::find($id);

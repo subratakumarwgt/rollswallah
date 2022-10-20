@@ -25577,7 +25577,12 @@ window.api_auth_token = "8629c4608a7cba5fd2a7a1677c2a97a6"; // const notifier = 
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  authEndpoint: '/api/broadcasting/auth',
+  authEndpoint: '/broadcasting/auth',
+  auth: {
+    headers: {
+      'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    }
+  },
   key: 'alliswell_pusher',
   cluster: 'mt1',
   wsHost: window.location.hostname,

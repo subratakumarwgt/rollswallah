@@ -11,7 +11,7 @@ use NotificationChannels\WebPush\HasPushSubscriptions;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles, HasPushSubscriptions;
+    use HasFactory, Notifiable, HasRoles, HasPushSubscriptions ;
 
     /**
      * The attributes that are mass assignable.
@@ -53,4 +53,13 @@ class User extends Authenticatable
     public function orders(){
         return $this->hasMany(Order::class,'user_id','id');
     }
+    // public function updatePushSubscription($endpoint, $key, $token){
+    //     try {
+    //         $push =  pushSubscription::firstOrNew(array('endpoint' => $endpoint,'public_key' => $key , "auth_token" => $token , "guest_id"=> $this->id));
+      
+    //     return $push->update(array('endpoint' => $endpoint,'public_key' => $key , "auth_token" => $token , "guest_id"=> $this->id)) ? "subscription added" : json_encode($this);
+    //    } catch (\Throwable $th) {
+    //     return $th->getMessage();
+    //    }
+    // }
 }
