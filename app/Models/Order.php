@@ -16,4 +16,7 @@ class Order extends Model
     public function chargeDetails(){
         return $this->hasMany(OrderCharge::class,'order_id','order_id');
     }
+    public function logs(){
+        return $this->hasMany(orderLog::class,'order_id','id');
+    }
 }

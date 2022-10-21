@@ -153,7 +153,8 @@ class UserDashboardController extends Controller
     public function myBookingView($booking_id){
         $booking_id = Booking::where('booking_id',$booking_id)->first()->id;
         $appointment = new AppointmentController($booking_id);
-      //  $appointment = $appointment->appointment;
+        // $appointment = $appointment->appointment;
+        //  dd($appointment);
         return view('userpanel.mybookings',['app_log'=>$appointment]);
     }
 

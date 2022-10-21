@@ -713,6 +713,7 @@ class CrudController extends Controller
 	}
 	public function validateAppointment(Request $request){
 		$log_slug = "booking_validate_error_";
+		return response(['status' => true, "data" => [],"message"=>"Booking is valid"], 200);
 		try {
 			$validator_password = Validator::make($request->all(), [
 				"booking_date" => "required",

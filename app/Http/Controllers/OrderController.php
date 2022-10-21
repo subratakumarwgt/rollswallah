@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appointment_log;
 use App\Models\Booking;
 use App\Models\Centre;
 use App\Models\Doctor;
+use App\Models\Order;
+use App\Models\orderLog;
 use Illuminate\Http\Request;
 
-class AppointmentController extends Controller
+class OrderController extends Controller
 {
     //
-
-    public $appointment;
+    public $order;
     public $steps;
 
     private $current_status;
@@ -21,9 +21,9 @@ class AppointmentController extends Controller
 
 
     public function __construct($id){
-    	$this->appointment = Booking::find($id);
+    	$this->order = Order::find($id);
         
-        $this->steps =  $this->appointment->logs;
+        $this->steps =  $this->order->logs;
         // dd($this->steps);
         // $this->setConfirmation();
         // $this->setVisitInfo();
@@ -32,34 +32,33 @@ class AppointmentController extends Controller
     }
     public function getCurrentStatus(){
         try {
-            $this->current_status = @$this->appointment->logs->last()->status_name;
-            $this->current_step = @$this->appointment->logs->last()->step_no;
-            return @$this->appointment->logs->last();
+            $this->current_status = @$this->order->logs->last()->status_name;
+            $this->current_step = @$this->order->logs->last()->step_no;
+            return @$this->order->logs->last();
         } catch (\Throwable $th) {
-            $this->logger("get_current_status_error",json_encode(["error"=>$th->getMessage(),"data"=>$this->appointment]));
+            $this->logger("get_order_current_status_error",json_encode(["error"=>$th->getMessage(),"data"=>$this->order]));
             return false;
         }      
 
     }
     public function getDetailsByStep($step_no){
-        return @$this->appointment->logs->where('step_no',$step_no)->first();
+        return @$this->order->logs->where('step_no',$step_no)->first();
     }
   
 
-    public function setBookingDetails(){
+    public function setOrderDetails(){
         try {
-            $this->appointment->booking_id = uniqid("AP").$this->appointment->id; 
-            $this->appointment->save();
-            $log = new Appointment_log();
-            $log->booking_id = $this->appointment->id;
-            $log->update_message = "Booking has been recieved.";
+           
+            $log = new orderLog();
+            $log->order_id = $this->order->id;
+            $log->update_message = "Order has been recieved.";
             $log->status_name = "requested";
-            $log->section_title = "Booking Details";
+            $log->section_title = "Order Details";
             $log->section_content_json = json_encode([
-                'appointment_id' => $this->appointment->booking_id,
-                'appointment_for'=>$this->appointment->booking_type,
-                'schedule_date'=>$this->appointment->booking_date,
-                'recieved_on'=>$this->appointment->created_at
+                'order_id' => $this->order->order_id,
+                'order_for'=>$this->order->booking_type,
+                'order_details'=>$this->order->orderDetails,
+                'recieved_on'=>$this->order->created_at
             ]);
             $log->step_no = 1;
             $log->icon = 'fa fa-pencil';
@@ -71,14 +70,14 @@ class AppointmentController extends Controller
                 return false;
             }
         } catch (\Throwable $th) {
-            $this->logger("set_booking_details_error",json_encode(["error"=>$th->getMessage(),"data"=>$this->appointment]));
+            $this->logger("set_booking_details_error",json_encode(["error"=>$th->getMessage(),"data"=>$this->order]));
             return false;
         }
       
     }
-    public function getBookingDetails(){
+    public function getOrderDetails(){
         try {
-         return $this->appointment->logs->where('step_no',1)->first();
+         return $this->order->logs->where('step_no',1)->first();
            
         } catch (\Throwable $th) {
             $this->logger("get_booking_details_error",json_encode(["error"=>$th->getMessage()]));
@@ -88,16 +87,16 @@ class AppointmentController extends Controller
     }
     public function setConfirmation($time = ""){
         try {
-            $this->appointment->booking_time = $time; 
-            $this->appointment->save();
-            $log = new Appointment_log();
-            $log->booking_id = $this->appointment->id;
-            $log->update_message = "Booking has been confirmed.";
+           
+            $log = new orderLog();
+            $log->order_id = $this->order->id;
+            $log->update_message = "Order has been confirmed.";
             $log->status_name = "confirmed";
             $log->section_title = "Confirmation";
             $log->section_content_json = json_encode([
-                'appointment_id' => $this->appointment->booking_id,
-                'confirmed_on'=>date("Y-m-d H:i:s")
+                'order_id' => $this->order->order_id,
+                'confirmed_on'=>date("Y-m-d H:i:s"),
+                'estimated_delivery'=>""
             ]);
             $log->step_no = 2;
             $log->icon = 'fa fa-check';
@@ -116,13 +115,13 @@ class AppointmentController extends Controller
     }
     public function setCancel(){
         try {
-            $log = new Appointment_log();
-            $log->booking_id = $this->appointment->id;
+            $log = new orderLog();
+            $log->order_id = $this->order->id;
             $log->update_message = "Booking has been cancelled.";
             $log->status_name = "cancelled";
             $log->section_title = "Confirmation";
             $log->section_content_json = json_encode([
-                'appointment_id' => $this->appointment->booking_id,
+                'order_id' => $this->order->order_id,
                 'cancelled_on'=>date("Y-m-d H:i:s"),
                 'refund'=>'processing'
             ]);
@@ -143,19 +142,19 @@ class AppointmentController extends Controller
     }
     public function setVisitInfo(){
         try {
-            $doctor =  Doctor::find($this->appointment->doctor_id);
-            $centre =  Centre::find($this->appointment->centre_id);
-            if ($this->appointment->booking_type != "check_up") {
+            $doctor =  Doctor::find($this->order->doctor_id);
+            $centre =  Centre::find($this->order->centre_id);
+            if ($this->order->booking_type != "check_up") {
              // $diagnosis = null;
             }
-            $log = new Appointment_log();
-            $log->booking_id = $this->appointment->id;
+            $log = new orderLog();
+            $log->order_id = $this->order->id;
             $log->update_message = "Visit info set.";
             $log->status_name = "visit info";
             $log->section_title = "Visit Info";
             $log->section_content_json = json_encode([
-                'appointment_id' => $this->appointment->booking_id,
-                'timming'=> $this->appointment->booking_time,
+                'order_id' => $this->order->order_id,
+                'timming'=> $this->order->booking_time,
                 'doctor' => $doctor->name,
                 'centre' => $centre->name,
                 'fees'=>$doctor->full_charge,
@@ -178,13 +177,13 @@ class AppointmentController extends Controller
     }
      public function setFeedback($feedback=""){
         try {
-            $log = new Appointment_log();
-            $log->booking_id = $this->appointment->id;
+            $log = new orderLog();
+            $log->order_id = $this->order->id;
             $log->update_message = "Feedback submited.";
             $log->status_name = "feedback";
             $log->section_title = "Get well soon!";
             $log->section_content_json = json_encode([
-                'appointment_id' => $this->appointment->booking_id,
+                'order_id' => $this->order->order_id,
                 'visited_on'=>date("Y-m-d H:i:s"),
                 'feedback'=>$feedback
             ]);
@@ -192,7 +191,7 @@ class AppointmentController extends Controller
             $log->icon = 'fa fa fa-comments-o';
             $log->class = 'success';
             if ($log->save()) {
-                $this->appointment->review = $feedback;
+                $this->order->review = $feedback;
                 return true;
             }
             else {
@@ -206,7 +205,7 @@ class AppointmentController extends Controller
     }
     public function getFeedback(){
         try {
-            return $this->appointment->logs->where('step_no',4)->first();
+            return $this->order->logs->where('step_no',4)->first();
               
            } 
         catch (\Throwable $th) {
@@ -217,7 +216,7 @@ class AppointmentController extends Controller
     }
     public function getConfirmation(){
         try {
-            return $this->appointment->logs->where('step_no',2)->first();
+            return $this->order->logs->where('step_no',2)->first();
               
            } 
         catch (\Throwable $th) {
@@ -228,7 +227,7 @@ class AppointmentController extends Controller
     }
     public function getVisitInfo(){
         try {
-            return $this->appointment->logs->where('step_no',3)->first();
+            return $this->order->logs->where('step_no',3)->first();
               
            } 
         catch (\Throwable $th) {
@@ -237,6 +236,7 @@ class AppointmentController extends Controller
            }
       
     }
-
-
+    private function getEstimatedDeliveryTime($minutes = 40){
+        return date("Y-m-d H:i:s",strtotime("+".$minutes." minutes"));
+    }
 }

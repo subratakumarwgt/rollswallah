@@ -13,11 +13,11 @@
 <?php $__env->startSection('content'); ?>
 <div class="container-fluid">
    <div class="row">
-      <div class="col-xl-7 order-1"><img class="bg-img-cover bg-center" src="<?php echo e(asset('assets/images/login/1.jpg')); ?>" alt="looginpage"></div>
+      <div class="col-xl-7 order-1"><img class="bg-img-cover bg-center" src="<?php echo e(asset('assets/images/login/1.png')); ?>" alt="looginpage"></div>
       <div class="col-xl-5 p-0">
          <div class="login-card">
             <div>
-               <div><a class="logo text-start" href="<?php echo e(route('auth-login')); ?>"><img class="img-fluid for-light" src="<?php echo e(asset('assets/images/logo/logo.png')); ?>" alt="looginpage"><img class="img-fluid for-dark" src="<?php echo e(asset('assets/images/logo/logo_dark.png')); ?>" alt="looginpage"></a></div>
+               <div><a class="logo text-start" href="<?php echo e(route('auth-login')); ?>"><img class="img-fluid for-light" width="500px" src="<?php echo e(asset('assets/images/logo/logo.png')); ?>" alt="looginpage"><img class="img-fluid for-dark" src="<?php echo e(asset('assets/images/logo/logo_dark.png')); ?>" alt="looginpage"></a></div>
                <div class="login-main">
                   <form class="theme-form needs-validation" novalidate="" method="post" action="<?php echo e(route('auth-login')); ?>">
                      <?php echo csrf_field(); ?>

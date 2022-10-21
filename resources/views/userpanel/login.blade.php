@@ -13,11 +13,11 @@
 @section('content')
 <div class="container-fluid">
    <div class="row">
-      <div class="col-xl-7 order-1"><img class="bg-img-cover bg-center" src="{{asset('assets/images/login/1.jpg')}}" alt="looginpage"></div>
+      <div class="col-xl-7 order-1"><img class="bg-img-cover bg-center" src="{{asset('assets/images/login/1.png')}}" alt="looginpage"></div>
       <div class="col-xl-5 p-0">
          <div class="login-card">
             <div>
-               <div><a class="logo text-start" href="{{ route('auth-login') }}"><img class="img-fluid for-light" src="{{asset('assets/images/logo/logo.png')}}" alt="looginpage"><img class="img-fluid for-dark" src="{{asset('assets/images/logo/logo_dark.png')}}" alt="looginpage"></a></div>
+               <div><a class="logo text-start" href="{{ route('auth-login') }}"><img class="img-fluid for-light" width="500px" src="{{asset('assets/images/logo/logo.png')}}" alt="looginpage"><img class="img-fluid for-dark" src="{{asset('assets/images/logo/logo_dark.png')}}" alt="looginpage"></a></div>
                <div class="login-main">
                   <form class="theme-form needs-validation" novalidate="" method="post" action="{{ route('auth-login') }}">
                      @csrf

@@ -1,27 +1,27 @@
-@extends('userpanel.master')
-@section('title', 'My Bookings')
 
-@section('css')
-<link rel="stylesheet" type="text/css" href="{{asset('assets/css/vendors/animate.css')}}">
-@endsection
+<?php $__env->startSection('title', 'My Bookings'); ?>
 
-@section('style')
-@endsection
-@section('breadcrumb-title')
+<?php $__env->startSection('css'); ?>
+<link rel="stylesheet" type="text/css" href="<?php echo e(asset('assets/css/vendors/animate.css')); ?>">
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('style'); ?>
+<?php $__env->stopSection(); ?>
+<?php $__env->startSection('breadcrumb-title'); ?>
 <h5>Appointment Log</h5>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('breadcrumb-items')
+<?php $__env->startSection('breadcrumb-items'); ?>
 <li class="breadcrumb-item">Settings</li>
 <li class="breadcrumb-item active">My Bookings </li>
-<li class="breadcrumb-item active">{{@$appointment->booking_id}} </li>
-@endsection
+<li class="breadcrumb-item active"><?php echo e(@$appointment->booking_id); ?> </li>
+<?php $__env->stopSection(); ?>
 
-@section('banner')
-<div class="" style="height: 200px;position:fixed;filter: blur(12px);-webkit-filter: blur(12px);"><img src="{{asset('assets/images/bg_3-33.jpg')}}" alt="" style="min-width: 1000px;"></div>
-@endsection
+<?php $__env->startSection('banner'); ?>
+<div class="" style="height: 200px;position:fixed;filter: blur(12px);-webkit-filter: blur(12px);"><img src="<?php echo e(asset('assets/images/bg_3-33.jpg')); ?>" alt="" style="min-width: 1000px;"></div>
+<?php $__env->stopSection(); ?>
 
-@section('content')
+<?php $__env->startSection('content'); ?>
 
 <div class="container-fluid">
 	<div class="row">
@@ -30,19 +30,19 @@
 
 				<div class=" pt-3 pb-3 row text-ark">
 
-					<input type="hidden" value="{{$app_log->appointment}}" id="booking">
+					<input type="hidden" value="<?php echo e($app_log->appointment); ?>" id="booking">
 					<!-- cd-timeline Start-->
 					<section class="cd-container" id="cd-timeline">
-						@foreach($app_log->steps as $log)
-						<input type="hidden" value="{{$log}}" class="steps">
-						<div class="cd-timeline-block text-center" id="loader_{{$log->id}}">
+						<?php $__currentLoopData = $app_log->steps; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $log): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+						<input type="hidden" value="<?php echo e($log); ?>" class="steps">
+						<div class="cd-timeline-block text-center" id="loader_<?php echo e($log->id); ?>">
 							<div class="cd-timeline-content">
 								<div class="spinner-border" role="status">
 									<span class="sr-only">Loading...</span>
 								</div>
 							</div>
 						</div>
-						@endforeach
+						<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
 
 
@@ -56,11 +56,11 @@
 		</div>
 	</div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
 
-@section('script')
-<script src="{{asset('assets/js/timeline/timeline-v-1/main.js')}}"></script>
-<script src="{{asset('assets/js/modernizr.js')}}"></script>
+<?php $__env->startSection('script'); ?>
+<script src="<?php echo e(asset('assets/js/timeline/timeline-v-1/main.js')); ?>"></script>
+<script src="<?php echo e(asset('assets/js/modernizr.js')); ?>"></script>
 <script>
 	var booking = document.getElementById("booking");
 	booking = JSON.parse(booking.value);
@@ -182,4 +182,5 @@
 		setNodes()
 	}, 800);
 </script>
-@endsection
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('userpanel.master', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Users\subra\Documents\projects\rollswallah\resources\views/userpanel/mybookings.blade.php ENDPATH**/ ?>
