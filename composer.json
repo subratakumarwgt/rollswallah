@@ -17,7 +17,7 @@
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
         "predis/predis": "^1.1",
-        "pusher/pusher-php-server": "~3.0",
+        "pusher/pusher-php-server": "^7.2",
         "razorpay/razorpay": "2.*",
         "rinvex/laravel-statistics": "^5.0",
         "spatie/laravel-permission": "^5.4"

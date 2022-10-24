@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
@@ -8,10 +7,8 @@ use NotificationChannels\WebPush\WebPushMessage;
 use NotificationChannels\WebPush\WebPushChannel;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Auth;
-use Pusher\Pusher;
 
-class PushNotify extends Notification
+class webPushNotification extends Notification
 {
     use Queueable;
 
@@ -43,10 +40,7 @@ class PushNotify extends Notification
      */
     public function via($notifiable)
     {
-       
-        return [WebPushChannel::class,"database"];
-        
-     
+         return [WebPushChannel::class];
     }
 
 
@@ -72,6 +66,7 @@ class PushNotify extends Notification
             "body" => $this->body,
             "action" => $this->action,
             "url" => $this->url
+            //
         ];
     }
 }

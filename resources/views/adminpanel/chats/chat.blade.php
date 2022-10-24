@@ -182,9 +182,9 @@
 		let time = newDate.timeNow();
 		let form = new FormData();
 		form.append("_token",$("#csrf_token").val())
-		form.append("key","alliswell_pusher")
-		form.append("secret","alliswell_pusher")
-		form.append("appId","alliswell_pusher")
+		form.append("key","25b4d478f2181f36ae88")
+		form.append("secret","f8e5f1ec72df481e3d9d")
+		form.append("appId","1495690")
 		form.append("channel","chat")
 		form.append("event","App\\Events\\sendChat")
 		form.append("data",JSON.stringify({"message":message,"user":thisUser,"time":time}));
@@ -209,6 +209,15 @@
                                     500: function(){
                                         $.notify({
                                             message:"Something went wrong"
+                                        }, {
+                                            type: 'danger',
+                                            z_index: 10000,
+                                            timer: 2000,
+                                        });
+                                    },
+									422: function(){
+                                        $.notify({
+                                            message:"Invalid server creds"
                                         }, {
                                             type: 'danger',
                                             z_index: 10000,

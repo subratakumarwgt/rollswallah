@@ -8,9 +8,10 @@ self.addEventListener('push', function (e) {
         var msg = e.data.json();
         console.log(msg,"from SW")
         
-        e.waitUntil(self.registration.showNotification("New Order", {
-            body: "Hello this is body",
-            icon: "",
+        e.waitUntil(self.registration.showNotification(msg.title, {
+            body: msg.body,
+            icon: "/assets/images/logo/rollswallah.png",
+            vibrate: [200, 100, 200, 100, 200, 100, 200],
             actions: [{action: "get",title:"titlehere"}]
         }));
 

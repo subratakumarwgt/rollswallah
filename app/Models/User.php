@@ -53,6 +53,9 @@ class User extends Authenticatable
     public function orders(){
         return $this->hasMany(Order::class,'user_id','id');
     }
+    public function onlineStatus(){
+        return $this->hasOne(onlineUsers::class,'user_id','id');
+    }
     // public function updatePushSubscription($endpoint, $key, $token){
     //     try {
     //         $push =  pushSubscription::firstOrNew(array('endpoint' => $endpoint,'public_key' => $key , "auth_token" => $token , "guest_id"=> $this->id));

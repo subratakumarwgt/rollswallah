@@ -360,8 +360,16 @@ class ModuleController extends Controller
 
 		$newObj = new PushNotify("New Title!","New body hello hii bye!!","See now","url");
 		$notification = new PushNotify("New Title!","New body hello hii bye!!","See now","url");
-	    dd(Auth::User()->notifyNow($notification));
-		$ss = Notification::sendNow(User::where("id",11)->get(),$newObj);
-		print_r($ss);
+	    // dd(Auth::User()->notifyNow($notification));
+		try {
+			// Auth::User()->notify($notification);
+		    // echo($ss);
+			Notification::send(User::all(),$notification);
+		} catch (\Throwable $th) {
+			echo("error: ".$th->getMessage());
+		}
+
+		// $pusher->trigger('booking', 'push', 'hello world');
+		
 	}
 }

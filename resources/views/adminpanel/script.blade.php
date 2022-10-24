@@ -84,6 +84,9 @@ $(document).ready(async function(){
 <script>
     const admin_broadcast = $("#admin_broadcast").val();
 
+    var this_user_id = {{Auth::User()->id}}
+    var this_user_status = {{Auth::User()->userStatus->is_online ?? 1}}
+
     // console.log(Echo)
     Echo.channel('booking')
         .listen('NewBooking', (e) => {
@@ -131,8 +134,10 @@ $(document).ready(async function(){
     .here((users) => {
       online_users = users
       console.log("here method",users)
+
     })
     .joining((user) => {
+        deBounceUserStatus(user,1)
         $.notify({
                 message: `New user joined ${user.name}`
             }, {
@@ -164,21 +169,30 @@ let new_user_row = $(`
             $("#tableBody").append(new_row)
     })
     .leaving((user) => {
-        $.notify({
-                message: `${user.name} just left`
-            }, {
-                type: 'warning',
-                z_index: 10000,
-                timer: 2000,
-            })
-            $("#user_status_"+user.id).html(`<i class="fa fa-circle shadow-sm text-danger"></i>`)
+        deBounceUserStatus(user,0)
+        $("#user_status_"+user.id).html(`<i class="fa fa-circle shadow-sm text-danger"></i>`)
             let light = $("#user_info_"+user.id).find(".status-circle")
             light.removeClass("online")
             light.addClass("offline")
+       
     })
     .error((error) => {
         console.error(error);
     });
+
+    const deBounceUserStatus = (user, status = 1) => {
+         let changeStatus 
+         clearTimeout(changeStatus);
+         changeStaus = setTimeout(() => {
+            setUserSTatus(user,status)           
+         }, 5000);
+    }
+
+    const setUserSTatus = (user,status = 1) => {
+        $.post("/api/set-user-status",{us},(data)=>{
+            console.log(data);
+        })
+    }
    
 </script>
 @yield('script')

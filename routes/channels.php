@@ -1,5 +1,6 @@
 <?php
 
+use App\Broadcasting\NotificationChannel;
 use Illuminate\Support\Facades\Broadcast;
 use App\Models\Order;
 use App\Models\ApiKey;
@@ -28,13 +29,14 @@ Broadcast::channel('orders.{id}', function ($user,$id) {
     return false;
  
 });
-Broadcast::channel('online', function ($user) {
-    $user->profile = $user->profile;
-    return $user;// !empty(User::find($user_id));
+// Broadcast::channel('online', function ($user) {
+//     $user->profile = $user->profile;
+//     return $user;// !empty(User::find($user_id));
  
-});
+// });
 Broadcast::channel('chat', function ($user) {
     $user->profile = $user->profile;
     return $user;// !empty(User::find($user_id));
  
 });
+Broadcast::channel('online',NotificationChannel::class);

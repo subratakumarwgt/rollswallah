@@ -780,15 +780,7 @@ class CrudController extends Controller
 				$this->logger($log_slug.date("Y-m-d_H-i-s"),['data'=>$request->all(),"errors"=> $validator_password->errors()]);
 				return response(['status' => false, "errors" => $validator_password->errors(),"message"=>"Invalid order request"], 400);
 			}
-			// $slot = Slots::where('doctor_id',$request->doctor_id)->whereDate('date',$request->order_date)->where('centre_id',$request->centre_id)->first();
-			// if (empty($slot) || empty($slot->free_slots)) {
-			// 	$this->logger($log_slug.date("Y-m-d_H-i-s"),['data'=>$request->all(),"errors"=> "Insufficient slots"]);
-			// 	return response(['status' => false, "errors" => "Insufficient slots","data"=>"Insufficient slots! Please try with a different date"], 400);
-			// }
-			// if (strtotime('now')>strtotime($request->order_date)) {
-			// 	$this->logger($log_slug.date("Y-m-d_H-i-s"),['data'=>$request->all(),"errors"=> "Invalid order date"]);
-			// 	return response(['status' => false, "errors" => "Invalid order date","message"=>"Invalid order date"], 400);
-			// }
+			
 			if (!empty(User::where('contact',$request->user_contact)->count())) {
 				$request->user_id = User::where('contact',$request->user_contact)->first()->id;
 				$array = array_merge($request->all(),['user_id'=>$request->user_id]);
@@ -808,9 +800,7 @@ class CrudController extends Controller
 				$request->contact_id = $contact->id;
 				$array = array_merge($request->all(),['contact_id'=>$request->contact_id]);
 			}
-			// $array = array_merge($array,['centre_contact'=>Centre::find($request->centre_id)->details]);
-			// $array = array_merge($array,['centre_address'=>Centre::find($request->centre_id)->address]);
-			//$request->centre_contact = Centre::find($request->centre_id)->details;
+			
 			unset($array["table_name"]);		
 			unset($array["table_model"]);		
 			unset($array["id"]);	
