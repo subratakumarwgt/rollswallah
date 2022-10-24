@@ -28,8 +28,9 @@ use App\Models\OrderDetails;
 use App\Models\DailyExpense;
 use App\Models\OrderCharge;
 use Illuminate\Support\Facades\Validator;
-use Session;
 use DB;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Razorpay\Api\Api;
 
@@ -722,8 +723,6 @@ class CrudController extends Controller
 				"user_name" => "required|string|min:5",
 				"centre_id" => "required|exists:centres,id",
 				"doctor_id" => "required|exists:doctors,id",
-			
-	
 			]);
 			if ($validator_password->fails()) {
 				$this->logger($log_slug.date("Y-m-d_H-i-s"),['data'=>$request->all(),"errors"=> $validator_password->errors()]);
@@ -813,6 +812,77 @@ class CrudController extends Controller
 			}
 
 			event(new NewOrder($order));
+			return response(['status' => true, "data" => $array,"message"=>"Order placed successfully","details"=>$order], 200);
+		} catch (\Throwable $th) {
+			$this->logger($log_slug.date("Y-m-d_H-i-s"),["errors"=> $th->getMessage()]);
+		    return response(['status' => false, "errors" => $th->getMessage(),"message"=>"Something went wrong!"], 400);	
+		}
+	}
+	public function placeOnlineOrder(Request $request)
+	{
+		$log_slug = "online_order_error_";
+		try {
+			
+			$validator_password = Validator::make($request->all(), [
+				"payment_type"=>"required",
+				"total" => "required",
+				"user_contact" => "required",
+				"payment_id" => "exists:payments,id"	
+			]);
+			if ($validator_password->fails()) {
+				$this->logger($log_slug.date("Y-m-d_H-i-s"),['data'=>$request->all(),"errors"=> $validator_password->errors()]);
+				return response(['status' => false, "errors" => $validator_password->errors(),"message"=>"Invalid order request"], 400);
+			}
+			
+			if (!empty(User::where('contact',$request->user_contact)->count())) {
+				$request->user_id = User::where('contact',$request->user_contact)->first()->id;
+				$array = array_merge($request->all(),['user_id'=>$request->user_id]);
+			}
+			elseif(!empty(Contact::where('number',$request->user_contact)->count())){
+				$request->contact_id = Contact::where('number',$request->user_contact)->first()->id;
+				$array = array_merge($request->all(),['contact_id'=>$request->contact_id]);
+			}
+			else{
+				$contactData = [
+					"number"  => $request->user_contact,
+					"name"    => @$request->user_name,
+					"address" => @$request->user_address,
+				];
+
+				$contact = Contact::create($contactData);
+				$request->contact_id = $contact->id;
+				$array = array_merge($request->all(),['contact_id'=>$request->contact_id]);
+			}
+			
+			unset($array["table_name"]);		
+			unset($array["table_model"]);		
+			unset($array["id"]);	
+			$order = Order::create($array);
+
+
+			if(empty($order))
+			{
+				$this->logger($log_slug.date("Y-m-d_H-i-s"),['data'=>$request->all(),"errors"=> "Order Insert function issue"]);
+				return response(['status' => false, "errors" => null,"message"=>"Order could not be updated"], 400);
+			
+			}
+			$user_finder_id = Auth::check() ? Auth::User()->id :  Session::getId();
+			$order->order_id = time().$order->id;
+			$cart_items = Cart::where("user_id",$user_finder_id)->get();
+			foreach ($cart_items as  $item) {
+				$product_price = empty($item->product->on_offer) ? $item->product->pre_price : $item->product->price;
+				$orderDetail = [
+					"order_id" => $order->order_id,
+					"product_id" => $item->product->id,
+					"price" => $product_price,
+					"quantity" => $item->quantity,
+					"subtotal" => $product_price * $item->quantity,
+				];
+				OrderDetails::create($orderDetail);
+				$item->delete();
+			}
+			event(new NewOrder($order));
+			
 			return response(['status' => true, "data" => $array,"message"=>"Order placed successfully","details"=>$order], 200);
 		} catch (\Throwable $th) {
 			$this->logger($log_slug.date("Y-m-d_H-i-s"),["errors"=> $th->getMessage()]);

@@ -12,7 +12,7 @@ self.addEventListener('push', function (e) {
             body: msg.body,
             icon: "/assets/images/logo/rollswallah.png",
             vibrate: [200, 100, 200, 100, 200, 100, 200],
-            actions: [{action: "get",title:"titlehere"}]
+            actions: [{action: "",title:msg.action}]
         }));
 
         // console.log(self.registration.showNotification("New Order", {

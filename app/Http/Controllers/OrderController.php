@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Booking;
+use App\Models\Order;
 use App\Models\Centre;
 use App\Models\Doctor;
-use App\Models\Order;
 use App\Models\orderLog;
 use Illuminate\Http\Request;
 
@@ -52,13 +51,14 @@ class OrderController extends Controller
             $log = new orderLog();
             $log->order_id = $this->order->id;
             $log->update_message = "Order has been recieved.";
-            $log->status_name = "requested";
+            $log->status_name = "placed";
             $log->section_title = "Order Details";
             $log->section_content_json = json_encode([
                 'order_id' => $this->order->order_id,
-                'order_for'=>$this->order->booking_type,
+                'order_type'=>$this->order->order_type,
                 'order_details'=>$this->order->orderDetails,
-                'recieved_on'=>$this->order->created_at
+                'order_charges'=>$this->order->orderCharges,
+                'recieved_on'=>date("H:i, d M",strtotime($this->order->created_at))
             ]);
             $log->step_no = 1;
             $log->icon = 'fa fa-pencil';
@@ -70,7 +70,7 @@ class OrderController extends Controller
                 return false;
             }
         } catch (\Throwable $th) {
-            $this->logger("set_booking_details_error",json_encode(["error"=>$th->getMessage(),"data"=>$this->order]));
+            $this->logger("set_order_details_error",json_encode(["error"=>$th->getMessage(),"data"=>$this->order]));
             return false;
         }
       
@@ -80,12 +80,12 @@ class OrderController extends Controller
          return $this->order->logs->where('step_no',1)->first();
            
         } catch (\Throwable $th) {
-            $this->logger("get_booking_details_error",json_encode(["error"=>$th->getMessage()]));
+            $this->logger("get_order_details_error",json_encode(["error"=>$th->getMessage()]));
             return false;
         }
       
     }
-    public function setConfirmation($time = ""){
+    public function setConfirmation($delivery_time = ""){
         try {
            
             $log = new orderLog();
@@ -96,7 +96,8 @@ class OrderController extends Controller
             $log->section_content_json = json_encode([
                 'order_id' => $this->order->order_id,
                 'confirmed_on'=>date("Y-m-d H:i:s"),
-                'estimated_delivery'=>""
+                'estimated_delivery'=> $this->getEstimatedDeliveryTime($delivery_time),
+                'delivery_address' => $this->order->user_address
             ]);
             $log->step_no = 2;
             $log->icon = 'fa fa-check';
@@ -108,7 +109,7 @@ class OrderController extends Controller
                 return false;
             }
         } catch (\Throwable $th) {
-            $this->logger("set_booking_details_error",json_encode(["error"=>$th->getMessage()]));
+            $this->logger("set_order_details_error",json_encode(["error"=>$th->getMessage()]));
             return false;
         }
       
@@ -117,7 +118,7 @@ class OrderController extends Controller
         try {
             $log = new orderLog();
             $log->order_id = $this->order->id;
-            $log->update_message = "Booking has been cancelled.";
+            $log->update_message = "order has been cancelled.";
             $log->status_name = "cancelled";
             $log->section_title = "Confirmation";
             $log->section_content_json = json_encode([
@@ -135,30 +136,23 @@ class OrderController extends Controller
                 return false;
             }
         } catch (\Throwable $th) {
-            $this->logger("set_booking_details_error",json_encode(["error"=>$th->getMessage()]));
+            $this->logger("set_order_details_error",json_encode(["error"=>$th->getMessage()]));
             return false;
         }
       
     }
     public function setVisitInfo(){
         try {
-            $doctor =  Doctor::find($this->order->doctor_id);
-            $centre =  Centre::find($this->order->centre_id);
-            if ($this->order->booking_type != "check_up") {
-             // $diagnosis = null;
-            }
+          
             $log = new orderLog();
             $log->order_id = $this->order->id;
-            $log->update_message = "Visit info set.";
-            $log->status_name = "visit info";
-            $log->section_title = "Visit Info";
+            $log->update_message = "Food is ready and being handed over to Delivery Person.";
+            $log->status_name = "food_ready";
+            $log->section_title = "Food Ready";
             $log->section_content_json = json_encode([
                 'order_id' => $this->order->order_id,
-                'timming'=> $this->order->booking_time,
-                'doctor' => $doctor->name,
-                'centre' => $centre->name,
-                'fees'=>$doctor->full_charge,
-                'address'=>$centre->address,
+                'time'=> date("H:i, d M"),
+                'duration' => floor((strtotime("now") - strtotime($this->order->created_at))/60),                
             ]);
             $log->step_no = 3;
             $log->icon = 'fa fa-calendar';
@@ -170,7 +164,35 @@ class OrderController extends Controller
                 return false;
             }
         } catch (\Throwable $th) {
-            $this->logger("set_booking_details_error",json_encode(["error"=>$th->getMessage()]));
+            $this->logger("set_order_details_error",json_encode(["error"=>$th->getMessage()]));
+            return false;
+        }
+      
+    }
+    public function setRecieved(){
+        try {
+          
+            $log = new orderLog();
+            $log->order_id = $this->order->id;
+            $log->update_message = "Thank you for ordering from ROLLSWALLAH";
+            $log->status_name = "order_recieved";
+            $log->section_title = "Order Recieved";
+            $log->section_content_json = json_encode([
+                'order_id' => $this->order->order_id,
+                'time'=> date("H:i, d M"),
+                'duration' => floor((strtotime("now") - strtotime($this->order->created_at))/60),                
+            ]);
+            $log->step_no = 3;
+            $log->icon = 'fa fa-calendar';
+            $log->class = 'success';
+            if ($log->save()) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        } catch (\Throwable $th) {
+            $this->logger("set_order_details_error",json_encode(["error"=>$th->getMessage()]));
             return false;
         }
       
@@ -184,7 +206,7 @@ class OrderController extends Controller
             $log->section_title = "Get well soon!";
             $log->section_content_json = json_encode([
                 'order_id' => $this->order->order_id,
-                'visited_on'=>date("Y-m-d H:i:s"),
+                'placed_on'=>date("H:i:s, d M,Y ",strtotime($this->order->created_at)),
                 'feedback'=>$feedback
             ]);
             $log->step_no = 4;
@@ -198,7 +220,7 @@ class OrderController extends Controller
                 return false;
             }
         } catch (\Throwable $th) {
-            $this->logger("set_booking_details_error",json_encode(["error"=>$th->getMessage()]));
+            $this->logger("set_order_details_error",json_encode(["error"=>$th->getMessage()]));
             return false;
         }
       

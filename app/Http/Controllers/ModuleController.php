@@ -358,12 +358,9 @@ class ModuleController extends Controller
 	public function sendPush(Request $request)
 	{
 
-		$newObj = new PushNotify("New Title!","New body hello hii bye!!","See now","url");
-		$notification = new PushNotify("New Title!","New body hello hii bye!!","See now","url");
-	    // dd(Auth::User()->notifyNow($notification));
-		try {
-			// Auth::User()->notify($notification);
-		    // echo($ss);
+		$notification = new PushNotify("Hey folks!","Greetings from rollswallah","See now","url");
+	    
+		try {			
 			Notification::send(User::all(),$notification);
 		} catch (\Throwable $th) {
 			echo("error: ".$th->getMessage());

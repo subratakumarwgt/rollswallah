@@ -16,4 +16,7 @@ class OrderDetails extends Model
     public function item(){
         return $this->hasOne(Item::class,'id','item_id');
     }
+    public function product(){
+        return $this->hasOne(Product::class,'id','product_id');
+    }
 }

@@ -13,6 +13,7 @@ use App\Models\ModuleHasPermssion as ModPer;
 use App\Models\User;
 use App\Models\Module;
 use App\Models\onlineUsers;
+use App\Models\Order;
 use App\Notifications\webPushNotification;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +36,8 @@ class NotifyController extends Controller
     private $log_slug;
 
 
-    public function __construct(User $user){
+    public function __construct(User $user = null){
+    if(!empty($user))
     $this->user = $user;
     $this->errorMessage = "NotifyController_error_ ";
 
@@ -107,6 +109,20 @@ class NotifyController extends Controller
         }
      
      
+    }
+
+    public function sendOrderNotification(Order $order){
+        $adminNotification = new webPushNotification("New order: ".$order->order_id,"New order recieved from: ".$order->user_contact,"Confirm Order","");
+        $userNotification = new webPushNotification("Order Placed successfully: ".$order->order_id,"Thank you for ordering from: ROLLSWALLAH","Confirm Order","");
+
+        $admin_users = User::where("role","admin")->get();
+        $user = User::where("contact",$order->user_contact)->first();
+        if($user)
+        $this->notifyUser($user,$userNotification);
+        foreach ($admin_users as $key => $user) {
+        $this->notifyUser($user,$adminNotification);
+        }  
+
     }
 
 
