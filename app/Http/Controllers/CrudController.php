@@ -829,6 +829,8 @@ class CrudController extends Controller
 				"user_contact" => "required",
 				"payment_id" => "exists:payments,id"	
 			]);
+
+			
 			if ($validator_password->fails()) {
 				$this->logger($log_slug.date("Y-m-d_H-i-s"),['data'=>$request->all(),"errors"=> $validator_password->errors()]);
 				return response(['status' => false, "errors" => $validator_password->errors(),"message"=>"Invalid order request"], 400);
@@ -847,6 +849,7 @@ class CrudController extends Controller
 					"number"  => $request->user_contact,
 					"name"    => @$request->user_name,
 					"address" => @$request->user_address,
+					"email" => @$request->user_email,
 				];
 
 				$contact = Contact::create($contactData);
@@ -857,6 +860,8 @@ class CrudController extends Controller
 			unset($array["table_name"]);		
 			unset($array["table_model"]);		
 			unset($array["id"]);	
+			$array["status"] = "pending";
+			$array["order_type"] = "website";
 			$order = Order::create($array);
 
 
@@ -866,9 +871,12 @@ class CrudController extends Controller
 				return response(['status' => false, "errors" => null,"message"=>"Order could not be updated"], 400);
 			
 			}
-			$user_finder_id = Auth::check() ? Auth::User()->id :  Session::getId();
+			$user_finder_id = $request->user_id;
 			$order->order_id = time().$order->id;
+			$order->save();
 			$cart_items = Cart::where("user_id",$user_finder_id)->get();
+			// dd($user_finder_id);
+			
 			foreach ($cart_items as  $item) {
 				$product_price = empty($item->product->on_offer) ? $item->product->pre_price : $item->product->price;
 				$orderDetail = [
@@ -881,9 +889,23 @@ class CrudController extends Controller
 				OrderDetails::create($orderDetail);
 				$item->delete();
 			}
-			event(new NewOrder($order));
 			
+			$trackOrder = new OrderController($order->id);
+
+			$charges = $trackOrder->chargesApplicable($cart_items);
+			
+			
+			foreach ($charges as $key => $charge) {
+				unset($charge["charge_label"]);
+				OrderCharge::create($charge);
+			}
+			
+			$trackOrder->setOrderDetails();
+			
+			Cart::where("user_id",$user_finder_id)->delete();
+			event(new NewOrder($order));			
 			return response(['status' => true, "data" => $array,"message"=>"Order placed successfully","details"=>$order], 200);
+
 		} catch (\Throwable $th) {
 			$this->logger($log_slug.date("Y-m-d_H-i-s"),["errors"=> $th->getMessage()]);
 		    return response(['status' => false, "errors" => $th->getMessage(),"message"=>"Something went wrong!"], 400);	
@@ -1130,6 +1152,38 @@ class CrudController extends Controller
 				return response(['status'=>false,'message'=>"No data Provided"],400);
 
 			}
+		}
+		public function confirmOrder($id,Request $request){
+			$order = Order::where("order_id",$request->order_id)->first();
+			if (empty($request->preparation_time)) {
+				return response(['status'=>false,'message'=>"No data Provided"],400);
+			}
+			$orderController = new OrderController($order->id);
+			$orderController->setConfirmation($request->preparation_time);
+			return response(['status'=>true,'message'=>"Order confirmed!"],200);
+
+		}
+		public function readyOrder($id,Request $request){
+			$order = Order::where("order_id",$request->order_id)->first();			
+			$orderController = new OrderController($order->id);
+			$orderController->setReadyInfo();
+			return response(['status'=>true,'message'=>"Order confirmed!"],200);
+		}
+		public function packOrder($id,Request $request){
+			$order = Order::where("order_id",$request->order_id)->first();			
+			$orderController = new OrderController($order->id);
+			$orderController->setPackInfo();
+			return response(['status'=>true,'message'=>"Order packed and handed over!"],200);
+		}
+		public function deliverOrder($id,Request $request){
+			$order = Order::where("order_id",$request->order_id)->first();			
+			$orderController = new OrderController($order->id);
+			if(isset($request->delivery_boy_id))
+			 $user = User::find($request->delivery_boy_id);
+			else
+			$user = [];
+			$orderController->setDeliveryInfo($user);
+			return response(['status'=>true,'message'=>"Order delivered!"],200);
 		}
 
 		}

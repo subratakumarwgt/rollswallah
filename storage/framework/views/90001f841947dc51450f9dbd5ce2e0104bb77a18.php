@@ -54,20 +54,20 @@
         <?php echo $__env->make('adminpanel.dynamic_sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         <!-- Page Sidebar Ends-->
         <div class="page-body">
-          <div class="container-fluid">        
-            <div class="page-title">
+          <div class="container-fluid pt-3">        
+            <!-- <div class="page-title">
               <div class="row">
                 <div class="col-6">
                   <?php echo $__env->yieldContent('breadcrumb-title'); ?>
                 </div>
                 <div class="col-6">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="<?php echo e(route('/')); ?>"> <i data-feather="home"></i></a></li>
+                   
                     <?php echo $__env->yieldContent('breadcrumb-items'); ?>
                   </ol>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <!-- Container-fluid starts-->
           <div class="row justify-content-center">

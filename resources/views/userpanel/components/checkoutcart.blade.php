@@ -1,5 +1,5 @@
 @foreach($cart_items as $cart_item)
-<li class="list-group-item d-flex justify-content-between lh-condensed">
+<li class="list-group-item d-flex justify-content-between lh-condensed cart_row_item">
                         <div>
                             <img src="/{{$cart_item->product->image}}" class="img-fluid" width="100px">
                         </div>

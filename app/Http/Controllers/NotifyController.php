@@ -75,7 +75,7 @@ class NotifyController extends Controller
             $unRead = $notification->data;
             // dd($notifications);
             try{
-               $this->notifyUser($this->user,new webPushNotification($unRead["title"],$unRead["body"],$unRead["action"],$unRead["url"]));
+               $this->notifyUser($this->user,new webPushNotification(@$unRead["title"],@$unRead["body"],@$unRead["action"],@$unRead["url"]));
                $notification->markAsRead();
             }
             catch(Throwable $th){
@@ -119,7 +119,7 @@ class NotifyController extends Controller
         $user = User::where("contact",$order->user_contact)->first();
         if($user)
         $this->notifyUser($user,$userNotification);
-        foreach ($admin_users as $key => $user) {
+        foreach ($admin_users as  $user) {
         $this->notifyUser($user,$adminNotification);
         }  
 

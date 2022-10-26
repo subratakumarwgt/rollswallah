@@ -380,6 +380,7 @@ Route::group(['namespace' => '\App\Http\Controllers'],function () {
     Route::get('/diagnostic-centres','UserDashboardController@doctorView')->name('diagnostic-centres-list');
 
      Route::get('/my-bookings/{booking_id}','UserDashboardController@myBookingView')->name('my-booking-details');
+     Route::get('/track-order/{order_id}','UserDashboardController@orderTrackView')->name('track-order');
 
      Route::get('/my-bookings','UserDashboardController@myBookingList')->name('my-booking-list');
 
@@ -501,6 +502,11 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
      Route::post('/check-route', 'AdminDashboardController@checkRoute')->name('check-route');
 
      Route::get('/check-error', 'AdminDashboardController@checkRoute')->name('error-list');
+     Route::get('/order-history', 'AdminDashboardController@orderHistory')->name('order-history');
+     Route::get('/sales/orders/bind', 'AdminDashboardController@orderCouponBind')->name('online-orders-bind');
+     Route::get('/sales/orders/timeline', 'AdminDashboardController@getOrderTimelineHTML')->name('online-orders-timeline');
+     Route::get('/sales/orders/details', 'AdminDashboardController@getOrderDetailsHTML')->name('online-orders-details');
+     Route::get('/sales/orders/info', 'AdminDashboardController@getOrderInfoHTML')->name('online-orders-info');
      Route::get('/module-permission', 'ModuleController@modulePermission')->name('module-permission');
      Route::get('module-permission/{view_type}', 'ModuleController@modulePermission')->name('module-permission-view');
      Route::get('module-permission/{view_type}/{view_type_id}', 'ModuleController@modulePermission')->name('module-permission-view-id');

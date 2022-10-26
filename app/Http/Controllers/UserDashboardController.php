@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Models\Cart;
 use App\Models\Centre;
 use App\Models\Doctor;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\Slots;
 use App\Models\StaticAsset;
@@ -113,7 +114,9 @@ class UserDashboardController extends Controller
             $discount += ((!empty($value->product->on_offer) ?( $value->product->pre_price-$value->product->price) : 0 )* $value->quantity);      
             $subtotal += ((!empty($value->product->on_offer) ? $value->product->price : $value->product->pre_price )* $value->quantity);
         }
-        return view('userpanel.cart',['items'=>$items,'subtotal'=>$subtotal,"subtotal_total" =>$subtotal_total, "discount" => $discount]);
+        $order = new OrderController();
+        $charges = $order->chargesApplicable($items);
+        return view('userpanel.cart',['items'=>$items,'subtotal'=>$subtotal,"subtotal_total" =>$subtotal_total, "discount" => $discount,"charges"=>$charges]);
     }
     public function checkout($subtotal=0){
         if (Auth::check()) {
@@ -128,6 +131,7 @@ class UserDashboardController extends Controller
               //  $user = \App\User::find($user_id);
     
               $items = Cart::where('user_id',$user_id)->get();
+              $order = new OrderController();
               $subtotal = 0;
               $subtotal_total = 0;
               $discount = 0;
@@ -144,7 +148,7 @@ class UserDashboardController extends Controller
                 'subtotal' => $subtotal,
                 "subtotal_total" => $subtotal_total,
                 "discount" => $discount,
-                'charges' => "",
+                'charges' => $order->chargesApplicable($items) ?? "",
                 'item_html'=>$item_html
             ]);
               }
@@ -156,6 +160,13 @@ class UserDashboardController extends Controller
         // $appointment = $appointment->appointment;
         //  dd($appointment);
         return view('userpanel.mybookings',['app_log'=>$appointment]);
+    }
+    public function orderTrackView($order_id){
+        $order = Order::where('order_id',$order_id)->first();
+        $appointment = new OrderController($order->id);
+        // $appointment = $appointment->appointment;
+        //  dd($appointment);
+        return view('userpanel.trackOrder',['order_log'=>$appointment,"order" => $order ]);
     }
 
 }

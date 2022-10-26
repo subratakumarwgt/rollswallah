@@ -11,6 +11,7 @@ use App\Models\Slots;
 use App\Models\StaticAsset;
 use App\Models\User;
 use App\Models\Module;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -82,6 +83,9 @@ class AdminDashboardController extends Controller
     public function dashboard(){
         return view('adminpanel.dashboard');
     }
+    public function orderHistory(){
+      return view('adminpanel.expenses.onlineOrders');
+  }
     public function contactList(){
       
       $regions = StaticAsset::getAssetsByTitle("customer_regions");
@@ -904,7 +908,63 @@ class AdminDashboardController extends Controller
 
     public function moduleList(){
        $modules = Module::where("has_child","1")->get();
-        return view('adminpanel.modules.modules_list',['modules'=>$modules]);
+       return view('adminpanel.modules.modules_list',['modules'=>$modules]);
+    }
+    public function orderCouponBind(Request $request){
+      $recordsQuery = new Order();
+      $recordsQuery = $recordsQuery->where("order_type","website");
+      $sort=0;
+      $searchValue = $request->search ?? "";
+      if($searchValue!=""){
+        $sort=1;
+        $_SESSION['key'] = $searchValue;
+        $recordsQuery=$recordsQuery->where('orders.id', 'LIKE', '%' .$_SESSION['key']. '%');
+       
+    }
+    if (isset($request->status) && !empty($request->status)) {
+        $recordsQuery = $recordsQuery->where('status',$request->status);
+    }
+    if (isset($request->region) && !empty($request->region)) {
+        $recordsQuery = $recordsQuery->where('region',$request->region);
+    }
+    if (isset($request->from_date) && !empty($request->from_date)) {
+        $recordsQuery = $recordsQuery->whereDate('created_at','>=',$request->from_date);
+    }
+    if (isset($request->to_date) && !empty($request->to_date)) {
+        $recordsQuery = $recordsQuery->whereDate('created_at','<=',$request->to_date);
+    }
+
+  
+      $records =  $recordsQuery->orderBy("id","DESC")
+                    ->get();
+  
+      $data_arr = array();
+      $order = new OrderController();
+      $order_id_array = $records->pluck("order_id");
+      return response($order->getOrderCouponsHTML($order_id_array),200);
+  
+    }
+
+    public function getOrderTimelineHTML(Request $request){
+      $order_id = $request->order_id;
+      $order_id = Order::where("order_id",$order_id)->first()->id;
+      $order = new OrderController($order_id);
+      // dd($orders);
+      return response($order->getOrderTimelineHTML(),200);
+    }
+    public function getOrderDetailsHTML(Request $request){
+      $order_id = $request->order_id;
+      $order_id = Order::where("order_id",$order_id)->first()->id;
+      $order = new OrderController($order_id);
+      // dd($orders);
+      return response($order->getOrderDetailsHTML(),200);
+    }
+    public function getOrderInfoHTML(Request $request){
+      $order_id = $request->order_id;
+      $order_id = Order::where("order_id",$order_id)->first()->id;
+      $order = new OrderController($order_id);
+      // dd($orders);
+      return response($order->getOrderInfoHTML(),200);
     }
 
     public function checkRoute(Request $request)
@@ -914,10 +974,10 @@ class AdminDashboardController extends Controller
          $route = route($request->route_name);
          if (!empty($route)) {
           $route = str_replace(url("/"), "", $route);
-        return response(array("success"=>true,"data"=>$route),200);
+          return response(array("success"=>true,"data"=>$route),200);
       }
       else{
-         return response(array("success"=>false,"message"=>"Wrong route name given/ Route doesn't exist"),200);
+          return response(array("success"=>false,"message"=>"Wrong route name given/ Route doesn't exist"),200);
       }
       }
       catch(\Throwable $th){

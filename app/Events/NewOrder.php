@@ -29,7 +29,7 @@ class NewOrder implements ShouldBroadcast
         //
         $this->api_key = ApiKey::getApiByKey('admin_broadcast','admin');
         $this->order = $order;
-        $this->time = date("H:i , d M",strtotime($order->created_at));
+        $this->time = date("H Y-m-d") == date("H Y-m-d",strtotime($order->created_at)) ? "Just now" : date("H:i , d M",strtotime($order->created_at));
     }
 
     /**

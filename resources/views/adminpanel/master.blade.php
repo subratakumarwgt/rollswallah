@@ -54,20 +54,20 @@
         @include('adminpanel.dynamic_sidebar')
         <!-- Page Sidebar Ends-->
         <div class="page-body">
-          <div class="container-fluid">        
-            <div class="page-title">
+          <div class="container-fluid pt-3">        
+            <!-- <div class="page-title">
               <div class="row">
                 <div class="col-6">
                   @yield('breadcrumb-title')
                 </div>
                 <div class="col-6">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('/') }}"> <i data-feather="home"></i></a></li>
+                   
                     @yield('breadcrumb-items')
                   </ol>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
           <!-- Container-fluid starts-->
           <div class="row justify-content-center">

@@ -31,5 +31,13 @@ class Controller extends BaseController
         elseif(Auth::guard('client')->check())
             {return "client";}
     }
+    public function getChargesByKey($key){
+        try {
+            return \App\Models\Charge::where("key_name",$key)->first();
+        } catch (\Throwable $th) {
+           $this->logger($key."_getCharges",$key);
+           return null;
+        }
+    }
    
 }

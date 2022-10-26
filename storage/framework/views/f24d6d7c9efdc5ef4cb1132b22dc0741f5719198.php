@@ -1,5 +1,5 @@
 <?php $__currentLoopData = $cart_items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $cart_item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-<li class="list-group-item d-flex justify-content-between lh-condensed">
+<li class="list-group-item d-flex justify-content-between lh-condensed cart_row_item">
                         <div>
                             <img src="/<?php echo e($cart_item->product->image); ?>" class="img-fluid" width="100px">
                         </div>

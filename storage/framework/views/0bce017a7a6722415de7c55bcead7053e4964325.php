@@ -151,21 +151,17 @@
                 Discount
                 <span class="text-danger"><i class="fa fa-inr"></i><strong id="carttotal"> - <?php echo e($discount); ?></strong> </span>
               </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                Delivery Charge
-                <span><i class="fa fa-inr"></i><strong id="delivery"><?php echo e($charges->delivery_charge ?? "0"); ?></strong></span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center px-0">
-                Packing Charge
-                <span><i class="fa fa-inr"></i><strong id="packing"> <?php echo e($charges->packing_charge ?? "0"); ?></strong></span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 mb-3">
-                <div>
-                  <strong>The total amount</strong>
+              <?php $__currentLoopData = $charges; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $charge): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+              <li class="list-group-item d-flex justify-content-between align-items-center p-1">
+               <?php echo e($charge["charge_label"]); ?>
 
-                </div>
-                <span class="badge badge-dark badge-xl"><strong><i class="fa fa-inr"></i><text id="final_total"><?php echo e(@$charges->packing_charge + @$charges->delivery_charge + @$subtotal); ?></text> </strong></span>
+                <span><i class="fa fa-inr"></i><strong id="delivery"><?php echo e($charge["amount"] ?? 0); ?></strong></span>
               </li>
+              <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+              <li class="list-group-item border-none d-flex justify-content-between ">
+                        <span>Total (INR)</span>
+                        <strong class="badge badge-dark badge-xl"><i class="fa fa-inr"></i><text id=""> <?php echo e(@array_sum(array_column($charges, 'amount')) + @$subtotal); ?></text></strong>
+                    </li>
             </ul>
 
             <button type="button" class="btn btn-primary btn-block" onclick="confirm('You want to go for checkout?'),window.open('/checkout','_self')">GO TO CHECKOUT</button>
@@ -176,7 +172,7 @@
         <!-- Card -->
 
         <!-- Card -->
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <div class="pt-4">
 
             <a class="dark-grey-text d-flex justify-content-between" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -192,7 +188,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
         <!-- Card -->
 
       </div>

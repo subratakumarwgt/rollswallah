@@ -39,6 +39,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
   Route::post('/make-order', '\App\Http\Controllers\CrudController@makeOrder')->name('make-order');
   Route::post('/make-purchase', '\App\Http\Controllers\CrudController@makePurchase')->name('make-purchase');
   Route::post('/place-order', '\App\Http\Controllers\CrudController@placeOrder')->name('place-order');
+  Route::post('/place-online-order', '\App\Http\Controllers\CrudController@placeOnlineOrder')->name('place-order');
   Route::post('/add-to-cart', '\App\Http\Controllers\CrudController@addToCart')->name('add-to-cart');
   Route::post('/cart/change-quantity', '\App\Http\Controllers\CrudController@changeQuantity')->name('cart.change-quantity');
   Route::post('/broadcasting/auth','\App\Http\Controllers\AdminDashboardController@verifyBroadcast')->name('broadcast-auth');
@@ -48,6 +49,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
   Route::post('/save-order-details', '\App\Http\Controllers\CrudController@saveOrderDetails')->name('save-order-details');
   Route::post('/save-charge-details', '\App\Http\Controllers\CrudController@saveChargeDetails')->name('save-charge-details');
   Route::get('/get-order/{id}', '\App\Http\Controllers\CrudController@getOrderDetails')->name('get-order');
+
+  //Order Handle Routes
+  Route::post('/confirm-order/{order_id}', '\App\Http\Controllers\CrudController@confirmOrder')->name('confirm-order');
+  Route::post('/ready-order/{order_id}', '\App\Http\Controllers\CrudController@readyOrder')->name('ready-order');
+  Route::post('/pack-order/{order_id}', '\App\Http\Controllers\CrudController@packOrder')->name('pack-order');
+  Route::post('/deliver-order/{order_id}', '\App\Http\Controllers\CrudController@deliverOrder')->name('deliver-order');
 
   //chart api routes
   Route::get('/get-order-bar-chart', '\App\Http\Controllers\ChartController@getOrderBarChart')->name('get-order-bar-chart');

@@ -24,11 +24,12 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12 mb-3"><a href="import" class="btn btn-primary btn-sm mr-3"><i class="fas fa-plus-square"></i> New Product</a>
-<a href="import/excel" class="btn btn-primary btn-sm mr-3"><i class="fas fa-plus-square"></i> Mass Import</a></div>
+       
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-body">
+                <div class="col-md-12 mb-3"><a href="import" class="btn btn-primary btn-sm mr-3"><i class="fas fa-plus-square"></i> New Product</a>
+<a href="import/excel" class="btn btn-primary btn-sm mr-3"><i class="fas fa-plus-square"></i> Mass Import</a></div>
                     <div class="row m-0">
                         <div class="col-md-4 p-3 border-right-sm">
                             <label class="p-2">Filter by Sub Category</label>

@@ -129,7 +129,7 @@ $(document).ready(async function(){
                 z_index: 10000,
                 timer: 20000,
             })
-        alert("New order. ID: "+e.order.id);
+       
     });
     window.online_users = []
     Echo.join('online')
