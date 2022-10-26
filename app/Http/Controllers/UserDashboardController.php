@@ -163,6 +163,10 @@ class UserDashboardController extends Controller
     }
     public function orderTrackView($order_id){
         $order = Order::where('order_id',$order_id)->first();
+        $order->orderDetails = $order->orderDetails;
+        foreach ($order->orderDetails as $key => $detail) {
+           $detail->product = $detail->product;
+        }
         $appointment = new OrderController($order->id);
         // $appointment = $appointment->appointment;
         //  dd($appointment);

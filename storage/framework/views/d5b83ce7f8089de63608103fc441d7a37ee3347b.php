@@ -71,8 +71,10 @@
 							<div class="cd-timeline-content border-bottom border-top border-${data.class}">
 								<h5 class="text-primary  p-2">${data.section_title}</h5>
 								<p class="m-0  border-bottom">Order ID: <strong class="badge badge-warning text-dark pull-right">ID: ${dataJson.order_id}</strong></p>
-							
-								<p class="m-0 border-bottom">Booking charge: <strong class="pull-right  text-${data.class}"><i class="fa fa-inr small"></i> ${order.total}.00</strong></p>
+								${order.orderDetails.map((value)=>{
+									return (`<p class="m-0 border-bottom"><strong class="text-${data.class}"> ${value.quantity}x ${value.product.title} </strong>   <strong class="pull-right"> ₹ ${value.subtotal}</strong></p>`)
+								})}								
+								<p class="m-0 border-bottom">Total: <strong class="pull-right  text-${data.class}"><i class="fa fa-inr small"></i> ${order.total}.00</strong></p>
 								<p class="m-0  text-right border-bottom"> Recieved on:<strong class="small pull-right"> ${dataJson.recieved_on}</strong></p>
 							
 							</div>
@@ -98,18 +100,15 @@
 							</div>
 						</div>`);
 
-	const step_three = (data, dataJson) => {
+	const step_three = (data, dataJson,order) => {
 		return $(`<div class="cd-timeline-block ">
 		               <div class="cd-timeline-img cd-movie bg-${data.class} "><i class="${data.icon}"></i></div>
 							<div class="cd-timeline-content border-bottom border-top border-${data.class}">
 								<h5 class="text-primary  p-2">${data.section_title}</h5>
-									<p class="m-0 border-bottom">Timming:  <strong class="badge badge-${data.class} pull-right"><i class="fa fa-clock-o"></i>  ${dataJson.timming}</strong></p>
-									<p class="m-0 border-bottom">Doctor: <strong class="pull-right small">Dr ${dataJson.doctor}</strong></p>
-								<p class="m-0 border-bottom">Centre: <strong class="pull-right small">${dataJson.centre}</strong></p>
-								<p class="m-0 border-bottom">Doctor fees: <strong class="pull-right  text-${data.class}"><i class="fa fa-inr small"></i> ${dataJson.fees}.00</strong></p>
-								
-								<p class="m-0">Address:<p> <strong class="small border-bottom">${dataJson.address}</strong></p></p>
-								<span class="cd-date"><button class="btn btn-pill btn-${data.class} btn-sm shadow-sm"><i class="fa fa-download" aria-hidden="true"></i> Reciept</button></span>
+								${order.orderDetails.map((value,index)=>{
+									return (`<p class="m-0 border-bottom"><strong class=""> ${value.quantity}x ${value.product.title}</strong>   <strong class="pull-right"> ₹ ${value.subtotal}</strong></p>`)
+								})}						
+							
 							</div>
 						</div>`);
 
@@ -118,7 +117,7 @@
 		return $(`<div class="cd-timeline-block border-bottom-${data.class}">
 							<div class="cd-timeline-img cd-location bg-${data.class}"><i class="fa fa-comments-o"></i></div>
 							<div class="cd-timeline-content">
-								<h5 class="bg-light text-primary p-3">Get well soon! <i class="fa fa-smile-o" aria-hidden="true"></i></h5>
+								<h5 class="bg-light text-primary p-3">How was the food! <i class="fa fa-smile-o" aria-hidden="true"></i></h5>
 								<div class="form-group">
 									<label>Please share your feedback</label>
 									<input type="text" name="" class="form-control">
@@ -146,8 +145,7 @@
 							<div class="cd-timeline-content">
 								<h5 class="bg-light text-primary p-3">Order is out for delivery <i class="fa fa-smile-o" aria-hidden="true"></i></h5>
 								<p class="m-0 text-success text-center">
-<button class="btn btn-success" onlick="orderRecieved(order.order_id)">Order recieved</button></strong></p>
-								
+                                 <button class="btn btn-success" onlick="orderRecieved(order.order_id)">Order recieved</button></strong></p>
 							</div>
 						</div>`)
 	}
@@ -171,20 +169,19 @@
 
 					break;
 				case 3:
-					$("#cd-timeline").append(step_three(data, dataJson));
-					
+					$("#cd-timeline").append(step_three(data, dataJson,order));				
 
 					break;
 				case 4:
 					$("#cd-timeline").append(step_six(data, dataJson,order));
 					break;
-					case 5:
-						if (dataJson.feedback == "") {
-						$("#cd-timeline").append(step_four(data, dataJson));
-					} else {
-						$("#cd-timeline").append(step_five(data, dataJson));
-						
-					}
+				case 5:
+					if (dataJson.feedback !== "") {
+					$("#cd-timeline").append(step_four(data, dataJson));
+				} else {
+					$("#cd-timeline").append(step_five(data, dataJson));
+					
+				}
 
 
 					break;
