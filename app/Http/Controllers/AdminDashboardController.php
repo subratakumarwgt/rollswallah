@@ -935,7 +935,8 @@ class AdminDashboardController extends Controller
     }
 
   
-      $records =  $recordsQuery->orderBy("id","DESC")
+      $records =  $recordsQuery->orderBy("orders.id","DESC")
+                    ->take(20)
                     ->get();
   
       $data_arr = array();

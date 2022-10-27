@@ -10,11 +10,10 @@
 <?php if($order->current_status == 'pending'): ?>
 
 <div class="col-md-12 pl-5">
-    <ul class="mb-3">
+    <ul class="mb-3" id="order_details">
         <?php $__currentLoopData = $order->orderDetails; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
         <li class="p-1 border-bottom">
-           <?php echo e($item->quantity); ?> x <?php echo e($item->product->title); ?>
-
+           <?php echo e($item->quantity); ?> x <?php echo e($item->product->title); ?> <strong class="pull-right mr-5">₹<?php echo e($item->subtotal); ?></strong>
 
         </li>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

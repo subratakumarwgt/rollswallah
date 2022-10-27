@@ -95,6 +95,10 @@
         </div>
         <div class="modal-body">
           <div class="form-group p-1 mt-2">
+          <label for="view_type">
+              Items 
+            </label>
+            <div id="order_details_row"></div>
             <label for="view_type">
               Preparation time (in Minutes)
             </label>
@@ -488,6 +492,7 @@
            $info =await $.get("/management/sales/orders/info",{order_id}).then((data)=>{
            
            $("#order_info_holder").html(data)
+           $("#order_details_row").html($("#order_details").html())
         })
         $("#order_timeline_holder").html(loader)
         $timeline = await $.get("/management/sales/orders/timeline",{order_id}).then((data)=>{
@@ -511,6 +516,12 @@
         $('#searchKey').on('change', function() {
             getOrderCoupons()
         });
+
+        $("#order_coupon_holder").on("click",".see_details",function(){
+          
+            $(".coupon_row").removeClass("shadow border border-success bg-light bg-white")
+           $(this).parent("div").parent("li").addClass("shadow border border-success bg-white") 
+        })
 </script>
 
 

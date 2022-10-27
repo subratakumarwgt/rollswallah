@@ -1,4 +1,4 @@
-<li class="p-2 border  mb-2 bg-white">
+<li class="p-2 border  mb-2 bg-light text-dark border border-bottom coupon_row">
     <div class="row border-bottom">
         <div class="col-7 p-2">
             <div class="small p-2" style="text-align: left;"><span class="badge badge-<?php echo e($order->current_status == 'pending'? 'warning text-dark border-dark' : 'primary'); ?>"><?php echo e(strtoupper($order->current_status)); ?></span></div>
@@ -30,6 +30,6 @@
 
     </div>
     <div class="row pt-2">
-        <button class="btn  border-top btn-sm" onclick="getOrderHistory(<?php echo e($order->order_id); ?>)"><i class="fa fa-eye"></i> See details</button>
+        <button class="btn  border-top btn-sm see_details" onclick="getOrderHistory(<?php echo e($order->order_id); ?>)"><i class="fa fa-eye"></i> See details</button>
     </div>
 </li><?php /**PATH C:\Users\subra\Documents\projects\rollswallah\resources\views/adminpanel/expenses/components/order_coupon.blade.php ENDPATH**/ ?>

@@ -10,10 +10,10 @@
 @if($order->current_status == 'pending')
 
 <div class="col-md-12 pl-5">
-    <ul class="mb-3">
+    <ul class="mb-3" id="order_details">
         @foreach($order->orderDetails as $item)
         <li class="p-1 border-bottom">
-           {{$item->quantity}} x {{$item->product->title}}
+           {{$item->quantity}} x {{$item->product->title}} <strong class="pull-right mr-5">₹{{$item->subtotal}}</strong>
 
         </li>
         @endforeach

@@ -111,15 +111,22 @@ $(document).ready(async function(){
          })
      Echo.private(`orders.admin`)
       .listen('NewOrder', (e) => {
-        console.log(e.order);
+        // console.log(e.order);
         var notification = $(`<li>
-              <p><i class="fa fa-circle-o me-3 text-primary"> </i>New Order Recieved!  : ${e.time}</p>
+              <p><i class="fa fa-circle-o me-3 text-primary"> </i>New Order Recieved:ID ${e.order.order_id}  : ${e.time}</p>
             </li>`)
             $("#notify").append(notification);
             var count = $("#notif_count").html();
             count = parseInt(count);
             count++;
             $("#notif_count").html(count);
+            if (typeof getOrderHistory === "function")
+           { 
+            getOrderCoupons()
+            getOrderHistory(e.order.order_id)
+           }
+            else
+            window.open("/management/order-history")
             $.notify({
                 message: `New Order Recieved! from ${e.order.user_contact}`
             }, {

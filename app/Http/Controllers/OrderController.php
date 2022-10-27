@@ -369,7 +369,7 @@ class OrderController extends Controller
          if(empty($order_id_array)){
             return [];
          }
-           $orders = Order::whereIn("order_id",$order_id_array)->get();
+           $orders = Order::whereIn("order_id",$order_id_array)->orderBy("id","DESC")->get();
            $orderHTML = [];
            if(empty($orders))
            return "<li>No orders found with filter</li>";

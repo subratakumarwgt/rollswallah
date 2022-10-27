@@ -6,6 +6,45 @@
 @endsection
 
 @section('style')
+<style>
+	.rating{
+  position: relative;
+  display: flex;
+  margin: 10px 0;
+  flex-direction: row-reverse ;
+}
+.rating input{
+  position: relative;
+  width: 20px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-appearance: none;
+  appearance: none;
+  overflow: hidden;
+}
+.rating input::before{
+  content: '\f005';
+  position: absolute;
+  font-family: fontAwesome;
+  font-size: 28px;
+  position: absolute;
+  left: 4px;
+  color: #030b0f;
+  transition: 0.5s;
+}
+.rating input:nth-child(2n + 1)::before{
+  right: 4px;
+  left: initial;
+}
+.rating input:hover ~ input::before,
+.rating input:hover::before,
+.rating input:checked ~ input::before,
+.rating input:checked::before{
+  color: #1f9cff;
+}	
+</style>
 @endsection
 @section('breadcrumb-title')
 <h5>Order Log</h5>
@@ -62,66 +101,110 @@
 <script src="{{asset('assets/js/timeline/timeline-v-1/main.js')}}"></script>
 <script src="{{asset('assets/js/modernizr.js')}}"></script>
 <script>
+	function formatDate(date) {
+  let diff = new Date() - date; // the difference in milliseconds
+
+  if (diff < 1000) { // less than 1 second
+    return 'right now';
+  }
+
+  let sec = Math.floor(diff / 1000); // convert diff to seconds
+
+  if (sec < 60) {
+    return sec + ' sec. ago';
+  }
+
+  let min = Math.floor(diff / 60000); // convert diff to minutes
+  if (min < 60) {
+    return min + ' min. ago';
+  }
+
+  // format the date
+  // add leading zeroes to single-digit day/month/hours/minutes
+  let d = date;
+  d = [
+    '0' + d.getDate(),
+    '0' + (d.getMonth() + 1),
+    '' + d.getFullYear(),
+    '0' + d.getHours(),
+    '0' + d.getMinutes()
+  ].map(component => component.slice(-2)); // take last 2 digits of every component
+
+  // join the components into date
+  return d.slice(0, 3).join('.') + ' ' + d.slice(3).join(':');
+}
+
 	var booking = document.getElementById("booking");
 	var order = document.getElementById("order");
 	booking = JSON.parse(booking.value);
 	 order = JSON.parse(order.value);
 	const step_one = (data, dataJson,order) => $(`<div class="cd-timeline-block" >
-							<div class="cd-timeline-img cd-picture bg-${data.class}"><i class="${data.icon}"></i></div>
+							<div class="cd-timeline-img cd-picture bg-${data.class}"><i class="fa fa-check-square"></i></div>
 							<div class="cd-timeline-content border-bottom border-top border-${data.class}">
 								<h5 class="text-primary  p-2">${data.section_title}</h5>
 								<p class="m-0  border-bottom">Order ID: <strong class="badge badge-warning text-dark pull-right">ID: ${dataJson.order_id}</strong></p>
-								${order.orderDetails.map((value)=>{
+								${JSON.parse(JSON.stringify(order.orderDetails)).map((value)=>{
 									return (`<p class="m-0 border-bottom"><strong class="text-${data.class}"> ${value.quantity}x ${value.product.title} </strong>   <strong class="pull-right"> ₹ ${value.subtotal}</strong></p>`)
-								})}								
+								}).join('')}								
 								<p class="m-0 border-bottom">Total: <strong class="pull-right  text-${data.class}"><i class="fa fa-inr small"></i> ${order.total}.00</strong></p>
-								<p class="m-0  text-right border-bottom"> Recieved on:<strong class="small pull-right"> ${dataJson.recieved_on}</strong></p>
-							
+								<p class="m-0  text-right border-bottom"> Recieved on:<strong class="small pull-right"> ${formatDate(new Date(order.created_at))}</strong></p>
+								<p class="m-0 text-success text-center">${data.update_message}</strong></p>
 							</div>
 						</div>`);
 	const step_one_append = (data, dataJson) => $(`<div class="cd-timeline-block ">
-							<div class="cd-timeline-img cd-movie bg-${data.class}"><i class="${data.icon}"></i></div>
+							<div class="cd-timeline-img cd-movie bg-${data.class}"><i class="fa fa-check-square"></i></div>
 							<div class="cd-timeline-content border-bottom border-top border-${data.class}">
 								<h5 class="text-primary  p-2">${data.section_title}</h5>
-								<h6 class="p-1">Your Order is <span class="text-${data.class}"> ${data.status_name} <i class="${data.icon}"></i> .</span></h6>
-								
-							
-										</div>
+								<h6 class="p-1">Your Order is <span class="text-${data.class}"> ${data.status_name} <i class="fa fa-check-square"></i> .</span></h6>
+								<p class="m-0 text-success text-center">${data.update_message}</strong></p>
+							</div>
 						</div>`);
 
 	const step_two = (data, dataJson) => $(`<div class="cd-timeline-block ">
-							<div class="cd-timeline-img cd-movie bg-${data.class}"><i class="${data.icon}"></i></div>
+							<div class="cd-timeline-img cd-movie bg-${data.class}"><i class="fa fa-check-square"></i></div>
 							<div class="cd-timeline-content border-bottom border-top border-${data.class}">
-								<h5 class="text-primary  p-2">${data.section_title}</h5>
-								<h6 class="p-1">Your Order is <span class="text-${data.class}"> ${data.status_name} <i class="${data.icon}"></i> .</span></h6>
-								
-							
-								 <span class="small pull-right text-secondary">${data.status_name} on: <strong>  ${dataJson.cancelled_on ?? dataJson.confirmed_on}</strong></span>
+								<h5 class="text-primary  p-2">${data.section_title} <i class="fa fa-check-circle"></i>  | <small>${formatDate(new Date(dataJson.confirmed_on))}</small></h5>
+								<h6 class="p-1">Your Order is <span class="text-${data.class}"> ${data.status_name} <i class="fa fa-check-circle"></i> .</span></h6>		
+								<p class="m-0 text-success text-center">${data.update_message}</strong></p>					
 							</div>
 						</div>`);
 
 	const step_three = (data, dataJson,order) => {
 		return $(`<div class="cd-timeline-block ">
-		               <div class="cd-timeline-img cd-movie bg-${data.class} "><i class="${data.icon}"></i></div>
+		               <div class="cd-timeline-img cd-movie bg-${data.class} "><i class="fa fa-check-square"></i></div>
 							<div class="cd-timeline-content border-bottom border-top border-${data.class}">
-								<h5 class="text-primary  p-2">${data.section_title}</h5>
+								<h5 class="text-primary  p-2">Ready <i class="fa fa-check-circle"></i>  | <small>${new Date(Date.parse(dataJson.ready_on)).toDateString()}</small></h5>
 								${order.orderDetails.map((value,index)=>{
 									return (`<p class="m-0 border-bottom"><strong class=""> ${value.quantity}x ${value.product.title}</strong>   <strong class="pull-right"> ₹ ${value.subtotal}</strong></p>`)
-								})}						
-							
+								}).join('')}						
+								<p class="m-0 text-success text-center">${data.update_message}</strong></p>
 							</div>
+							
 						</div>`);
 
 	}
 	const step_four = (data, dataJson) => {
 		return $(`<div class="cd-timeline-block border-bottom-${data.class}">
-							<div class="cd-timeline-img cd-location bg-${data.class}"><i class="fa fa-comments-o"></i></div>
+							<div class="cd-timeline-img cd-location bg-${data.class}"> <i class="fa fa-check-square"></i></div>
 							<div class="cd-timeline-content">
-								<h5 class="bg-light text-primary p-3">How was the food! <i class="fa fa-smile-o" aria-hidden="true"></i></h5>
+							
+								<h5 class="bg-light text-success p-3">How was the food ?<i class="fa fa-smile-o" aria-hidden="true"></i></h5>
 								<div class="form-group">
+								
+									<div class="rating">
+									<input type="radio" name="html" class="rating_radio" value="5.0">
+									<input type="radio" name="html" class="rating_radio" value="4.5">
+									<input type="radio" name="html" class="rating_radio" value="4.0">
+									<input type="radio" name="html" class="rating_radio" value="3.5">
+									<input type="radio" name="html" class="rating_radio" value="3.0">
+									<input type="radio" name="html" class="rating_radio" value="2.5">
+									<input type="radio" name="html" class="rating_radio" value="2.0">
+									<input type="radio" name="html" class="rating_radio" value="1.5">
+									<input type="radio" name="html" class="rating_radio" value="1.0">
+									<input type="radio" name="html" class="rating_radio" value="0.5">
+									
+									</div>	
 									<label>Please share your feedback</label>
-									<input type="text" name="" class="form-control">
-									<button class="btn btn-pill btn-outline-primary mt-3"><i class="fa fa-paper-plane" aria-hidden="true"></i> Send</button>
 								</div>
 								
 							</div>
@@ -130,9 +213,9 @@
 
 	const step_five = (data, dataJson) => {
 		return $(`<div class="cd-timeline-block border-bottom-${data.class}">
-							<div class="cd-timeline-img cd-location bg-${data.class}"><i class="fa fa-comments-o"></i></div>
+							<div class="cd-timeline-img cd-location bg-${data.class}"><i class="fa fa-check-square"></i></div>
 							<div class="cd-timeline-content">
-								<h5 class="bg-light text-primary p-3">Order is delivered <i class="fa fa-smile-o" aria-hidden="true"></i></h5>
+								<h5 class="bg-light text-primary p-3">Delivered <i class="fa fa-check-circle" aria-hidden="true"></i> | <small>${formatDate(new Date(dataJson.delivered_on))}</small></h5>
 								<p class="m-0 text-success text-center">${data.update_message}</strong></p>
 								
 							</div>
@@ -141,11 +224,12 @@
 	
 	const step_six = (data, dataJson,order) => {
 		return $(`<div class="cd-timeline-block border-bottom-${data.class}">
-							<div class="cd-timeline-img cd-location bg-${data.class}"><i class="fa fa-comments-o"></i></div>
+							<div class="cd-timeline-img cd-location bg-${data.class}"><i class="fa fa-check-square"></i></div>
 							<div class="cd-timeline-content">
-								<h5 class="bg-light text-primary p-3">Order is out for delivery <i class="fa fa-smile-o" aria-hidden="true"></i></h5>
+								<h5 class="bg-light text-primary p-3">Packed & Handed Over <i class="fa fa-check-circle" aria-hidden="true"></i> | <small>${formatDate(new Date(dataJson.packed_on))}</small></h5>
+								<p class="m-0 text-success text-center">${data.update_message}</strong></p>
 								<p class="m-0 text-success text-center">
-                                 <button class="btn btn-success" onlick="orderRecieved(order.order_id)">Order recieved</button></strong></p>
+                                ${order.status != "complited" ? `<button class="btn btn-success" onclick="deliverOrder(${order.order_id},this)">Order recieved</button>` : "" } </strong></p>
 							</div>
 						</div>`)
 	}
@@ -173,13 +257,17 @@
 
 					break;
 				case 4:
+				
 					$("#cd-timeline").append(step_six(data, dataJson,order));
+				
+					
 					break;
 				case 5:
+					$("#cd-timeline").append(step_five(data, dataJson));
 					if (dataJson.feedback !== "") {
 					$("#cd-timeline").append(step_four(data, dataJson));
 				} else {
-					$("#cd-timeline").append(step_five(data, dataJson));
+					
 					
 				}
 
@@ -195,6 +283,29 @@
 
 	setTimeout(() => {
 		setNodes()
-	}, 800);
+	}, 100);
+	const deliverOrder = async (order_id,form) => {
+    
+        loadoverlay($(form))
+        let packOrder =await $.post("/api/deliver-order/"+order_id)
+                            .then((data)=>{
+                                hideoverlay($(form))
+                                $.notify({
+									message: "Order marked as delivered"
+								}, {
+									type: 'success',
+									z_index: 10000,
+									timer: 2000,
+								})
+                            })
+                            .error(error =>{
+                                hideoverlay($(form))
+                                // getOrderHistory(order_id)
+                            })
+    }
+	
+	$("#cd-timeline").on("change",".rating_radio",function(){
+          alert($(this).val())
+	  })
 </script>
 @endsection
