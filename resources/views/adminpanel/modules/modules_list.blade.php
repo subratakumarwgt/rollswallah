@@ -20,9 +20,6 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Module List</h3>
-
-<button class="btn btn-primary btn-sm"  id="add_new_module" onclick="add_module()"><i class="fa fa-plus-circle"></i> New Module</button>
 @endsection
 
 @section('breadcrumb-items')
@@ -201,7 +198,11 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12">
-            <div class="card">
+            <div class="bg-white">
+              <div class="card-body p-3">
+              <h3>Module List   <button class="btn btn-primary btn-sm pull-right"  id="add_new_module" onclick="add_module()"><i class="fa fa-plus-circle"></i> New Module</button>
+        </h3>
+                      </div>
                
                 <div class="card-body">
                   <div class="row">

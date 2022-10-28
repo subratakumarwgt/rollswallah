@@ -26,7 +26,6 @@
 <?php $__env->startSection('breadcrumb-title'); ?>
 <h3>Modules & Permissions</h3>
 
-<button class="btn btn-outline-dark  btn-sm shadow"  data-bs-toggle="modal" data-bs-target="#exampleModalCenter"> <i class="fa fa-cogs"></i> Setup</button>
 
 <?php $__env->stopSection(); ?>
 
@@ -82,6 +81,8 @@
     <div class="card">
   
         <div class="card-body table-responsive" id="module_chart">
+        <button class="btn btn-outline-dark  btn-sm shadow"  data-bs-toggle="modal" data-bs-target="#exampleModalCenter"> <i class="fa fa-cogs"></i> Setup</button>
+
           <div class="row ">
           <div class="m-2 p-3"> Showing permissions for: <strong id="view_type_view"><?php echo e(@$resource->name); ?> (<?php echo e(ucfirst(@$view_type)); ?>)</strong></div>
           </div>

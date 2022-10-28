@@ -44,6 +44,67 @@
 .rating input:checked::before{
   color: #1f9cff;
 }	
+.timeline-steps {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap
+    }
+
+    .timeline-steps .timeline-step {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        margin: 1.45rem
+    }
+
+    @media (min-width:768px) {
+        .timeline-steps .timeline-step:not(:last-child):after {
+            content: "";
+            display: block;
+            border-top: .25rem dotted darkolivegreen;
+            width: 3.46rem;
+            position: absolute;
+            left: 7.5rem;
+            top: .3125rem
+        }
+
+        .timeline-steps .timeline-step:not(:first-child):before {
+            content: "";
+            display: block;
+            border-top: .25rem dotted darkolivegreen;
+            width: 3.8125rem;
+            position: absolute;
+            right: 7.5rem;
+            top: .3125rem
+        }
+    }
+
+    .timeline-steps .timeline-content {
+        width: 6rem;
+        text-align: center
+    }
+
+    .timeline-steps .timeline-content .inner-circle {
+        border-radius: 1.5rem;
+        height: 0.8rem;
+        width: 0.8rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background-color: green
+    }
+
+    .timeline-steps .timeline-content .inner-circle:before {
+        content: "";
+        background-color: darkolivegreen;
+        display: inline-block;
+        height: 3rem;
+        width: 3rem;
+        min-width: 3rem;
+        border-radius: 6.25rem;
+        opacity: .5
+    }
 </style>
 @endsection
 @section('breadcrumb-title')
@@ -57,13 +118,16 @@
 @endsection
 
 @section('banner')
-<div class="" style="height: 200px;position:fixed;filter: blur(12px);-webkit-filter: blur(12px);"><img src="{{asset('assets/images/bg_3-33.jpg')}}" alt="" style="min-width: 1000px;"></div>
+<div class="" style="height: 200px;position:fixed;filter: blur(50px);-webkit-filter: blur(50px);"><img src="{{asset('assets/images/bg_3-33.jpg')}}" alt="" style="min-width: 1000px;"></div>
 @endsection
 
 @section('content')
 
 <div class="container-fluid">
-	<div class="row">
+	<div class="row justi-fy-content-center">
+		<div class="col-md-12">
+			<!-- <div class="card-body  shadow-sm" id="order_timeline_holder"></div> -->
+		</div>
 		<div class="col-sm-12">
 			<div class="">
 
@@ -71,6 +135,7 @@
 
 					<input type="hidden" value="{{$order_log->order}}" id="booking">
 					<input type="hidden" value="{{$order}}" id="order">
+					<input type="hidden" value="{{$order->order_id}}" id="order_id">
 					<!-- cd-timeline Start-->
 					<section class="cd-container" id="cd-timeline">
 						@foreach($order_log->steps as $log)
@@ -135,14 +200,15 @@
 }
 
 	var booking = document.getElementById("booking");
-	var order = document.getElementById("order");
+	var order= document.getElementById("order");
 	booking = JSON.parse(booking.value);
 	 order = JSON.parse(order.value);
+	 let order_id = order.order_id
 	const step_one = (data, dataJson,order) => $(`<div class="cd-timeline-block" >
 							<div class="cd-timeline-img cd-picture bg-${data.class}"><i class="fa fa-check-square"></i></div>
 							<div class="cd-timeline-content border-bottom border-top border-${data.class}">
 								<h5 class="text-primary  p-2">${data.section_title}</h5>
-								<p class="m-0  border-bottom">Order ID: <strong class="badge badge-warning text-dark pull-right">ID: ${dataJson.order_id}</strong></p>
+								<p class="m-0  border-bottom">Order ID: <strong class="badge badge-warning text-dark pull-right">ID: ${order_id}</strong></p>
 								${JSON.parse(JSON.stringify(order.orderDetails)).map((value)=>{
 									return (`<p class="m-0 border-bottom"><strong class="text-${data.class}"> ${value.quantity}x ${value.product.title} </strong>   <strong class="pull-right"> ₹ ${value.subtotal}</strong></p>`)
 								}).join('')}								
@@ -163,7 +229,7 @@
 	const step_two = (data, dataJson) => $(`<div class="cd-timeline-block ">
 							<div class="cd-timeline-img cd-movie bg-${data.class}"><i class="fa fa-check-square"></i></div>
 							<div class="cd-timeline-content border-bottom border-top border-${data.class}">
-								<h5 class="text-primary  p-2">${data.section_title} <i class="fa fa-check-circle"></i>  | <small>${formatDate(new Date(dataJson.confirmed_on))}</small></h5>
+								<h5 class="text-primary  p-2">${data.section_title} <i class="fa fa-check-circle"></i>  | <small>${formatDate(new Date(data.created_at))}</small></h5>
 								<h6 class="p-1">Your Order is <span class="text-${data.class}"> ${data.status_name} <i class="fa fa-check-circle"></i> .</span></h6>		
 								<p class="m-0 text-success text-center">${data.update_message}</strong></p>					
 							</div>
@@ -173,11 +239,29 @@
 		return $(`<div class="cd-timeline-block ">
 		               <div class="cd-timeline-img cd-movie bg-${data.class} "><i class="fa fa-check-square"></i></div>
 							<div class="cd-timeline-content border-bottom border-top border-${data.class}">
-								<h5 class="text-primary  p-2">Ready <i class="fa fa-check-circle"></i>  | <small>${new Date(Date.parse(dataJson.ready_on)).toDateString()}</small></h5>
+								<h5 class="text-primary  p-2">Ready <i class="fa fa-check-circle"></i>  | <small>${new Date(Date.parse(data.created_at)).toDateString()}</small></h5>
 								${order.orderDetails.map((value,index)=>{
 									return (`<p class="m-0 border-bottom"><strong class=""> ${value.quantity}x ${value.product.title}</strong>   <strong class="pull-right"> ₹ ${value.subtotal}</strong></p>`)
 								}).join('')}						
 								<p class="m-0 text-success text-center">${data.update_message}</strong></p>
+							</div>
+							
+						</div>`);
+
+	}
+	const step_extra = () => {
+		return $(`<div class="cd-timeline-block ">
+		               <div class="cd-timeline-img cd-movie bg-success "><i class="fa fa-success"></i></div>
+							<div class="cd-timeline-content border-bottom border-top border-success">
+								<h5 class="text-primary">Further information will be added here</h5>
+								<div class="card-body chart-block">
+									<div class="chart-overflow" id="column-chart2">
+										<div class="loader-box">
+											<div class="loader-2"></div>
+										</div>
+									</div>
+								</div>				
+								
 							</div>
 							
 						</div>`);
@@ -215,7 +299,7 @@
 		return $(`<div class="cd-timeline-block border-bottom-${data.class}">
 							<div class="cd-timeline-img cd-location bg-${data.class}"><i class="fa fa-check-square"></i></div>
 							<div class="cd-timeline-content">
-								<h5 class="bg-light text-primary p-3">Delivered <i class="fa fa-check-circle" aria-hidden="true"></i> | <small>${formatDate(new Date(dataJson.delivered_on))}</small></h5>
+								<h5 class="bg-light text-primary p-3">Delivered <i class="fa fa-check-circle" aria-hidden="true"></i> | <small>${formatDate(new Date(data.created_at))}</small></h5>
 								<p class="m-0 text-success text-center">${data.update_message}</strong></p>
 								
 							</div>
@@ -226,7 +310,7 @@
 		return $(`<div class="cd-timeline-block border-bottom-${data.class}">
 							<div class="cd-timeline-img cd-location bg-${data.class}"><i class="fa fa-check-square"></i></div>
 							<div class="cd-timeline-content">
-								<h5 class="bg-light text-primary p-3">Packed & Handed Over <i class="fa fa-check-circle" aria-hidden="true"></i> | <small>${formatDate(new Date(dataJson.packed_on))}</small></h5>
+								<h5 class="bg-light text-primary p-3">Packed & Handed Over <i class="fa fa-check-circle" aria-hidden="true"></i> | <small>${formatDate(new Date(data.created_at))}</small></h5>
 								<p class="m-0 text-success text-center">${data.update_message}</strong></p>
 								<p class="m-0 text-success text-center">
                                 ${order.status != "complited" ? `<button class="btn btn-success" onclick="deliverOrder(${order.order_id},this)">Order recieved</button>` : "" } </strong></p>
@@ -235,41 +319,66 @@
 	}
 	var steps = document.getElementsByClassName("steps");
 	const setNodes = async () => {
-		// let order = $("#order").val();
+		// let loader = $(`<div class="card-body chart-block">
+        //                         <div class="chart-overflow" id="column-chart2">
+        //                             <div class="loader-box">
+        //                                 <div class="loader-2"></div>
+        //                             </div>
+        //                         </div>
+        //                     </div>`); 
+		// $("#order_timeline_holder").html(loader)
+        // $timeline = await $.get("/management/sales/orders/timeline",{order_id}).then((data)=>{
+           
+        //     $("#order_timeline_holder").html(data)
+        // })
+		
+		steps =await $.get("/api/get-order-steps/"+order_id)
+		             .then((data)=>{
+						   order = data.order
+                           return data.data
+						  
+					 })
+					 $("#cd-timeline").html("")	
+					 let last_step = steps.length;
+					
 		await steps.forEach(element => {
-			let data = JSON.parse(element.value);
-			let dataJson = JSON.parse(data.section_content_json)
+			let data = element;
+			let dataJson = data.section_content_json
 			var container = document.getElementById("cd-timeline");
+			
 			$("#loader_" + data.id).remove();
+			
 
 			switch (parseInt(data.step_no)) {
 
 				case 1:
-
 					$("#cd-timeline").append(step_one(data, dataJson,order));
+					if(1 == last_step)
+					$("#cd-timeline").append(step_extra());
 					break;
 				case 2:
 					$("#cd-timeline").append(step_two(data, dataJson));
-
+					if(2 == last_step)
+					$("#cd-timeline").append(step_extra());
 					break;
 				case 3:
-					$("#cd-timeline").append(step_three(data, dataJson,order));				
-
+					$("#cd-timeline").append(step_three(data, dataJson,order));	
+					if(3 == last_step)
+					$("#cd-timeline").append(step_extra());
 					break;
-				case 4:
-				
-					$("#cd-timeline").append(step_six(data, dataJson,order));
-				
-					
+				case 4:				
+					$("#cd-timeline").append(step_six(data, dataJson,order));	
+					if(4 == last_step)
+					$("#cd-timeline").append(step_extra());				
 					break;
 				case 5:
 					$("#cd-timeline").append(step_five(data, dataJson));
 					if (dataJson.feedback !== "") {
 					$("#cd-timeline").append(step_four(data, dataJson));
-				} else {
-					
-					
-				}
+					} else {
+						
+						
+					}
 
 
 					break;
@@ -297,6 +406,7 @@
 									z_index: 10000,
 									timer: 2000,
 								})
+								setNodes()
                             })
                             .error(error =>{
                                 hideoverlay($(form))
@@ -305,7 +415,7 @@
     }
 	
 	$("#cd-timeline").on("change",".rating_radio",function(){
-          alert($(this).val())
+		setNodes()
 	  })
 </script>
 @endsection

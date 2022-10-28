@@ -87,6 +87,11 @@ $(document).ready(async function(){
     var this_user_id = {{Auth::User()->id}}
     var this_user_status = {{Auth::User()->userStatus->is_online ?? 1}}
 
+    const playNewOrder = () => {
+      var audio = new Audio('/storage/audio/new_order_recieved.mp3');
+       audio.play();
+    }
+
     // console.log(Echo)
     Echo.channel('booking')
         .listen('NewBooking', (e) => {
@@ -124,11 +129,12 @@ $(document).ready(async function(){
            { 
             getOrderCoupons()
             getOrderHistory(e.order.order_id)
+            playNewOrder()
            }
             else
             window.open("/management/order-history")
             $.notify({
-                message: `New Order Recieved! from ${e.order.user_contact}`
+                message: `New Order Recieved: ID ${e.order.order_id}, from ${e.order.user_contact}`
             }, {
                 type: 'success',
                 z_index: 10000,

@@ -45,7 +45,7 @@
                 <div class="owl-carousel owl-theme" id="owl-carousel-13">
                     <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="item border border-success shadow">
-                    <div class="card-body  shadow-sm <?php if($category != $_GET['category']): ?> text-light bg-dark <?php else: ?> text-primary bg-light <?php endif; ?> rounded"> <a href="/"><i class="fa fa-dot-circle-o text-light" aria-hidden="true"></i> <?php echo e(strtoupper($category)); ?> </a></div>
+                    <div class="card-body  shadow-sm <?php if(isset($_GET['category']) && $category != $_GET['category']): ?> text-light bg-dark <?php else: ?> text-primary bg-light <?php endif; ?> rounded"> <a href="/"><i class="fa fa-dot-circle-o text-light" aria-hidden="true"></i> <?php echo e(strtoupper($category)); ?> </a></div>
                     </div>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     <?php $__currentLoopData = $subcategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
@@ -247,6 +247,7 @@
  
 </script>
 <script>
+    
 //  $(document).ready(function(){
     $(".add-to-cart").on('click',function(e){
     var product_id = $(this).data('product')

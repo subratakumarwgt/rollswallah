@@ -837,8 +837,8 @@ class CrudController extends Controller
 			}
 			
 			if (!empty(User::where('contact',$request->user_contact)->count())) {
-				$request->user_id = User::where('contact',$request->user_contact)->first()->id;
-				$array = array_merge($request->all(),['user_id'=>$request->user_id]);
+				// $request->user_id = User::where('contact',$request->user_contact)->first()->id;
+				 $array = array_merge($request->all(),['user_id'=>$request->user_id]);
 			}
 			elseif(!empty(Contact::where('number',$request->user_contact)->count())){
 				$request->contact_id = Contact::where('number',$request->user_contact)->first()->id;
@@ -875,7 +875,7 @@ class CrudController extends Controller
 			$order->order_id = time().$order->id;
 			$order->save();
 			$cart_items = Cart::where("user_id",$user_finder_id)->get();
-			// dd($user_finder_id);
+			//  dd($user_finder_id);
 			
 			foreach ($cart_items as  $item) {
 				$product_price = empty($item->product->on_offer) ? $item->product->pre_price : $item->product->price;
@@ -1184,6 +1184,15 @@ class CrudController extends Controller
 			$user = [];
 			$orderController->setDeliveryInfo($user);
 			return response(['status'=>true,'message'=>"Order delivered!"],200);
+		}
+		public function getOrderLog($id){
+			$order = Order::where("order_id",$id)->first();			
+			$orderController = new OrderController($order->id);		
+			$order->orderDetails = $order->orderDetails;
+			foreach ($order->orderDetails as $key => $value) {
+				$value->product = $value->product;
+			}
+			return response(['status'=>true,'data'=>$orderController->steps,"order" => $order],200);
 		}
 
 		}

@@ -45,7 +45,7 @@
                 <div class="owl-carousel owl-theme" id="owl-carousel-13">
                     @foreach($categories as $category)
                     <div class="item border border-success shadow">
-                    <div class="card-body  shadow-sm @if($category != $_GET['category']) text-light bg-dark @else text-primary bg-light @endif rounded"> <a href="/"><i class="fa fa-dot-circle-o text-light" aria-hidden="true"></i> {{strtoupper($category)}} </a></div>
+                    <div class="card-body  shadow-sm @if(isset($_GET['category']) && $category != $_GET['category']) text-light bg-dark @else text-primary bg-light @endif rounded"> <a href="/"><i class="fa fa-dot-circle-o text-light" aria-hidden="true"></i> {{strtoupper($category)}} </a></div>
                     </div>
                     @endforeach
                     @foreach($subcategories as $category)
@@ -245,6 +245,7 @@
  
 </script>
 <script>
+    
 //  $(document).ready(function(){
     $(".add-to-cart").on('click',function(e){
     var product_id = $(this).data('product')

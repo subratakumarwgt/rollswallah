@@ -49,6 +49,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
   Route::post('/save-order-details', '\App\Http\Controllers\CrudController@saveOrderDetails')->name('save-order-details');
   Route::post('/save-charge-details', '\App\Http\Controllers\CrudController@saveChargeDetails')->name('save-charge-details');
   Route::get('/get-order/{id}', '\App\Http\Controllers\CrudController@getOrderDetails')->name('get-order');
+  Route::get('/get-order-steps/{id}', '\App\Http\Controllers\CrudController@getOrderLog')->name('get-order-steps');
 
   //Order Handle Routes
   Route::post('/confirm-order/{order_id}', '\App\Http\Controllers\CrudController@confirmOrder')->name('confirm-order');

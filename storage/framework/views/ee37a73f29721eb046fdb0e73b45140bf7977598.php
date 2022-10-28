@@ -198,7 +198,7 @@
       form.append("status", "pending")
       form.append("user_contact", $("#user_contact").val());
       form.append("user_name", $("#user_name").val());
-      form.append("user_id", <?php echo e(Auth::check() ? Auth::User()->id : Session::getId()); ?>);
+      form.append("user_id", "<?php echo e(Auth::check() ? Auth::User()->id : Session::getId()); ?>");
       form.append("user_address", $("#user_address").val());
       form.append("table_model", "Order");
 
@@ -238,8 +238,9 @@
 
     
       await $.ajax(settings).done(function(response) {
-        hideoverlay($("#checkOutForm"));
-        alert("order_complited")
+        response = JSON.parse(response)
+       hideoverlay($("#checkOutForm"));
+       window.open("/track-order/"+response.details.order_id)
       })
  
         }

@@ -47,12 +47,13 @@
 
 <div class="container-fluid">
     <div class="row">
-        <!-- <div class="col-md-12 mb-3"><a href="#" class="btn btn-outline-dark btn-sm mr-3" id="addNewRole"> <i class="fas fa-plus-square"></i>Add New Product</a>
+        <!-- <div class="col-md-12 mb-3">
 <a href="import/excel" class="btn btn-primary btn-sm mr-3"><i class="fas fa-plus-square"></i> Mass Import</a></div> -->
         <div class="col-sm-12">
             <div class="card">
 
                 <div class="card-body">
+                <a href="#" class="btn btn-outline-dark btn-sm mr-3" id="addNewRole"> <i class="fas fa-plus-square"></i>Add New Role</a>
                     <div class="table-responsive">
                         <table class="table" id="datatable">
                             <thead>
@@ -206,4 +207,3 @@ hideoverlay($(this))
 
 <!-- <script src="{{asset('assets/js/datatable/datatables/datatable.custom.js')}}"></script> -->
 @endsection
-<button class="btn btn-sm btn-outline-dark"><i class="fa fa-user"></i>Assign Users</button><button class="btn btn-sm btn-outline-dark"><i class="fa fa-lock"></i>Edit Permissions</button>

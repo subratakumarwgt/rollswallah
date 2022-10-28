@@ -163,14 +163,30 @@ class UserDashboardController extends Controller
     }
     public function orderTrackView($order_id){
         $order = Order::where('order_id',$order_id)->first();
-        $order->orderDetails = $order->orderDetails;
-        foreach ($order->orderDetails as $key => $detail) {
-           $detail->product = $detail->product;
+        if(Auth::check())
+        {
+            $user = Auth::User();
+            $user_id = $user->id;
         }
-        $appointment = new OrderController($order->id);
-        // $appointment = $appointment->appointment;
-        //  dd($appointment);
-        return view('userpanel.trackOrder',['order_log'=>$appointment,"order" => $order ]);
+        else{
+            $user_id = Session::getId();
+        }
+        // dd($user_id);
+        if($order->user_id == $user_id)
+        { 
+            
+            $order->orderDetails = $order->orderDetails;
+            foreach ($order->orderDetails as $key => $detail) {
+            $detail->product = $detail->product;
+            }
+            $appointment = new OrderController($order->id);
+            return view('userpanel.trackOrder',['order_log'=>$appointment,"order" => $order ])->with("message","Access denied for current action");
+    
+             }
+       else{
+        return view('userpanel.access-denied');
+    
+       }
     }
 
 }
