@@ -26,6 +26,7 @@
         "child_process": "^1.0.2",
         "express": "^4.17.1",
         "fs": "0.0.1-security",
+        "grapesjs": "^0.20.1",
         "gulp": "^4.0.2",
         "gulp-htmlmin": "^5.0.1",
         "gulp-imagemin": "^6.2.0",

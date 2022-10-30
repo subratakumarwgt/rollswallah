@@ -13,9 +13,19 @@
         height: 260px;
         overflow: hidden;
     }
+    @media(max-width:800px) {
+        .product_img_wrapper{
+        height: 60px;
+        overflow: hidden;
+    }
+    @media(max-width:700px) {
+        .product_img_wrapper{
+        height: 230px !important;
+        overflow: hidden;
+    }
     @media(max-width:600px) {
         .product_img_wrapper{
-        height: 120px;
+        height: 130px !important;
         overflow: hidden;
     }
     }
@@ -38,24 +48,46 @@
     <!-- <div class="col-md-12">
         <img src="<?php echo e(asset('assets/images/icecreambg1.png')); ?>" alt="" width="100%" >
     </div>  -->
-  
-        <div class="col-md-12">
-            <div class="card-header h6 text-primary">Categories</div>
-            <div class="card-body">
-                <div class="owl-carousel owl-theme" id="owl-carousel-13">
-                    <?php $__currentLoopData = $categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="item border border-success shadow">
-                    <div class="card-body  shadow-sm <?php if(isset($_GET['category']) && $category != $_GET['category']): ?> text-light bg-dark <?php else: ?> text-primary bg-light <?php endif; ?> rounded"> <a href="/"><i class="fa fa-dot-circle-o text-light" aria-hidden="true"></i> <?php echo e(strtoupper($category)); ?> </a></div>
+    <div class="col-md-11 card">
+                  
+                  <div class="card-body">
+                      <div class="row justify-content-center">
+                       <div class="col-md-10 row justify-content-center " action="#" method="get">
+                    <div class="form-group col-8 p-1">
+                        <input class="form-control w-100 shadow-sm" type="text" placeholder="Search by Name, Clinic, Specialist etc." title="" id="">
                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    <?php $__currentLoopData = $subcategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="item">                                   
-                     <div class="card-body bg-dark text-white shadow-sm  border-bottom  border-primary rounded "> <a href="/"><i class="fa fa-heart text-danger" aria-hidden="true"></i> <?php echo e(strtoupper($category)); ?>  </a></div>
-                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <div class="col-4 p-1">
+                        <button class="btn btn-primary btn-pill shadow-sm">Search</button>
+                    </div>
                 </div>
-            </div>
-        </div>
+                </div>
+                  </div>
+               
+                </div>
+  
+    <div class="col-md-11 card">
+           
+           <div class="card-body">
+              
+                <div class="owl-carousel owl-theme col-12" id="owl-carousel-13">
+         <?php $__currentLoopData = array_merge($categories,$subcategories); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+         <?php if (isset($component)) { $__componentOriginal1052a869877d3fbc1080fefd0723af00c18919e9 = $component; } ?>
+<?php $component = $__env->getContainer()->make(App\View\Components\SliderItem::class, ['item' => $item]); ?>
+<?php $component->withName('slider-item'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal1052a869877d3fbc1080fefd0723af00c18919e9)): ?>
+<?php $component = $__componentOriginal1052a869877d3fbc1080fefd0723af00c18919e9; ?>
+<?php unset($__componentOriginal1052a869877d3fbc1080fefd0723af00c18919e9); ?>
+<?php endif; ?>
+         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+               </div>
+                 
+               </div>
+           </div>
         <!-- <div class="col-md-12">
             <div class="card-header h5 text-primary">Collections</div>
             <div class="card-body">
@@ -68,8 +100,7 @@
                 </div>
             </div>
         </div> -->
-         </div>
-<div class="container-fluid product-wrapper mt-4">
+        <div class="container-fluid product-wrapper mt-4 col-md-11">
    <div class="product-grid">
       <div class="feature-products">
          
@@ -78,87 +109,22 @@
          <div class="row justify-content-center">
              <div class="col-md-12">
                  <div class="row">
-                 <div class="card-header card-header h6 text-primary mb-2">Menu <i class="fa fa-cutlery"></i></div>
+               
         <?php if($products->count() > 0): ?>
        
-        <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-      
-            <div class="col-xl-3 col-md-3 col-sm-6 xl-3">
-             
-                  <div class="product-box">
-                  
-               <div class="card">
-               <div class="row">
-                    <div class="col-md-12 col-sm-12 col-5">
-                     <div class="product-img  product_img_wrapper" >
-                        <img class="img-fluid" src="/<?php echo e($product->image); ?>" alt="" >
-                        <?php if(!empty($product->on_offer)): ?>
-                        <div class="ribbon ribbon-danger text-white border-danger ribbon-bottom-left ">offer!</div>
-                        <?php endif; ?>
-                        <div class="product-hover">
-                           <ul>
-                              <li>
-                                 <button class="btn add-to-cart" type="button" data-product = "<?php echo e($product->id); ?>"><i class="icon-shopping-cart"></i></button>
-                              </li>
-                              <li>
-                                 <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter_<?php echo e($product->id); ?>"><i class="icon-eye"></i></button>
-                              </li>
-                              <!-- <li>
-                                 <button class="btn" type="button"><i class="icofont icofont-law-alt-2"></i></button>
-                              </li> -->
-                           </ul>
-                        </div>
-                     </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-7">
-                     <div class="modal fade" id="exampleModalCenter_<?php echo e($product->id); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter_<?php echo e($product->id); ?>" aria-hidden="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                           <div class="modal-content" id="modal_content_<?php echo e($product->id); ?>">
-                              <div class="modal-header">
-                                 <div class="product-box row">
-                                    <div class="product-img col-lg-6"><img class="img-fluid" src="/<?php echo e($product->image); ?>" alt="" id="img_<?php echo e($product->id); ?>"></div>
-                                    <div class="product-details col-lg-6 text-start">
-                                       <h4 id="title_<?php echo e($product->id); ?>" class=""><?php echo e($product->title); ?></h4>
-                                       <div class="product-price" id="price_<?php echo e($product->id); ?>"><i class="fa fa-inr"></i><?php echo e($product->price); ?>
-
-                                        <del class="text-danger" id="pre_price_<?php echo e($product->id); ?>"> MRP: <i class="fa fa-inr"></i><?php echo e($product->pre_price); ?></del>
-                                       </div>
-                                     
-                                      
-                                          <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                             <div class="input-group">
-                                                <input class="touchspin text-center" type="text" value="1" id="product_qty_<?php echo e($product->id); ?>" readonly="">
-                                             </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                             <button class="btn btn-dark btn-pill add-to-cart" type="button" data-quantity="<?php echo e($product->id); ?>" data-product = "<?php echo e($product->id); ?>" id="addBtn_<?php echo e($product->id); ?>">Add to Cart</button>
-                                             
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="product-details">                       
-                        <strong class="h6 product_title_1" > <?php echo e($product->title); ?></strong>
-                        <div class="product-price text-success "><i class="fa fa-inr"></i> <?php echo e($product->price); ?>
-
-                           <del class="text-danger"><small><i class="fa fa-inr"></i> <?php echo e($product->pre_price); ?>   </small> </del>
-                        </div>
-                        <div class="addcart-btn">
-                            <button class="btn btn-dark btn-pill add-to-cart" type="button" data-quantity="<?php echo e($product->id); ?>" data-product = "<?php echo e($product->id); ?>" id="addBtn_<?php echo e($product->id); ?>">Add <i class="fa fa-shopping-cart"></i></button>
-                        </div>
-                     </div>
-                    </div>
-                  </div>
-               </div>
-            </div>
-            </div>
+        <?php $__currentLoopData = $products; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>      
+           <?php if (isset($component)) { $__componentOriginal2c1b2c59fa706cf2cddefa5ad9acf56417989ab0 = $component; } ?>
+<?php $component = $__env->getContainer()->make(App\View\Components\Product::class, ['product' => $product]); ?>
+<?php $component->withName('product'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal2c1b2c59fa706cf2cddefa5ad9acf56417989ab0)): ?>
+<?php $component = $__componentOriginal2c1b2c59fa706cf2cddefa5ad9acf56417989ab0; ?>
+<?php unset($__componentOriginal2c1b2c59fa706cf2cddefa5ad9acf56417989ab0); ?>
+<?php endif; ?>
         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
          </div>
@@ -174,6 +140,8 @@
     </div>
 </div>
 </div>
+         </div>
+
 
 
 

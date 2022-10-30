@@ -13,9 +13,19 @@
         height: 260px;
         overflow: hidden;
     }
+    @media(max-width:800px) {
+        .product_img_wrapper{
+        height: 60px;
+        overflow: hidden;
+    }
+    @media(max-width:700px) {
+        .product_img_wrapper{
+        height: 230px !important;
+        overflow: hidden;
+    }
     @media(max-width:600px) {
         .product_img_wrapper{
-        height: 120px;
+        height: 130px !important;
         overflow: hidden;
     }
     }
@@ -38,24 +48,35 @@
     <!-- <div class="col-md-12">
         <img src="{{asset('assets/images/icecreambg1.png')}}" alt="" width="100%" >
     </div>  -->
-  
-        <div class="col-md-12">
-            <div class="card-header h6 text-primary">Categories</div>
-            <div class="card-body">
-                <div class="owl-carousel owl-theme" id="owl-carousel-13">
-                    @foreach($categories as $category)
-                    <div class="item border border-success shadow">
-                    <div class="card-body  shadow-sm @if(isset($_GET['category']) && $category != $_GET['category']) text-light bg-dark @else text-primary bg-light @endif rounded"> <a href="/"><i class="fa fa-dot-circle-o text-light" aria-hidden="true"></i> {{strtoupper($category)}} </a></div>
+    <div class="col-md-11 card">
+                  
+                  <div class="card-body">
+                      <div class="row justify-content-center">
+                       <div class="col-md-10 row justify-content-center " action="#" method="get">
+                    <div class="form-group col-8 p-1">
+                        <input class="form-control w-100 shadow-sm" type="text" placeholder="Search by Name, Clinic, Specialist etc." title="" id="">
                     </div>
-                    @endforeach
-                    @foreach($subcategories as $category)
-                    <div class="item">                                   
-                     <div class="card-body bg-dark text-white shadow-sm  border-bottom  border-primary rounded "> <a href="/"><i class="fa fa-heart text-danger" aria-hidden="true"></i> {{strtoupper($category)}}  </a></div>
-                     </div>
-                    @endforeach
+                    <div class="col-4 p-1">
+                        <button class="btn btn-primary btn-pill shadow-sm">Search</button>
+                    </div>
                 </div>
-            </div>
-        </div>
+                </div>
+                  </div>
+               
+                </div>
+  
+    <div class="col-md-11 card">
+           
+           <div class="card-body">
+              
+                <div class="owl-carousel owl-theme col-12" id="owl-carousel-13">
+         @foreach(array_merge($categories,$subcategories) as $item)
+         <x-slider-item :item="$item"/>
+         @endforeach
+               </div>
+                 
+               </div>
+           </div>
         <!-- <div class="col-md-12">
             <div class="card-header h5 text-primary">Collections</div>
             <div class="card-body">
@@ -68,8 +89,7 @@
                 </div>
             </div>
         </div> -->
-         </div>
-<div class="container-fluid product-wrapper mt-4">
+        <div class="container-fluid product-wrapper mt-4 col-md-11">
    <div class="product-grid">
       <div class="feature-products">
          
@@ -78,85 +98,11 @@
          <div class="row justify-content-center">
              <div class="col-md-12">
                  <div class="row">
-                 <div class="card-header card-header h6 text-primary mb-2">Menu <i class="fa fa-cutlery"></i></div>
+               
         @if($products->count() > 0)
        
-        @foreach($products as $product)
-      
-            <div class="col-xl-3 col-md-3 col-sm-6 xl-3">
-             
-                  <div class="product-box">
-                  
-               <div class="card">
-               <div class="row">
-                    <div class="col-md-12 col-sm-12 col-5">
-                     <div class="product-img  product_img_wrapper" >
-                        <img class="img-fluid" src="/{{$product->image}}" alt="" >
-                        @if(!empty($product->on_offer))
-                        <div class="ribbon ribbon-danger text-white border-danger ribbon-bottom-left ">offer!</div>
-                        @endif
-                        <div class="product-hover">
-                           <ul>
-                              <li>
-                                 <button class="btn add-to-cart" type="button" data-product = "{{$product->id}}"><i class="icon-shopping-cart"></i></button>
-                              </li>
-                              <li>
-                                 <button class="btn" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter_{{$product->id}}"><i class="icon-eye"></i></button>
-                              </li>
-                              <!-- <li>
-                                 <button class="btn" type="button"><i class="icofont icofont-law-alt-2"></i></button>
-                              </li> -->
-                           </ul>
-                        </div>
-                     </div>
-                    </div>
-                    <div class="col-md-12 col-sm-12 col-7">
-                     <div class="modal fade" id="exampleModalCenter_{{$product->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenter_{{$product->id}}" aria-hidden="true">
-                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                           <div class="modal-content" id="modal_content_{{$product->id}}">
-                              <div class="modal-header">
-                                 <div class="product-box row">
-                                    <div class="product-img col-lg-6"><img class="img-fluid" src="/{{$product->image}}" alt="" id="img_{{$product->id}}"></div>
-                                    <div class="product-details col-lg-6 text-start">
-                                       <h4 id="title_{{$product->id}}" class="">{{$product->title}}</h4>
-                                       <div class="product-price" id="price_{{$product->id}}"><i class="fa fa-inr"></i>{{$product->price}}
-                                        <del class="text-danger" id="pre_price_{{$product->id}}"> MRP: <i class="fa fa-inr"></i>{{$product->pre_price}}</del>
-                                       </div>
-                                     
-                                      
-                                          <div class="product-qnty">
-                                          <h6 class="f-w-600">Quantity</h6>
-                                          <fieldset>
-                                             <div class="input-group">
-                                                <input class="touchspin text-center" type="text" value="1" id="product_qty_{{$product->id}}" readonly="">
-                                             </div>
-                                          </fieldset>
-                                          <div class="addcart-btn">
-                                             <button class="btn btn-dark btn-pill add-to-cart" type="button" data-quantity="{{$product->id}}" data-product = "{{$product->id}}" id="addBtn_{{$product->id}}">Add to Cart</button>
-                                             
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <div class="product-details">                       
-                        <strong class="h6 product_title_1" > {{$product->title}}</strong>
-                        <div class="product-price text-success "><i class="fa fa-inr"></i> {{$product->price}}
-                           <del class="text-danger"><small><i class="fa fa-inr"></i> {{$product->pre_price}}   </small> </del>
-                        </div>
-                        <div class="addcart-btn">
-                            <button class="btn btn-dark btn-pill add-to-cart" type="button" data-quantity="{{$product->id}}" data-product = "{{$product->id}}" id="addBtn_{{$product->id}}">Add <i class="fa fa-shopping-cart"></i></button>
-                        </div>
-                     </div>
-                    </div>
-                  </div>
-               </div>
-            </div>
-            </div>
+        @foreach($products as $product)      
+           <x-product  :product="$product"/>
         @endforeach
         </div>
          </div>
@@ -172,6 +118,8 @@
     </div>
 </div>
 </div>
+         </div>
+
 
 
 
