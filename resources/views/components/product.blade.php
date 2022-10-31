@@ -1,7 +1,7 @@
 <div class="col-xl-3 col-md-3 col-sm-6 xl-3">             
              <div class="product-box">
              
-          <div class="card">
+          <div class="bg-white mb-1 mr-1 shadow">
           <div class="row">
                <div class="col-md-12 col-sm-12 col-5">
                 <div class="product-img  product_img_wrapper" >
@@ -59,8 +59,11 @@
                 </div>
                 <div class="product-details">                       
                    <strong class="h6 product_title_1" > {{$product->title}}</strong>
-                   <div class="product-price text-success "><i class="fa fa-inr"></i> {{$product->price}}
-                      <del class="text-danger"><small><i class="fa fa-inr"></i> {{$product->pre_price}}   </small> </del>
+                   <div class="product-price text-success "><i class="fa fa-inr"></i> {{!empty($product->on_offer) ? $product->price : $product->pre_price}}
+                   @if(!empty($product->on_offer))     <del class="text-danger"><small><i class="fa fa-inr"></i> {{$product->pre_price}}   </small> </del>
+                   <span><small class="text-danger"> ( -<i class="fa fa-inr"></i> {{$product->pre_price-$product->price}} )</small></span>
+                   @endif
+                   
                    </div>
                    <div class="addcart-btn">
                        <button class="btn btn-dark btn-pill add-to-cart" type="button" data-quantity="{{$product->id}}" data-product = "{{$product->id}}" id="addBtn_{{$product->id}}">Add <i class="fa fa-shopping-cart"></i></button>

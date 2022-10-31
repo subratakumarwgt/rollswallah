@@ -40,7 +40,7 @@
 
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('banner'); ?>
-<div class="" style="height: 200px;position:fixed;filter: blur(12px);-webkit-filter: blur(12px);"><img src="<?php echo e(asset('assets/images/bg_3-33.jpg')); ?>" alt="" style="min-width: 1000px;"></div>
+<div class="" style="height: 200px;position:fixed;filter: blur(50px);-webkit-filter: blur(50px);"><img src="<?php echo e(asset('assets/images/bg_3-33.jpg')); ?>" alt="" style="min-width: 1000px;"></div>
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <input type="hidden" id="user_id" value="<?php echo e($user_id); ?>">
@@ -48,31 +48,31 @@
     <!-- <div class="col-md-12">
         <img src="<?php echo e(asset('assets/images/icecreambg1.png')); ?>" alt="" width="100%" >
     </div>  -->
-    <div class="col-md-11 card">
+    <div class="col-md-11">
                   
                   <div class="card-body">
-                      <div class="row justify-content-center">
-                       <div class="col-md-10 row justify-content-center " action="#" method="get">
-                    <div class="form-group col-8 p-1">
+                    
+                       <div class="row justify-content-center p-2 " action="#" method="get">
+                    <div class="form-group col-8 p-2">
                         <input class="form-control w-100 shadow-sm" type="text" placeholder="Search by Name, Clinic, Specialist etc." title="" id="">
                     </div>
-                    <div class="col-4 p-1">
+                    <div class="col-4 p-2">
                         <button class="btn btn-primary btn-pill shadow-sm">Search</button>
                     </div>
                 </div>
-                </div>
+               
                   </div>
                
                 </div>
   
-    <div class="col-md-11 card">
+    <div class="col-md-11 ">
            
            <div class="card-body">
               
                 <div class="owl-carousel owl-theme col-12" id="owl-carousel-13">
          <?php $__currentLoopData = array_merge($categories,$subcategories); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
          <?php if (isset($component)) { $__componentOriginal1052a869877d3fbc1080fefd0723af00c18919e9 = $component; } ?>
-<?php $component = $__env->getContainer()->make(App\View\Components\SliderItem::class, ['item' => $item]); ?>
+<?php $component = $__env->getContainer()->make(App\View\Components\SliderItem::class, ['item' => strtoupper($item)]); ?>
 <?php $component->withName('slider-item'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>

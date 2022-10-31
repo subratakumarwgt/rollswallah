@@ -40,7 +40,7 @@
 
 @endsection
 @section('banner')
-<div class="" style="height: 200px;position:fixed;filter: blur(12px);-webkit-filter: blur(12px);"><img src="{{asset('assets/images/bg_3-33.jpg')}}" alt="" style="min-width: 1000px;"></div>
+<div class="" style="height: 200px;position:fixed;filter: blur(50px);-webkit-filter: blur(50px);"><img src="{{asset('assets/images/bg_3-33.jpg')}}" alt="" style="min-width: 1000px;"></div>
 @endsection
 @section('content')
 <input type="hidden" id="user_id" value="{{$user_id}}">
@@ -48,30 +48,30 @@
     <!-- <div class="col-md-12">
         <img src="{{asset('assets/images/icecreambg1.png')}}" alt="" width="100%" >
     </div>  -->
-    <div class="col-md-11 card">
+    <div class="col-md-11">
                   
                   <div class="card-body">
-                      <div class="row justify-content-center">
-                       <div class="col-md-10 row justify-content-center " action="#" method="get">
-                    <div class="form-group col-8 p-1">
+                    
+                       <div class="row justify-content-center p-2 " action="#" method="get">
+                    <div class="form-group col-8 p-2">
                         <input class="form-control w-100 shadow-sm" type="text" placeholder="Search by Name, Clinic, Specialist etc." title="" id="">
                     </div>
-                    <div class="col-4 p-1">
+                    <div class="col-4 p-2">
                         <button class="btn btn-primary btn-pill shadow-sm">Search</button>
                     </div>
                 </div>
-                </div>
+               
                   </div>
                
                 </div>
   
-    <div class="col-md-11 card">
+    <div class="col-md-11 ">
            
            <div class="card-body">
               
                 <div class="owl-carousel owl-theme col-12" id="owl-carousel-13">
          @foreach(array_merge($categories,$subcategories) as $item)
-         <x-slider-item :item="$item"/>
+         <x-slider-item :item="strtoupper($item)"/>
          @endforeach
                </div>
                  
