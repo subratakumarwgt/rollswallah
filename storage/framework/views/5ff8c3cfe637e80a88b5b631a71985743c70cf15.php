@@ -51,7 +51,7 @@
         <?php echo $__env->make('userpanel.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
         <!-- Page Sidebar Ends-->
         <div class="page-body p-0">
-        <div class="container-fluid">        
+        <!-- <div class="container-fluid">        
             <div class="page-title">
               <div class="row p-2">
                 <div class="col-6">
@@ -65,7 +65,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         <!-- <div class="container-fluid">         -->
          <?php echo $__env->yieldContent('banner'); ?>
           <!-- </div> -->

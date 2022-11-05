@@ -521,6 +521,8 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
      Route::get('render-sidebar', 'ModuleController@renderSideBar')->name('render-sidebar');
      Route::get('general-statistics', 'ModuleController@generalStatistics')->name('statistics');
 
+     Route::get('general-page', 'ModuleController@orderEasy')->name('gen-pag');
+
      Route::post('push-notification-subscription', 'ModuleController@saveSubscription')->name('push-notification-subscription');
 
      Route::get('send-push', 'ModuleController@sendPush')->name('send-push');   
@@ -555,6 +557,9 @@ Route::group(['namespace' => '\App\Http\Controllers',"prefix"=>"management" ,'mi
 
      Route::get('/update-resource/{id}', 'ExpenseController@editResource')->name('resource-edit');
      Route::post('/update-resource/{id}', 'ExpenseController@updateResource')->name('resource-update');
+
+
+     Route::get('/crud/{model_name}/create', 'ExpenseController@editResource')->name('resource-edit');
 
      
      

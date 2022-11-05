@@ -137,14 +137,18 @@
               </div>
               <div class="owl-carousel owl-theme owl-carousel-deal" id="owl-carousel-12">
                 <?php $__currentLoopData = $ice_creams; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-          <div class="item">
-          <div class="img-wrapper-rounded shadow-sm border-bottom border-primary"><div class="ribbon ribbon-danger ribbon-left"> - <i class="fa fa-inr small"></i> <?php echo e($item->pre_price - $item->price); ?></div><img src="/<?php echo e($item->image); ?>" alt="" class="img-height-200"></div>
-          <div class="h6 text-center"><?php echo e($item->title); ?></div>
-          <div class=" text-success small text-center border border-success rounded bg-white"><i class="fa fa-inr small"></i> <?php echo e($item->price); ?>
-
-            <del class="text-danger"><small> </small><i class="fa fa-inr small"></i><?php echo e($item->pre_price); ?> </del> 
-          </div>               
-          </div>
+                <?php if (isset($component)) { $__componentOriginal0ecba0329182f047873cd449c4fc8c739c8c5e7d = $component; } ?>
+<?php $component = $__env->getContainer()->make(App\View\Components\Offers\RoundSlider::class, ['item' => $item]); ?>
+<?php $component->withName('offers.round-slider'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php $component->withAttributes([]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal0ecba0329182f047873cd449c4fc8c739c8c5e7d)): ?>
+<?php $component = $__componentOriginal0ecba0329182f047873cd449c4fc8c739c8c5e7d; ?>
+<?php unset($__componentOriginal0ecba0329182f047873cd449c4fc8c739c8c5e7d); ?>
+<?php endif; ?>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         
         <div class="item">

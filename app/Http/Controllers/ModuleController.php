@@ -7,6 +7,7 @@ use App\Models\Centre;
 use App\Models\Contact;
 use App\Models\Diagnosis;
 use App\Models\Doctor;
+use App\Models\Item;
 use App\Models\Product;
 use App\Models\Slots;
 use App\Models\StaticAsset;
@@ -368,5 +369,12 @@ class ModuleController extends Controller
 
 		// $pusher->trigger('booking', 'push', 'hello world');
 		
+	}
+	public function orderEasy(Request $request)
+	{   
+		$category = StaticAsset::getAssetsByTitle("product_categories");
+		$items = Item::where("type","product")->get();
+		return view("adminpanel.expenses.components.order_easy",["items" => $items]);
+
 	}
 }

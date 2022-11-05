@@ -532,6 +532,7 @@ class ExpenseController extends Controller
         }
 		$data["order_type"] = StaticAsset::getAssetsByTitle("order_type");
 		$data["payment_type"] = StaticAsset::getAssetsByTitle("payment_type");
+		$data["items"] = Item::where("type","product")->get();
         
         $data["order_id"] = $order->order_id;
         return view("adminpanel.expenses.addQuickOrder",$data);

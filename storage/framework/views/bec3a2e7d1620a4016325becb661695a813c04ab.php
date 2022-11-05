@@ -9,6 +9,12 @@
 
 <?php $__env->startSection('style'); ?>
 <style>
+    .banner_heading{
+       position: absolute !important;
+       padding-top: 5%;
+       width: inherit;
+       text-align: center;
+    }
     .product_img_wrapper{
         height: 260px;
         overflow: hidden;
@@ -18,11 +24,13 @@
         height: 60px;
         overflow: hidden;
     }
+    }
     @media(max-width:700px) {
         .product_img_wrapper{
         height: 230px !important;
         overflow: hidden;
     }
+     }
     @media(max-width:600px) {
         .product_img_wrapper{
         height: 130px !important;
@@ -44,35 +52,34 @@
 <?php $__env->stopSection(); ?>
 <?php $__env->startSection('content'); ?>
 <input type="hidden" id="user_id" value="<?php echo e($user_id); ?>">
-<div class="row justify-content-center">    
-    <!-- <div class="col-md-12">
-        <img src="<?php echo e(asset('assets/images/icecreambg1.png')); ?>" alt="" width="100%" >
-    </div>  -->
+<div class="row justify-content-center">        
+      
+    
     <div class="col-md-11">
                   
-                  <div class="card-body">
+                  <!-- <div class="card-body">
                     
                        <div class="row justify-content-center p-2 " action="#" method="get">
                     <div class="form-group col-8 p-2">
-                        <input class="form-control w-100 shadow-sm" type="text" placeholder="Search by Name, Clinic, Specialist etc." title="" id="">
+                        <input class="form-control w-100 shadow-sm" type="text" placeholder="Search by Name, Category, Specialist etc." title="" id="">
                     </div>
                     <div class="col-4 p-2">
                         <button class="btn btn-primary btn-pill shadow-sm">Search</button>
                     </div>
                 </div>
                
-                  </div>
+                  </div> -->
                
                 </div>
   
-    <div class="col-md-11 ">
+    <div class="col-md-11 mt-3">
            
            <div class="card-body">
               
                 <div class="owl-carousel owl-theme col-12" id="owl-carousel-13">
          <?php $__currentLoopData = array_merge($categories,$subcategories); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
          <?php if (isset($component)) { $__componentOriginal1052a869877d3fbc1080fefd0723af00c18919e9 = $component; } ?>
-<?php $component = $__env->getContainer()->make(App\View\Components\SliderItem::class, ['item' => strtoupper($item)]); ?>
+<?php $component = $__env->getContainer()->make(App\View\Components\SliderItem::class, ['item' => $item]); ?>
 <?php $component->withName('slider-item'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
@@ -88,18 +95,7 @@
                  
                </div>
            </div>
-        <!-- <div class="col-md-12">
-            <div class="card-header h5 text-primary">Collections</div>
-            <div class="card-body">
-                <div class="owl-carousel owl-theme" id="owl-carousel-13-1">
-                    <?php $__currentLoopData = $subcategories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <div class="item">                                   
-                     <div class="card-body bg-white shadow-sm text-dark border-bottom  border-primary rounded "> <a href="/"><i class="fa fa-heart text-danger" aria-hidden="true"></i> <?php echo e(strtoupper($category)); ?>  </a></div>
-                     </div>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                </div>
-            </div>
-        </div> -->
+       
         <div class="container-fluid product-wrapper mt-4 col-md-11">
    <div class="product-grid">
       <div class="feature-products">

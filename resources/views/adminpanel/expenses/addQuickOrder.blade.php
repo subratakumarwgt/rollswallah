@@ -123,6 +123,18 @@
   </div>
 </div>
 
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="selectModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-content">
+       <x-layouts.order-easy :items="$items" />
+      
+     </div>
+       
+    
+    </div>
+</div>
+
+
 
 <div class="modal fade" id="billModal" tabindex="-1" role="dialog" aria-labelledby="billModal" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -195,6 +207,7 @@
             <div class="col-md-9 mb-4  border-right"><button class="btn btn-outline-dark  ml-1" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Product</button>
               <button class="btn btn-outline-dark  ml-1" id="add_new_charge" onclick="add_charge()"><i class="fa fa-plus-circle"></i> New Charges</button>
               <button class="btn btn-outline-dark border-success ml-1" id="add_new_order" onclick='newOrder()'><i class="fa fa-plus-circle"></i> New Order</button>
+              <button class="btn btn-outline-dark border-success ml-1" id="view_menu" onclick='view_menu()'><i class="fa fa-cutlery"></i> Menu</button>
             </div>
             <div class="col-md-4 mb-4">
               <div class="input-group" id="user_contact_group">
@@ -288,8 +301,7 @@
             <tbody id="expense_body">
               @if(!empty(count($order->orderDetails)))
               @foreach($order->orderDetails as $key => $order_detail)
-              <tr>
-
+              <tr id="new_row_{{$order_detail->item->id}}">
                 <td colspan="">
                   <select name="item" id="" class="form-control item_name items">
                     <option value="{{$order_detail->item->id}}">{{$order_detail->item->name}}</option>
@@ -311,29 +323,24 @@
                   <input type="number" class="form-control subtotal" name="subtotal" value="{{$order_detail->subtotal}}" min="1">
                 </td>
                 <td>
-                  @if($key == 0)
-                  <button class="btn btn-sm btn-outline-success" id="add_row" onclick="add_row()">
-                    <i class="fa fa-plus-square"></i>
-                  </button>
-                  @else
+                 
                   <button class="btn btn-sm btn-outline-danger remove_row" id="" onclick="remove_row()">
                     <i class="fa fa-minus-square"></i>
                   </button>
-                  @endif
+                 
                 </td>
 
               </tr>
               @endforeach
               @else
-              <tr>
+              <!-- <tr>
                 <td colspan="">
                   <select name="item" id="" class="form-control item_name items">
                     <option value="0">Select New Item</option>
                   </select>
                 </td>
                 <td>
-                  <!-- <span><i class="fa fa-times"></i></span><input type="number" class=" qty" name="qty" value="1" min="1"> -->
-
+                  
                   <input class="form-control qty" type="number" name="qty" value="1" min="1">
 
                 </td>
@@ -352,7 +359,7 @@
                   </button>
                 </td>
 
-              </tr>
+              </tr> -->
 
               @endif
             </tbody>
@@ -365,10 +372,11 @@
 
               </tr>
               @if(!empty(count($order->chargeDetails)))
+            
               @foreach($order->chargeDetails as $key => $order_detail)
-              <tr id="charge_row{{$key > 0 ? $key : '' }}" class="charges_row">
+              <tr id="charge_row_{{$key > 0 ? $key : '' }}" class="charges_row">
                 <td colspan="2">
-                  <select name="item_name" id="charges{{$key > 0 ? $key : '' }}" class="form-control item_name charges">
+                  <select name="item_name" id="charges{{$key > 0 ? $key : '' }}" class="form-control  charges">
                     <option value="{{$order_detail->charge_id}}">{{$order_detail->charge->title}}</option>
                   </select>
                 </td>
@@ -399,7 +407,7 @@
               @else
               <tr id="charge_row" class="charges_row">
                 <td colspan="2">
-                  <select name="item_name" id="charges" class="form-control item_name charges">
+                  <select name="item_name" id="charges" class="form-control  charges">
                     <option value="1">Packing Charge</option>
                   </select>
                 </td>
@@ -566,9 +574,9 @@
 
   getAllItems($(".items").bind("change", function() {
 
-    if ($(".items").length > 1 && isDuplicateItem($(this).val())) {
+    if ( isDuplicateItem($(this).val())) {
       $.notify({
-        message: "Items already exists in the list"
+        message: "Items already exists in the product list"
       }, {
         type: 'danger',
         z_index: 10000,
@@ -643,7 +651,7 @@
                          </select>
                         </td>
                         <td>
-                          <input type="number" class="form-control qty" name="qty" value="1" min="1" onchange="changeQuantity(this)">
+                          <input type="number" class="form-control qty qty_item_${id}" name="qty" value="1" min="1" onchange="changeQuantity(this)">
                         </td>
                         <td>
                           <input type="text" class="form-control unit" name="unit" readonly>
@@ -669,15 +677,16 @@
     countTotal()
 
   }
-  const add_row = () => {
-    id++;
-    let new_row = $("#expense_body").append(expense_row(id))
+  const add_row = (item_id=null) => {
+    if(item_id == null)
+   { id++;item_id = id}
+    let new_row = $("#expense_body").append(expense_row(item_id))
     new_row.find($(".remove_row")).bind("click", function() {
       remove_row(this)
     })
     getAllItems(new_row.find($(".item_name")))
     new_row.find(".items").bind("change", function() {
-      if ($(".items").length > 1 && isDuplicateItem($(this).val())) {
+      if (isDuplicateItem($(this).val())) {
         $.notify({
           message: "Item already exists in the list"
         }, {
@@ -714,10 +723,9 @@
     })
   }
 
-  const changeQuantity = (obj) => {
-    let quantity
-
-
+  const changeQty = (item_id,change = -1) => {
+    // $("#new_row_"+item_id).find(".qty").val(parseInt($("#new_row_"+item_id).find(".qty").val()) + change)
+    $(".qty_item_"+item_id).val(parseInt($(".qty_item_"+item_id).val()) + change).trigger("change")
   }
 
 
@@ -1018,12 +1026,15 @@
 
   }
   const isDuplicateItem = (value) => {
+    if($(".item_name").length == 0 )
+    return false;
+    else{
     let duplicate = $(".item_name").filter((num, elem) => {
       return $(elem).val() == value
     }).get()
-    console.log("given", value, "all", duplicate)
-    return duplicate.length > 1
-
+    
+    return  duplicate.length > 1 
+   }
   }
   const newOrder = () => {
     window.open("{{route('quick-order')}}", "_blank")
@@ -1062,7 +1073,7 @@
     charge_data = $("#charge_body tr.charges_row").map(function(index, elem) {
       let row = {};
       row.order_id = data.order_id
-      row.charge_id = $(elem).find(".item_name").val()
+      row.charge_id = $(elem).find(".charges").val()
       row.amount = $(elem).find(".subtotal").val()
       return row
     }).get()
@@ -1240,6 +1251,42 @@
     $("#bill").html(generateBill(order.data))
     $("#billModal").modal("show")
   }
+
+  const view_menu  = () => {
+    $("#selectModal").modal("show")
+  }
+  $(".product").click(function(){
+    // $(".item_name_place").removeClass("shadow-sm border-success border")
+    $(this).addClass("border-success border")    
+    $(this).find(".cross_button").removeClass("d-none")
+    let item = {
+        id : $(this).data("id"),
+        name : $(this).data("name"),
+        price : $(this).data("price")
+    }
+    console.log(item)
+    addItem(item)
+  })
+
+
+  const addItem = (item) => {
+
+       if(!isDuplicateItem(item.id))
+        { 
+          if($("#new_row_"+item.id).length == 0) 
+          add_row(item.id)    
+        else
+        {
+          
+        }
+        let item_holder = $("#new_row_"+item.id).find(".items")        
+        var newOption = new Option(item.name, item.id, false, false);
+        $(item_holder).append(newOption).val(item.id).trigger('change');    
+        }
+        
+    
+  }
+
 </script>
 
 

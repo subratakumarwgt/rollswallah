@@ -1,7 +1,7 @@
 <footer class="footer ">
-	  <div class="container-fluid ">
+	  <div class=" ">
      <div class="row justify-content-center">
-        <div class="col-md-10 bg-white mt-3">
+        <div class="col-md-12  mt-3">
                <div class="card-body">
                   <div class="collection-filter-block">
                      <div class="row">
@@ -40,7 +40,7 @@
         </div>
 			<div class="row">
           <div class="landing-center ptb50">
-            <div class="title"><img class="img-fluid" src="{{asset('assets/images/rollswallah.png')}}" alt=""></div>
+            <div class="title"><img class="img-fluid" src="{{asset('assets/images/rollswallah.png')}}" alt="" width="100px"></div>
             <div class="footer-content">
              </div>
           </div>

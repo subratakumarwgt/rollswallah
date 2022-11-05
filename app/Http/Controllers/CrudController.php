@@ -904,7 +904,7 @@ class CrudController extends Controller
 			
 			Cart::where("user_id",$user_finder_id)->delete();
 			event(new NewOrder($order));			
-			return response(['status' => true, "data" => $array,"message"=>"Order placed successfully","details"=>$order], 200);
+			return response(['status' => true, "data" => $array,"message"=>"Order placed successfully","	"=>$order], 200);
 
 		} catch (\Throwable $th) {
 			$this->logger($log_slug.date("Y-m-d_H-i-s"),["errors"=> $th->getMessage()]);

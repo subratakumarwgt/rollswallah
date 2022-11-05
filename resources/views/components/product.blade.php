@@ -1,13 +1,16 @@
 <div class="col-xl-3 col-md-3 col-sm-6 xl-3">             
              <div class="product-box">
              
-          <div class="bg-white mb-1 mr-1 shadow">
-          <div class="row">
+          <div class=" mb-1 mr-1" >
+          <div class="row shadow bg-white text-Primary" >
                <div class="col-md-12 col-sm-12 col-5">
                 <div class="product-img  product_img_wrapper" >
                    <img class="img-fluid" src="/{{$product->image}}" alt="" >
                    @if(!empty($product->on_offer))
-                   <div class="ribbon ribbon-danger text-white border-danger ribbon-bottom-left ">offer!</div>
+                   <div class="ribbon ribbon-warning text-dark border-warning ribbon-bottom-right ">  Offer</div>
+                   @endif
+                   @if(!empty($product->on_offer))
+                   <div class="ribbon ribbon-danger text-white border-danger ribbon-bottom-left "> - <i class="small fa fa-inr"></i> {{($product->pre_price - $product->price)}}</div>
                    @endif
                    <div class="product-hover">
                       <ul>
@@ -58,15 +61,15 @@
                    </div>
                 </div>
                 <div class="product-details">                       
-                   <strong class="h6 product_title_1" > {{$product->title}}</strong>
+                   <strong class="h6 product_title_1 pt-0 m-0" > {{$product->title}}</strong>
                    <div class="product-price text-success "><i class="fa fa-inr"></i> {{!empty($product->on_offer) ? $product->price : $product->pre_price}}
                    @if(!empty($product->on_offer))     <del class="text-danger"><small><i class="fa fa-inr"></i> {{$product->pre_price}}   </small> </del>
-                   <span><small class="text-danger"> ( -<i class="fa fa-inr"></i> {{$product->pre_price-$product->price}} )</small></span>
+                 
                    @endif
                    
                    </div>
-                   <div class="addcart-btn">
-                       <button class="btn btn-dark btn-pill add-to-cart" type="button" data-quantity="{{$product->id}}" data-product = "{{$product->id}}" id="addBtn_{{$product->id}}">Add <i class="fa fa-shopping-cart"></i></button>
+                   <div class="addcart-btn mb-2">
+                       <button class="btn btn-outline-dark btn-block text-primary   add-to-cart" type="button" data-quantity="{{$product->id}}" data-product = "{{$product->id}}" id="addBtn_{{$product->id}}"><i class="fa fa-shopping-cart"></i> Add </button>
                    </div>
                 </div>
                </div>
