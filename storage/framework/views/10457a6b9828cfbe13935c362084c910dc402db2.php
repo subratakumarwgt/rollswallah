@@ -231,6 +231,9 @@
             <div class="col-md-9 mb-4  border-right"><button class="btn btn-outline-dark  ml-1 mb-2" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Product</button>
               <button class="btn btn-outline-dark  ml-1 mb-2" id="add_new_charge" onclick="add_charge()"><i class="fa fa-plus-circle"></i> New Charges</button>
               <button class="btn btn-outline-dark border-success ml-1 mb-2" id="add_new_order" onclick='newOrder()'><i class="fa fa-plus-circle"></i> New Order</button>
+              <button class="btn btn-outline-dark border-success ml-1 mb-2" id="add_row" onclick="add_row()">
+                    <i class="fa fa-plus-square"></i> Item
+                  </button>
               <button class="btn btn-outline-dark border-success ml-1 mb-2" id="view_menu" onclick='view_menu()'><i class="fa fa-cutlery"></i> Menu</button>
             </div>
             <div class="col-md-4 mb-4">
@@ -322,10 +325,10 @@
               </tr>
             </thead>
 
-            <tbody id="expense_body">
+            <tbody id="expense_body" class="">
               <?php if(!empty(count($order->orderDetails))): ?>
               <?php $__currentLoopData = $order->orderDetails; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $order_detail): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-              <tr id="new_row_<?php echo e($order_detail->item->id); ?>" data-item_id="<?php echo e($order_detail->item->id); ?>" data-item_an>
+              <tr id="new_row_<?php echo e($order_detail->item->id); ?>" data-item_id="<?php echo e($order_detail->item->id); ?>" >
                 <td colspan="">
                   <select name="item" id="" class="form-control item_name items">
                     <option value="<?php echo e($order_detail->item->id); ?>"><?php echo e($order_detail->item->name); ?></option>
@@ -640,6 +643,8 @@
     let item = items.items.filter((value, key) => {
       return value.id == $(item_obj).val()
     })
+    $(item_obj).closest("tr").prop("id","new_row_"+item[0].id)
+    $(item_obj).closest("tr").data("item_id",item[0].id)
     $(item_obj).closest("tr").find(".price").val(item[0].price).trigger("change")
     $(item_obj).closest("tr").find(".unit").val(item[0].unit).trigger("change")
   }
@@ -710,7 +715,7 @@
   
   const remove_row = (e) => {
     id++;
-    // console.log("remove", e)
+    getItemBox()
     $(e).closest("tr").remove()
     countTotal()
     addOrderEasyD()
@@ -719,7 +724,7 @@
   const delete_item = (e,item_id) =>{
     e.preventDefault()
     remove_row($("#new_row_"+item_id).find(".remove_row"))
-    getItemBox()
+    
   }
   const add_row = (item_id=null) => {
     if(item_id == null)
@@ -1313,12 +1318,16 @@
   }
 
   const view_menu  = () => {
-    $(".items").each(function(key,val){
-
+    // getItemBox()
+    $("#expense_body tr").each(function(key,elem){
+      $(".product_id_"+$(elem).data("item_id")).trigger("click")
+    }).after(function(){
+      $("#selectModal").modal("show")
     })
-    $("#selectModal").modal("show")
+   
   }
-  const auto_click  = () => {
+  const auto_click  =async  () => {
+    //  await getItemBox()
     $("#expense_body tr").each(function(key,elem){
      $(".product_id_"+$(elem).data("item_id")).trigger("click")
     })
