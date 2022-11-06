@@ -49,6 +49,19 @@
     padding-top: 10%;
     background: rgba(245, 254, 234, 0.6);
   }
+  .delete_btn{
+ position: absolute;
+ left : 15px;
+ padding: 3px;
+
+ top: 10px;
+  }
+  .delete_btn:hover{
+    cursor: pointer;
+    background: black;
+    color: white;
+    transition: 1s all;
+  }
 </style>
 @endsection
 
@@ -125,8 +138,8 @@
 
 <div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="selectModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-    <div class="modal-content">
-       <x-layouts.order-easy :items="$items" />
+    <div class="modal-content" id="itemModalContent">
+       <x-layouts.order-easy :items="$items" :order="$order" />
       
      </div>
        
@@ -204,10 +217,10 @@
 
         <div class="card-body table-responsive">
           <div class="row">
-            <div class="col-md-9 mb-4  border-right"><button class="btn btn-outline-dark  ml-1" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Product</button>
-              <button class="btn btn-outline-dark  ml-1" id="add_new_charge" onclick="add_charge()"><i class="fa fa-plus-circle"></i> New Charges</button>
-              <button class="btn btn-outline-dark border-success ml-1" id="add_new_order" onclick='newOrder()'><i class="fa fa-plus-circle"></i> New Order</button>
-              <button class="btn btn-outline-dark border-success ml-1" id="view_menu" onclick='view_menu()'><i class="fa fa-cutlery"></i> Menu</button>
+            <div class="col-md-9 mb-4  border-right"><button class="btn btn-outline-dark  ml-1 mb-2" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Product</button>
+              <button class="btn btn-outline-dark  ml-1 mb-2" id="add_new_charge" onclick="add_charge()"><i class="fa fa-plus-circle"></i> New Charges</button>
+              <button class="btn btn-outline-dark border-success ml-1 mb-2" id="add_new_order" onclick='newOrder()'><i class="fa fa-plus-circle"></i> New Order</button>
+              <button class="btn btn-outline-dark border-success ml-1 mb-2" id="view_menu" onclick='view_menu()'><i class="fa fa-cutlery"></i> Menu</button>
             </div>
             <div class="col-md-4 mb-4">
               <div class="input-group" id="user_contact_group">
@@ -301,7 +314,7 @@
             <tbody id="expense_body">
               @if(!empty(count($order->orderDetails)))
               @foreach($order->orderDetails as $key => $order_detail)
-              <tr id="new_row_{{$order_detail->item->id}}">
+              <tr id="new_row_{{$order_detail->item->id}}" data-item_id="{{$order_detail->item->id}}" data-item_an>
                 <td colspan="">
                   <select name="item" id="" class="form-control item_name items">
                     <option value="{{$order_detail->item->id}}">{{$order_detail->item->name}}</option>
@@ -309,8 +322,14 @@
                 </td>
                 <td>
                   <!-- <span><i class="fa fa-times"></i></span><input type="number" class=" qty" name="qty" value="1" min="1"> -->
-
-                  <input class="form-control qty" type="number" name="qty" value="{{$order_detail->quantity}}" min="1">
+                  <div class="cross_button mt-1  justify-content-center">
+                <div class="input-group">
+                    <div class="input-group-prepend" onclick="changeQty({{$order_detail->item->id}},-1)"><span class="input-group-text qty_btn minus"><i class="fa fa-minus"></i></span></div>
+                        <input class="form-control qty_item_{{$order_detail->item->id}} qty_input_{{$order_detail->item->id}} qty" type="number" min="1" max="10"  value="{{$order_detail->quantity}}" data-bs-original-title="" title="" id="">
+                    <div class="input-group-prepend" onclick="changeQty({{$order_detail->item->id}},+1)"><span class="input-group-text qty_btn plus"><i class="fa fa-plus"></i></span></div>
+                </div>
+            </div>    
+                  <!-- <input class="form-control qty qty_item_{{$order_detail->item->id}} " type="number" name="qty" value="{{$order_detail->quantity}}" min="1"> -->
 
                 </td>
                 <td>
@@ -644,14 +663,20 @@
                   </button>
                 </td>
                 </tr>`)
-  const expense_row = (id) => $(`<tr id="new_row_${id}">
+  const expense_row = (id) => $(`<tr id="new_row_${id}" data-item_id="${id}">
                         <td colspan="">
                          <select name="item" id=""  class="form-control item_name items">
                           <option value="0">Select New Item</option>
                          </select>
                         </td>
                         <td>
-                          <input type="number" class="form-control qty qty_item_${id}" name="qty" value="1" min="1" onchange="changeQuantity(this)">
+                        <div class="cross_button  mt-1  justify-content-center">
+                         <div class="input-group">
+                        <div class="input-group-prepend" onclick="changeQty(${id},-1)"><span class="input-group-text qty_btn minus"><i class="fa fa-minus"></i></span></div>
+                        <input class="form-control qty_item_${id} qty_input_${id} qty" type="number" min="1" max="10"  value="1" data-bs-original-title="" title="" id="">
+                         <div class="input-group-prepend" onclick="changeQty(${id},+1)"><span class="input-group-text qty_btn plus"><i class="fa fa-plus"></i></span></div>
+                         </div>
+                         </div>
                         </td>
                         <td>
                           <input type="text" class="form-control unit" name="unit" readonly>
@@ -670,12 +695,19 @@
                        
                       </tr>`)
   let id = 1;
+  
   const remove_row = (e) => {
     id++;
-    console.log("remove", e)
+    // console.log("remove", e)
     $(e).closest("tr").remove()
     countTotal()
+    addOrderEasyD()
 
+  }
+  const delete_item = (e,item_id) =>{
+    e.preventDefault()
+    remove_row($("#new_row_"+item_id).find(".remove_row"))
+    getItemBox()
   }
   const add_row = (item_id=null) => {
     if(item_id == null)
@@ -724,8 +756,14 @@
   }
 
   const changeQty = (item_id,change = -1) => {
+    loadoverlay($(".qty_item_"+item_id))
     // $("#new_row_"+item_id).find(".qty").val(parseInt($("#new_row_"+item_id).find(".qty").val()) + change)
     $(".qty_item_"+item_id).val(parseInt($(".qty_item_"+item_id).val()) + change).trigger("change")
+    if($(".qty_item_"+item_id).val() == 0)
+    {
+      $(".qty_item_"+item_id).val(1).trigger("change")
+    }
+    hideoverlay($(".qty_item_"+item_id))
   }
 
 
@@ -738,6 +776,7 @@
     $(this).closest("tr").find(".subtotal").val(qty * price)
 
     countTotal()
+    addOrderEasyD()
 
   })
   $("#order_type").on("change", function() {
@@ -746,12 +785,21 @@
     else
       $("#charge_row").find(".price").val(0).trigger("change")
   })
+  const addOrderEasyD = () => {
+      all_items =   $("#expense_body tr")
+        .map(function(num,elem){
+          return  `${$(elem).find(".qty").val()} X <strong>${$(elem).find(".item_name").find('option:selected').html()}</strong>`
+        }).get()
+        $("#item_coma").html(all_items.join(", "))
+        $("#item_total").html('<i class="fa fa-inr"></i> '+$("#total").html());
+  }
   const countTotal = () => {
     let total = 0
     $(".subtotal").each((index, elem) => {
       total = parseInt(total) + parseInt(elem.value)
     })
     $("#total").html(total)
+   
   }
 
   const editHandler = (obj) => {
@@ -1253,19 +1301,40 @@
   }
 
   const view_menu  = () => {
+    $(".items").each(function(key,val){
+
+    })
     $("#selectModal").modal("show")
   }
-  $(".product").click(function(){
+  const auto_click  = () => {
+    $("#expense_body tr").each(function(key,elem){
+     $(".product_id_"+$(elem).data("item_id")).trigger("click")
+    })
+  }
+  $(document).ready(function(){
+    auto_click()
+    addOrderEasyD()
+  })
+  $("#itemModalContent").on("click",".product",function(){
     // $(".item_name_place").removeClass("shadow-sm border-success border")
-    $(this).addClass("border-success border")    
+    $(this).addClass("border-success border product_selected")    
     $(this).find(".cross_button").removeClass("d-none")
+    $(this).parent("div").find(".delete_btn").show()
     let item = {
         id : $(this).data("id"),
         name : $(this).data("name"),
         price : $(this).data("price")
     }
-    console.log(item)
+   
+   
+
+    // console.log(item)
     addItem(item)
+    try {
+      $(this).find(".qty_item_"+item.id).val($(".qty_input_"+item.id).val() ?? 1)
+    } catch (error) {
+      console.error(error.message)
+    }
   })
 
 
@@ -1286,6 +1355,8 @@
         
     
   }
+
+
 
 </script>
 

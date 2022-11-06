@@ -35,53 +35,77 @@
     <div class="card-body">
         <div class="row">
         <div class="col pt-2 pb-2 pr-4 pl-4">
-                <input type="text" class="form-control" placeholder="search for item">
+                <input type="text" class="form-control" placeholder="search for item" onkeyup="getItemBox()" id="search_key_item_box">
             </div>
             <div class="col pt-2 pb-2 pr-4 pl-4">
-                <select name="sub_category" id="sub_category" class="form-control">
-                    <option value=""> Filter by subcategory</option>
+                <select name="sub_category_easy" id="sub_category_easy" class="form-control" onchange="getItemBox()">
+                    <option value=""> Filter by Category</option>
+                    <option value="ice_cream">ice_cream</option>
+                    <option value="fast_food">fast_food</option>
                 </select>
             </div>
-            <div class="col pt-2 pb-2 pr-4 pl-4">
-                <select name="sub_category" id="sub_category" class="form-control">
-                    <option value=""> Filter by subcategory</option>
-                </select>
-            </div>
+            
            
         </div>
     </div>
     <div class="card-body">
-        <div class="row">
-            <?php $__currentLoopData = $items; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-            <div class="col-md-2 col-sm-6 col-6">
-              <?php if (isset($component)) { $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4 = $component; } ?>
-<?php $component = $__env->getContainer()->make(Illuminate\View\AnonymousComponent::class, ['view' => 'components.item-box','data' => ['item' => $item]]); ?>
-<?php $component->withName('item-box'); ?>
-<?php if ($component->shouldRender()): ?>
-<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
-<?php $component->withAttributes(['item' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute($item)]); ?>
-<?php echo $__env->renderComponent(); ?>
-<?php endif; ?>
-<?php if (isset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4)): ?>
-<?php $component = $__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4; ?>
-<?php unset($__componentOriginalc254754b9d5db91d5165876f9d051922ca0066f4); ?>
-<?php endif; ?>   
-            </div>            
-           <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?> 
+      <?php if(isset($order)): ?>
+      <div class="row p-2">
+       <h6>ORDER-ID: <strong><small><?php echo e($order->order_id); ?></small></strong></h6> 
+      </div>
+      <?php endif; ?>
+      <div class="row p-2">
+        <table id="item_details_table" class="table">
+          <tbody>
+          <tr><th></th><th></th>
+          </tr>
+            <tr>
+              <td class="p-1"> <span class="small" id="item_coma"></span></td>
+              <td class="p-2 " colspan="2"><span id="item_total" class="badge badge-dark"></span></td>
+            </tr>           
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-body">
+        <div class="row" id="item_box_row">
+           
         </div>
     </div>
     <div class="card-footer">
           <button class="btn btn-dark btn-sm m-2 order_draft" onclick="setAllData()"> <i class="fa fa-send"></i> Place Order </button>
-          <button class="btn btn-success btn-sm m-2 " onclick="createBill()"> <i class="fa fa-inr"></i> Create Bill </button>
           <button class="btn btn-primary btn-sm m-2 order_draft" onclick="saveDraft()"> <i class="fa fa-save"></i> Save Draft </button>
-          <button class="btn btn-danger btn-sm m-2 order_draft" onclick="cancelOrder()"> <i class="fa fa-times"></i> Cancel Order </button>
     </div>
+<script>
+   let timer = 500;
+ let timeOutCall
+const getItemBox = async () =>{
 
+ clearTimeout(timeOutCall)
+ timeOutCall =  setTimeout( ()=>{
+  loadoverlay($("#item_box_row"))
+   $.get("<?php echo e(route('get-item-box')); ?>",{type:"product",sub_category : $("#sub_category_easy").val(),order_id:$("#order_id").val(),search:$("#search_key_item_box").val()})
+    .then((data)=>{
+     hideoverlay($("#item_box_row"))
+    $("#item_box_row").html(data)
+    // if(typeof("countTotal") !== undefined)
+    // countTotal()
+    if(typeof("auto_click") !== undefined)
+    auto_click()
+    
+    })
+
+ },600)
+    
+}
+getItemBox()
+</script>
 
 
 <?php $__env->startPush('script'); ?>
 
 <script>
+  //Hello Pushed
   $("#from_date").prop('max', $("#to_date").val());
   $("#to_date").change(function() {
     $("#from_date").prop('max', $("#to_date").val());

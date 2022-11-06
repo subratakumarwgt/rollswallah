@@ -6,12 +6,14 @@ use App\Models\Centre;
 use App\Models\Contact;
 use App\Models\Diagnosis;
 use App\Models\Doctor;
+use App\Models\Item as ModelsItem;
 use App\Models\Product;
 use App\Models\Slots;
 use App\Models\StaticAsset;
 use App\Models\User;
 use App\Models\Module;
 use App\Models\Order;
+use App\View\Components\item;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -945,7 +947,46 @@ class AdminDashboardController extends Controller
       return response($order->getOrderCouponsHTML($order_id_array),200);
   
     }
+    
+   public function itemBoxBind(Request $request)
+   {
+     $recordsQuery = new ModelsItem();
+    //  $recordsQuery = $recordsQuery->where("order_type","website");
+     $sort=0;
+     $searchValue = $request->search ?? "";
+     if($searchValue!=""){
+       $sort=1;
+       $_SESSION['key'] = $searchValue;
+       $recordsQuery=$recordsQuery->where('items.id', 'LIKE', '%' .$_SESSION['key']. '%')->orWhere('items.name', 'LIKE', '%' .$_SESSION['key']. '%');
+      
+   }
 
+    if (isset($request->type) && !empty($request->type)) {
+        $recordsQuery = $recordsQuery->where('type',$request->type);
+    }
+    
+    if (isset($request->sub_category) && !empty($request->sub_category)) {
+        $recordsQuery = $recordsQuery->where('sub_category',$request->sub_category);
+    }
+    $orderItems = [];
+    if (isset($request->order_id) && !empty($request->order_id)) {
+    $orderItems = Order::where("order_id",$request->order_id)->first()->orderDetails->pluck("item_id")->toArray();
+    }
+ 
+     $records =  $recordsQuery->orderBy("items.id","DESC")
+                   ->take(18)
+                   ->get();
+      
+                   $itemsHtml = [];
+    if(empty($records->count()))
+    $itemsHtml[0] = "<h4 class='h4 p-3 text-center text-danger small'> No items found. </h4>";
+    foreach ($records as  $item) {
+      $itemsHtml[] = view("components.item-box",["item" => $item,"selected" => in_array($item->id,$orderItems)])->render();   
+    }
+
+      return response($itemsHtml,200);
+ 
+   }
     public function getOrderTimelineHTML(Request $request){
       $order_id = $request->order_id;
       $order_id = Order::where("order_id",$order_id)->first()->id;
