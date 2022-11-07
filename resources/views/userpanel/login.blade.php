@@ -39,6 +39,9 @@
                         @enderror
 
                      </div>
+                     @if(isset($_GET['redirect_url']))
+                     <input type="hidden" name="redirect_url" value="{{$_GET['redirect_url']}}" />
+                     @endif
                      <div class="form-group">
                         <label class="col-form-label">Password</label>
                         <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Enter Your Password">

@@ -53,6 +53,9 @@ endif;
 unset($__errorArgs, $__bag); ?>
 
                      </div>
+                     <?php if(isset($_GET['redirect_url'])): ?>
+                     <input type="hidden" name="redirect_url" value="<?php echo e($_GET['redirect_url']); ?>" />
+                     <?php endif; ?>
                      <div class="form-group">
                         <label class="col-form-label">Password</label>
                         <input id="password" type="password" class="form-control <?php $__errorArgs = ['password'];

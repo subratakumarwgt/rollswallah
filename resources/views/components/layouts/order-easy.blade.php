@@ -75,6 +75,8 @@
     <div class="card-footer">
           <button class="btn btn-dark btn-sm m-2 order_draft" onclick="setAllData()"> <i class="fa fa-send"></i> Place Order </button>
           <button class="btn btn-primary btn-sm m-2 order_draft" onclick="saveDraft()"> <i class="fa fa-save"></i> Save Draft </button>
+           <button class="btn btn-primary btn-sm m-2" id="add_new_order" onclick='newOrder()'><i class="fa fa-plus-circle"></i> New Order</button>
+           <button class="btn btn-danger btn-sm m-2" id="hide_menu" onclick='hide_menu()'><i class="fa fa-times"></i> Close</button>
     </div>
 <script>
    let timer = 500;

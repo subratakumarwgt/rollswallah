@@ -54,6 +54,8 @@ private function loginFailed(){
         //Authentication passed...
     // dd(Auth::User());
     $role = Auth::User()->role;
+    if(isset($request->redirect_url))
+    return redirect($request->redirect_url);
     switch ($role) {
         case 'user':
             return redirect()->route('product-dashboard');

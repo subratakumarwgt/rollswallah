@@ -1307,6 +1307,9 @@
 
   const view_menu  = () => {
     // getItemBox()
+    if($("#expense_body tr").length == 0)
+    $("#selectModal").modal("show")
+    else
     $("#expense_body tr").each(function(key,elem){
       $(".product_id_"+$(elem).data("item_id")).trigger("click")
     }).after(function(){
