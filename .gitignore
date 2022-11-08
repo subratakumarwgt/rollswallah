@@ -24,3 +24,5 @@ Homestead.json
 rollswallah.zip
 rollswallah_final.zip
 rollswallah - 1.zip
+
+storage/framework/sessions/*
