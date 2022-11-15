@@ -239,7 +239,7 @@
             <div class="col-md-4 mb-4">
               <div class="input-group" id="user_contact_group">
                 <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-phone"></i> (+91)  </span></div>
-                <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="Contact number (mandatory)" data-bs-original-title="" title="" id="user_contact" value="<?php echo e(@$order->user_contact); ?>" required>
+                <input class="form-control" type="text" minlength="10" max="9999999999" placeholder="Contact number (mandatory)" data-bs-original-title="" title="" id="user_contact" value="<?php echo e(@$order->user_contact ?? 9999900000); ?>" required>
               </div>
             </div>
             <div class="col-md-4 mb-4">

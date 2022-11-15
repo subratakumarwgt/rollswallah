@@ -14,7 +14,6 @@
         @foreach($order->orderDetails as $item)
         <li class="p-1 border-bottom">
            {{$item->quantity}} x {{$item->product->title}} <strong class="pull-right mr-5">₹{{$item->subtotal}}</strong>
-
         </li>
         @endforeach
     </ul>

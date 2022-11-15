@@ -126,7 +126,7 @@
             <label for="view_type">
              Mark order as ready?
             </label><br>
-           <small class="text-danger">( This customer will also be notified )</small><br>
+           <small class="text-danger">This customer may also be notified </small><br>
            <small class="text-danger" id="readyMessage"></small><br>
            <small class="text-danger">( This action can not be undo )</small>
             <input type="hidden" id="order_id" value="">
@@ -144,6 +144,14 @@
         <div class="col-md-4 pl-5 pt-4 border-right">
             <div class="text-center text-primary">
                 <h4 class="">Orders</h4>
+                <div class="col-md-12 p-1">
+                    <?php $__currentLoopData = $order_types; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $type): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="<?php echo e($type); ?>">
+                    <label class="form-check-label" for="inlineRadio1"><?php echo e($type); ?></label>
+                    </div>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                </div>
             </div>
         </div>
         <div class="col-md-4 p-1">

@@ -123,7 +123,8 @@
                             <option value="dine_in" >Dine In</option>
                             <option  value="take_away" >Take Away</option>
                             <option  value="Online" >Online</option>
-                            <option  value="On Call" >On Call</option>                          
+                            <option  value="on_call" >On Call</option>
+                            <option  value="website" >website</option>                          
                             </select>
                             </select>
 

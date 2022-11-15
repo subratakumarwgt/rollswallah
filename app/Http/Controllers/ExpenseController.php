@@ -509,6 +509,7 @@ class ExpenseController extends Controller
 
     public function viewQuickOrder($id = null){
         $data["isNew"] = "false";
+		
         if(empty($id)){
             $data["order_id"] = Order::create([
                 "status" => "draft",
@@ -516,7 +517,7 @@ class ExpenseController extends Controller
                 "item_count" => 0
             ])->id;
             $order = Order::find($data["order_id"]);
-            $order->order_id = time().$data["order_id"];
+            $order->order_id = date("Ymd").$data["order_id"];
             $order->save();
             $data["isNew"] = "true";
             $data["order"] = $order;

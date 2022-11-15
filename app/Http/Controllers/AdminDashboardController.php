@@ -86,7 +86,8 @@ class AdminDashboardController extends Controller
         return view('adminpanel.dashboard');
     }
     public function orderHistory(){
-      return view('adminpanel.expenses.onlineOrders');
+      $data["order_types"] = StaticAsset::getAssetsByTitle("order_type");
+      return view('adminpanel.expenses.onlineOrders',$data);
   }
     public function contactList(){
       
@@ -914,7 +915,7 @@ class AdminDashboardController extends Controller
     }
     public function orderCouponBind(Request $request){
       $recordsQuery = new Order();
-      $recordsQuery = $recordsQuery->where("order_type","website");
+      // $recordsQuery = $recordsQuery->where("order_type","website");
       $sort=0;
       $searchValue = $request->search ?? "";
       if($searchValue!=""){
@@ -926,9 +927,12 @@ class AdminDashboardController extends Controller
     if (isset($request->status) && !empty($request->status)) {
         $recordsQuery = $recordsQuery->where('status',$request->status);
     }
-    if (isset($request->region) && !empty($request->region)) {
-        $recordsQuery = $recordsQuery->where('region',$request->region);
+    if (isset($request->order_type) && !empty($request->order_type)) {
+        $recordsQuery = $recordsQuery->where('order_type',$request->order_type);
     }
+    // if (isset($request->region) && !empty($request->region)) {
+    //     $recordsQuery = $recordsQuery->where('region',$request->region);
+    // }
     if (isset($request->from_date) && !empty($request->from_date)) {
         $recordsQuery = $recordsQuery->whereDate('created_at','>=',$request->from_date);
     }

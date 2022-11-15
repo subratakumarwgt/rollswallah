@@ -14,7 +14,7 @@
             <div class="p-2">
                 <ul class="list m-1 p-1">
                     <?php $__currentLoopData = $order->orderDetails; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <li><?php echo e($item->quantity); ?> x <?php echo e($item->product->title); ?></li>
+                    <li><?php echo e($item->quantity); ?> x <?php echo e($item->product->title ?? $item->item->name); ?></li>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </ul>
             </div>

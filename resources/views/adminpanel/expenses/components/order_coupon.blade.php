@@ -14,7 +14,7 @@
             <div class="p-2">
                 <ul class="list m-1 p-1">
                     @foreach($order->orderDetails as $item)
-                    <li>{{$item->quantity}} x {{$item->product->title}}</li>
+                    <li>{{$item->quantity}} x {{$item->product->title ?? $item->item->name}}</li>
                     @endforeach
                 </ul>
             </div>

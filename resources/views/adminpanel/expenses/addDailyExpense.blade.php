@@ -29,9 +29,7 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Add Daily Expense</h3>
 
-<button class="btn btn-primary btn-sm" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Item</button>
 @endsection
 
 @section('breadcrumb-items')
@@ -97,9 +95,13 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="card">
-
+  
         <div class="card-header">
           <div class="row justify-content-center">
+            <div class="col-md-12 p-2">
+            <h3>Add Daily Expense</h3>
+            <button class="btn btn-primary btn-sm" id="add_new_item" onclick="add_item()"><i class="fa fa-plus-circle"></i> New Item</button>
+            </div>
             <div class="col-md-4 mb-2 ">
               <div class="border p-3 text-center rounded border-primary bg-light text-primary shadow-sm">
                 <strong>Date</strong> : <span class="text-dark editable_value editable_date">{{date("Y-m-d")}}</span> <i class="fa fa-pencil small text-danger cursor-pointer link" onclick="editHandler(this)"></i>

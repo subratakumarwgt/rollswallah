@@ -220,7 +220,7 @@ class OrderController extends Controller
             $log->icon = 'fa fa-calendar';
             $log->class = 'success';
             if ($log->save()) {
-                $this->order->status = "complited";
+                $this->order->status = "completed";
                 $this->order->save();
                 return true;
             }

@@ -1097,6 +1097,8 @@ class CrudController extends Controller
 		public function saveOrderDetails(Request $request){
 			if (!empty(count($request->row_data))) {
 				$order = Order::where("order_id",$request->order_id)->first();
+				$orderInstance = new OrderController($order->id);
+				$orderInstance->setConfirmation(count($request->row_data) * 5);
 				foreach ($order->orderDetails as $key => $value) {
 					$value->delete();
 				}
